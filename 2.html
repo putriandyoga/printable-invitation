@@ -764,6 +764,39 @@
       .parents .nb {
         display: inline-block;
         max-width: 100%;
+      } /* Small post-it on the corner of the bride's name (title / marga). Absolutely placed and on a high layer, so nothing else moves. Empty text hides it. */
+      .postit {
+        position: absolute;
+        left: 100%;
+        top: -3mm;
+        margin-left: -1mm;
+        z-index: 10;
+        white-space: nowrap;
+        padding: 1.5mm 3.2mm 1.2mm;
+        background: #fbe0cb;
+        border: 0.2mm solid rgba(118, 84, 58, 0.28);
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 3.9mm;
+        line-height: 1.05;
+        color: var(--brown);
+        text-align: center;
+        rotate: 5deg;
+      }
+      .postit::before {
+        content: "";
+        position: absolute;
+        top: -1.7mm;
+        left: 50%;
+        width: 9mm;
+        height: 3mm;
+        translate: -50% 0;
+        background: rgba(168, 181, 138, 0.78);
+        rotate: -3deg;
+      }
+      .nm-wrap {
+        position: relative;
+        display: inline-block;
       }
       .dengan {
         font-size: 8mm;
@@ -1414,7 +1447,12 @@
                     </p>
                   </div>
                   <div class="grp person">
-                    <p class="pname" data-bind="brideFullName"></p>
+                    <p class="pname">
+                      <span class="nm-wrap"
+                        ><span data-bind="brideFullName"></span
+                        ><span class="postit" data-bind="nameSticker"></span
+                      ></span>
+                    </p>
                     <p class="parents" data-bind="brideParents"></p>
                   </div>
                   <div class="grp"><p class="dengan script">dengan</p></div>
@@ -1529,11 +1567,12 @@
         // Couple
         brideName: "PUTRI", // front cover (short / first name)
         groomName: "YOGA",
-        brideFullName: "PUTRI NABELLA", // inside announcement
-        groomFullName: "MUHAMMAD YOGA ADHA PRATAMA",
+        brideFullName: "PUTRI NABELLA, S.KOM.", // inside announcement
+        groomFullName: "MUHAMMAD YOGA ADHA PRATAMA, S.KOM.",
         brideRelation: "Putri Sulung", // shown as "Putri Sulung dari Bapak ... & Ibu ..."
         groomRelation: "Putra Bungsu",
         weddingLogo: "P & Y", // monogram on the back cover: replace with your own initials
+        nameSticker: "Kano-Kano", // small post-it on the corner of the bride's name in the inside announcement (title or marga). "" hides it.
 
         // Bride's parents
         brideFather: "Samsi",
