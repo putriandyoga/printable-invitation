@@ -392,6 +392,9 @@
       .bq.xs {
         width: 30mm;
       }
+      .bq.md {
+        width: 48mm;
+      }
       .bq.tl {
         top: 3.5mm;
         left: 3.5mm;
@@ -479,7 +482,7 @@
       .label {
         font-family: var(--f-ui);
         font-weight: 700;
-        font-size: 2.6mm;
+        font-size: 4.5mm;
         letter-spacing: 0.9mm;
         text-transform: uppercase;
         color: var(--olive);
@@ -518,16 +521,17 @@
       }
 
       /* ---------- 5. Panel artwork ---------- */
-      /* Back cover (outside, left) */
+      /* Back cover (outside, left): large circular monogram */
       .back .content {
         justify-content: center;
-        padding: 0 16mm;
+        padding: 0 12mm;
       }
       .logo {
         position: relative;
-        width: 66mm;
-        height: 66mm;
-        margin-top: -6mm;
+        width: 98mm;
+        height: 98mm;
+        margin-top: -10mm;
+        flex: none;
       }
       .logo svg {
         position: absolute;
@@ -541,7 +545,7 @@
         left: 50%;
         top: 50%;
         translate: -50% -50%;
-        width: 40mm;
+        width: 46mm;
         text-align: center;
         font-family: var(--f-display);
         font-style: italic;
@@ -549,11 +553,119 @@
         color: var(--brown);
         line-height: 1.05;
       }
-      .back .date {
-        margin-top: 5mm;
+      /* Back cover designs: "minimalist" initials or "quote" love note (same 98 mm box as before) */
+      .bc-min[hidden],
+      .bc-quote[hidden],
+      .postit[hidden] {
+        display: none !important;
+      }
+      .bc-min,
+      .bc-quote {
+        position: relative;
+        width: 98mm;
+        height: 98mm;
+        margin-top: -10mm;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .bc-min .orn-svg,
+      .bc-quote .orn-svg {
+        position: absolute;
+        pointer-events: none;
+      }
+      .bc-min .mono-min {
+        position: relative;
+        width: 84mm;
+        text-align: center;
+        white-space: nowrap;
         font-family: var(--f-display);
-        font-size: 4mm;
-        letter-spacing: 1.1mm;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--brown);
+        line-height: 1.05;
+        letter-spacing: 0.5mm;
+      }
+      .bc-min .mono-min .amp {
+        font-family: var(--f-script);
+        font-style: normal;
+        font-weight: 600;
+        font-size: 0.62em;
+        color: var(--honey);
+        padding: 0 1.5mm;
+        vertical-align: 0.08em;
+      }
+      .bc-min .rule {
+        display: flex;
+        align-items: center;
+        gap: 2.5mm;
+        width: 52mm;
+        margin-top: 4mm;
+        color: var(--honey);
+      }
+      .bc-min .rule::before,
+      .bc-min .rule::after {
+        content: "";
+        flex: 1;
+        height: 0.3mm;
+        background: currentColor;
+        opacity: 0.7;
+      }
+      .bc-min .rule svg {
+        width: 6mm;
+        height: 6mm;
+        flex: none;
+      }
+      .bc-quote .qcard {
+        position: relative;
+        width: 74mm;
+        padding: 9mm 6mm 8mm;
+        background: #fff8e6;
+        border: 0.2mm solid rgba(118, 84, 58, 0.25);
+        box-shadow: 0.6mm 0.8mm 1.6mm rgba(118, 84, 58, 0.18);
+        rotate: -1.5deg;
+        text-align: center;
+      }
+      .bc-quote .qcard::before {
+        content: "";
+        position: absolute;
+        top: -2.4mm;
+        left: 50%;
+        width: 22mm;
+        height: 5mm;
+        translate: -50% 0;
+        background: rgba(168, 181, 138, 0.78);
+        rotate: 2deg;
+      }
+      .bc-quote .qtext {
+        display: block;
+        max-height: 46mm;
+        overflow: hidden;
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 9mm;
+        line-height: 1.12;
+        color: var(--brown);
+        text-wrap: balance;
+        overflow-wrap: anywhere;
+      }
+      .bc-quote .qsign {
+        display: block;
+        margin-top: 3mm;
+        color: var(--honey);
+      }
+      .bc-quote .qsign svg {
+        width: 22mm;
+        height: 5mm;
+      }
+      .back .date {
+        margin-top: 4mm;
+        width: 120mm;
+        font-family: var(--f-display);
+        font-size: 4.5mm;
+        letter-spacing: 0.9mm;
         text-transform: uppercase;
         color: var(--olive);
       }
@@ -561,12 +673,12 @@
         display: flex;
         align-items: center;
         gap: 3mm;
-        margin-top: 5mm;
+        margin-top: 4mm;
         color: var(--sage);
       }
       .back .sprigs svg {
-        width: 12mm;
-        height: 20mm;
+        width: 10mm;
+        height: 16mm;
       }
       .back .sprigs .heart {
         width: 5mm;
@@ -584,7 +696,7 @@
         text-align: center;
       }
 
-      /* Front cover (outside, right) */
+      /* Front cover (outside, right): wedding title on top, guest address + 64 x 32 mm label below */
       .front {
         background: radial-gradient(
           circle at 50% 38%,
@@ -593,132 +705,322 @@
         );
       }
       .front .content {
-        padding: 26mm 16mm 0;
         justify-content: flex-start;
+        padding: 19mm 16mm 0;
       }
       .sunfull {
-        width: 23mm;
-        height: 23mm;
+        width: 14mm;
+        height: 14mm;
         flex: none;
       }
-      .front .invited {
-        /* margin-top: 6mm; */
+      .wedof {
         margin-top: 18mm;
         font-size: 4.9mm;
+        /* margin-top: 3.5mm; */
+        /* font-size: 2.8mm; */
       }
-      .name {
-        display: block;
-        width: 96mm;
-        white-space: nowrap;
+      .cname {
+        width: 100mm;
+        margin-top: 2mm;
         font-family: var(--f-display);
         font-weight: 500;
+        font-size: 18.5mm;
+        line-height: 1.14;
         color: var(--brown);
-        line-height: 1.15;
-        margin-top: 3mm;
+        text-wrap: balance;
       }
-      .front .amp {
+      .camp {
         font-family: var(--f-script);
         font-weight: 700;
-        font-size: 15mm;
-        line-height: 0.95;
+        font-size: 11mm;
+        line-height: 1;
         color: var(--honey);
         margin-top: 1mm;
       }
-      .front .tag {
-        margin-top: 9mm;
-        font-size: 7mm;
+      .cdate {
+        margin-top: 3.5mm;
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 4.5mm;
+        letter-spacing: 0.5mm;
+        text-transform: uppercase;
+        color: var(--olive);
+        width: 112mm;
+      }
+      .kepada {
+        margin-top: 6.5mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 5.8mm;
         line-height: 1.1;
         color: var(--olive);
       }
-      .front .tag-wrap {
+      .addressee {
+        margin-top: 1.5mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 6.2mm;
+        line-height: 1.2;
+        color: var(--brown);
+      }
+      .guest-label {
+        position: relative;
+        flex: none;
+        width: 64mm;
+        height: 32mm;
+        margin-top: 5mm;
         display: flex;
         align-items: center;
-        gap: 3mm;
+        justify-content: center;
+        background: #fffef9;
+        border: 0.4mm dotted var(--honey);
       }
-
-      /* Inside left: announcement */
-      .ann .content {
-        padding: 21mm 17mm 0;
-        justify-content: flex-start;
+      .guest-label::before {
+        content: "";
+        position: absolute;
+        inset: 1.3mm;
+        border: 0.2mm solid rgba(168, 181, 138, 0.85);
+        pointer-events: none;
       }
-      .ann .flower {
-        width: 12mm;
-        height: 12mm;
-        flex: none;
+      .gl-no {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 12mm;
+        line-height: 1;
+        color: var(--brown);
       }
-      .ann .head {
-        margin-top: 4mm;
-        font-size: 2.7mm;
+      .gl-hint {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 3.2mm;
+        text-align: center;
+        font: 500 2.4mm/1.3 var(--f-ui);
+        color: rgba(118, 84, 58, 0.5);
       }
-      .ann .orn {
-        margin-top: 3mm;
-      }
-      .ann .l1,
-      .ann .l2 {
-        width: 116mm;
-        font-size: 5.6mm;
-        line-height: 1.1;
-        color: var(--olive);
-      }
-      .ann .l1 {
-        margin-top: 7mm;
-      }
-      .ann .l2 {
-        margin-top: 1.5mm;
-      }
-      .ann .l3 {
-        margin-top: 3.5mm;
-        width: 92mm;
+      .apology {
+        margin-top: 4.5mm;
+        width: 90mm;
         font-family: var(--f-serif);
         font-style: italic;
         font-weight: 500;
-        font-size: 5.2mm;
-        line-height: 1.22;
+        font-size: 4.5mm;
+        line-height: 1.3;
         color: var(--ink);
       }
-      .ann .name {
-        width: 108mm;
-        margin-top: 0;
+
+      /* Inside left: Indonesian announcement */
+      .ann .content {
+        padding: 15mm 17mm 25mm;
+        justify-content: space-between;
       }
-      .ann .names {
-        margin-top: 8mm;
+      .grp {
         display: flex;
         flex-direction: column;
         align-items: center;
       }
-      .ann .amp {
-        font-family: var(--f-script);
+      /* bride + "dengan" + groom stay together as one tight block, so the gaps around "dengan" stay proportional */
+      .couple {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3mm;
+      }
+      .bismillah {
+        font-size: 7mm;
+        line-height: 1.1;
+        color: var(--olive);
+      }
+      .salam {
+        margin-top: 2mm;
+        width: 116mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 4.5mm;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .msg {
+        margin-top: 3.5mm;
+        width: 104mm;
+        font-family: var(--f-serif);
+        font-weight: 500;
+        font-size: 4.5mm;
+        line-height: 1.28;
+        color: var(--ink);
+      }
+      .person {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .pname {
+        width: 114mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 8.6mm;
+        line-height: 1.14;
+        letter-spacing: 0.25mm;
+        text-transform: uppercase;
+        color: var(--brown);
+        text-wrap: balance;
+      }
+      .parents {
+        margin-top: 1.4mm;
+        width: 112mm;
+        font-family: var(--f-serif);
+        font-weight: 500;
+        font-size: 4.6mm;
+        line-height: 1.25;
+        color: var(--ink);
+        text-wrap: balance;
+      }
+      .parents .nb {
+        display: inline-block;
+        max-width: 100%;
+      } /* Small post-it on the corner of the bride's name (title / marga). Absolutely placed and on a high layer, so nothing else moves. Empty text hides it. */
+      .postit {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        translate: -50% 0;
+        z-index: 10;
+        white-space: nowrap;
+        padding: 1.3mm 3.2mm 1.1mm;
+        background: #fbe0cb;
+        border: 0.2mm solid rgba(118, 84, 58, 0.28);
+        box-shadow: 0.4mm 0.6mm 1.2mm rgba(118, 84, 58, 0.16);
+        font-family: var(--f-hand);
         font-weight: 700;
+        font-size: 4.5mm;
+        line-height: 1.05;
+        color: var(--brown);
+        text-align: center;
+        rotate: -3deg;
+      }
+      .postit::before {
+        content: "";
+        position: absolute;
+        top: -1.7mm;
+        left: 50%;
+        width: 9mm;
+        height: 3mm;
+        translate: -50% 0;
+        background: rgba(168, 181, 138, 0.78);
+        rotate: -3deg;
+      }
+      /* plain small line under the name (optional placement) */
+      .postit.pos-below {
+        position: static;
+        translate: none;
+        display: block;
+        width: max-content;
+        margin: 1mm auto 0;
+        padding: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 4.5mm;
+        color: var(--olive);
+        rotate: 0deg;
+      }
+      .postit.pos-below::before {
+        display: none;
+      }
+      /* Style 2: handwriting only, no paper, with a hand-drawn arrow pointing down at the name */
+      .postit.pos-hand {
+        top: 0.5mm;
+        padding: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        font-size: 6mm;
+        line-height: 1;
+        color: var(--brown);
+        rotate: -4deg;
+      }
+      .postit.pos-hand::before {
+        display: none;
+      }
+      .postit.pos-hand::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 6mm;
+        height: 6.5mm;
+        margin-top: 0.4mm;
+        translate: -50% 0;
+        rotate: 4deg; /* cancels the note's tilt so the arrow points straight down */
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 28' fill='none' stroke='%2376543A' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2V24'/%3E%3Cpath d='M9 18L15 24L21 18'/%3E%3C/svg%3E")
+          no-repeat center / contain;
+      }
+      .nm-wrap {
+        position: relative;
+        display: block;
+        width: 114mm;
+        padding-top: 7.5mm; /* room for the sticky note raised above the name line */
+      }
+      .nm-wrap.no-note {
+        padding-top: 0;
+      }
+      .nm-wrap.hand-note {
+        padding-top: 12mm; /* room for the handwriting plus its arrow */
+      }
+      .bname {
+        display: block;
+        white-space: normal; /* long names wrap onto two balanced lines instead of shrinking */
+        text-wrap: balance;
+      }
+      /* Academic title: same line, same typography as the name (only a gap between them) */
+      .bname .etitle {
+        font: inherit;
+        color: inherit;
+        letter-spacing: inherit;
+        margin-left: 0.25em;
+      }
+      .dengan {
         font-size: 8mm;
         line-height: 1;
         color: var(--honey);
-        margin: 0.5mm 0;
       }
-      .ann .when {
-        margin-top: 7mm;
-      }
-      .ann .dow {
-        font-family: var(--f-script);
-        font-weight: 700;
-        font-size: 8.5mm;
-        line-height: 1;
-        color: var(--olive);
+      .sched {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 4.5mm;
+        line-height: 1.2;
+        color: var(--ink);
       }
       .ann .dt {
         display: block;
-        width: 108mm;
+        width: 112mm;
         white-space: nowrap;
         font-family: var(--f-display);
         font-weight: 700;
         color: var(--brown);
         line-height: 1.15;
-        margin-top: 1.2mm;
+        margin-top: 1.5mm;
+      }
+      .ann .dt::after {
+        content: "";
+        display: block;
+        width: 64mm;
+        height: 1mm;
+        margin: 1.4mm auto 0;
+        border-radius: 1mm;
+        background: var(--peach);
       }
       .times {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        width: 104mm;
-        margin-top: 8mm;
+        width: 100mm;
+        margin-top: 5mm;
       }
       .times > div {
         padding: 0 3mm;
@@ -732,47 +1034,24 @@
         margin-top: 1.2mm;
         font-family: var(--f-serif);
         font-weight: 700;
-        font-size: 6.6mm;
+        font-size: 6.4mm;
         line-height: 1.1;
         color: var(--brown);
         white-space: nowrap;
       }
 
-      /* Inside right: families + venue */
+      /* Inside right: location postcard (with QR), closing message, Turut Mengundang */
       .fam .content {
-        padding: 21mm 15mm 0;
+        padding: 29mm 15mm 0;
         justify-content: flex-start;
-      }
-      .fam .together {
-        font-family: var(--f-serif);
-        font-style: italic;
-        font-weight: 500;
-        font-size: 5.4mm;
-        line-height: 1.2;
-        color: var(--ink);
-      }
-      .fam .name {
-        width: 112mm;
-        margin-top: 3mm;
-      }
-      .fam .famAmp {
-        font-family: var(--f-script);
-        font-weight: 700;
-        font-size: 8.5mm;
-        line-height: 1;
-        color: var(--honey);
-        margin-top: 0.8mm;
-      }
-      .fam .orn {
-        margin-top: 5mm;
       }
       .postcard {
         position: relative;
-        width: 116mm;
-        height: 76mm;
-        padding: 2.6mm;
-        margin-top: 6mm;
-        rotate: -1.2deg;
+        flex: none;
+        width: 112mm;
+        height: 50mm;
+        padding: 2.4mm;
+        rotate: -1deg;
         background: repeating-linear-gradient(
           -45deg,
           var(--peach) 0 3mm,
@@ -782,11 +1061,9 @@
         );
       }
       .pc-in {
-        position: relative;
         height: 100%;
         display: grid;
-        grid-template-columns: 1fr 38mm;
-        gap: 0;
+        grid-template-columns: minmax(0, 1fr) 36mm;
         background-color: var(--paper);
         background-image: radial-gradient(
           rgba(118, 84, 58, 0.07) 0.25mm,
@@ -796,29 +1073,31 @@
         text-align: left;
       }
       .pc-l {
-        padding: 5mm 4mm 4mm 5.5mm;
+        padding: 4mm 3mm 4mm 5.5mm;
         display: flex;
         flex-direction: column;
         justify-content: center;
         min-width: 0;
       }
-      .pc-l .wish {
-        font-size: 5.2mm;
-        line-height: 1;
-        color: var(--olive);
+      .pc-l .lok {
+        display: flex;
+        align-items: center;
+        gap: 1.4mm;
+        font-size: 4.5mm;
+        letter-spacing: 0.8mm;
       }
-      .pc-l .label {
-        margin-top: 3.5mm;
-        font-size: 2.3mm;
-        letter-spacing: 0.7mm;
+      .pc-l .lok svg {
+        width: 5mm;
+        height: 5mm;
+        flex: none;
       }
       .pc-l .venue {
         display: block;
-        margin-top: 1mm;
+        margin-top: 1.6mm;
         font-family: var(--f-serif);
         font-weight: 700;
-        font-size: 6.6mm;
-        line-height: 1.08;
+        font-size: 5.8mm;
+        line-height: 1.1;
         color: var(--brown);
         white-space: nowrap;
       }
@@ -826,91 +1105,223 @@
         white-space: normal;
       }
       .pc-l .addr {
-        margin-top: 2.2mm;
-        font-family: var(--f-ui);
-        font-weight: 500;
-        font-size: 3.2mm;
-        line-height: 1.38;
+        margin-top: 1.8mm;
+        font-family: var(--f-serif);
+        font-weight: 600;
+        font-size: 4.6mm;
+        line-height: 1.2;
         color: var(--ink);
       }
       .pc-r {
-        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-left: 0.3mm dashed rgba(118, 84, 58, 0.45);
       }
-      .stamp {
-        position: absolute;
-        top: 5mm;
-        right: 5.5mm;
-        width: 19mm;
-        isolation: isolate;
+      .qr {
+        width: 31mm;
+        height: 31mm;
+        aspect-ratio: 1;
+        flex: none;
+        padding: 2%;
+        background: #fff;
+        border: 0.3mm solid rgba(118, 84, 58, 0.3);
       }
-      .stamp::before {
-        content: "";
-        position: absolute;
-        inset: -1.2mm;
-        z-index: -1;
-        background: radial-gradient(
-            circle at 1.2mm 1.2mm,
-            transparent 0.75mm,
-            var(--paper) 0.8mm
-          )
-          0 0/2.4mm 2.4mm;
-        filter: drop-shadow(0 0 0.15mm rgba(118, 84, 58, 0.55));
+      .qr img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
-      .stamp-in {
+      .qr-ph {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 0.4mm;
-        padding: 1.8mm 1mm 1.4mm;
-        background: var(--paper);
-        border: 0.25mm solid rgba(118, 84, 58, 0.35);
-        color: var(--brown);
-      }
-      .stamp-in svg {
-        width: 10mm;
-        height: 10mm;
-      }
-      .stamp-in small {
-        font-family: var(--f-hand);
-        font-weight: 700;
-        font-size: 2.7mm;
-        line-height: 1;
+        justify-content: center;
         text-align: center;
-      }
-      .stamp-in em {
-        font-style: normal;
-        font-size: 1.7mm;
+        border: 0.3mm dashed rgba(118, 84, 58, 0.4);
+        font: 700 2.3mm/1.4 var(--f-ui);
         letter-spacing: 0.35mm;
-        font-weight: 700;
         text-transform: uppercase;
-        color: var(--olive);
+        color: rgba(118, 84, 58, 0.45);
       }
-      .postmark {
-        position: absolute;
-        top: 3mm;
-        right: 21mm;
-        width: 15mm;
-        height: 15mm;
-        rotate: -12deg;
-        opacity: 0.55;
+      .closing {
+        margin-top: 6mm;
+        width: 110mm;
       }
-      .pinart {
-        position: absolute;
-        left: 3mm;
-        right: 3mm;
-        bottom: 3mm;
-        height: 33mm;
-      }
-      .fam .note {
-        margin-top: 5mm;
-        width: 84mm;
+      .cl1 {
         font-family: var(--f-serif);
         font-style: italic;
         font-weight: 500;
-        font-size: 4.8mm;
-        line-height: 1.25;
+        font-size: 4.7mm;
+        line-height: 1.3;
         color: var(--ink);
+      }
+      .cl2 {
+        margin-top: 3mm;
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 4.5mm;
+        line-height: 1.25;
+        color: var(--olive);
+      }
+      .tm-block {
+        margin-top: 5mm;
+        width: 112mm;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .tm-block .orn {
+        width: 44mm;
+      }
+      .tm-head {
+        margin-top: 2.5mm;
+        font-family: var(--f-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 5.8mm;
+        line-height: 1.15;
+        color: var(--brown);
+      }
+      .tm-list {
+        list-style: none;
+        margin: 2.5mm 0 0;
+        padding: 0;
+        width: 108mm;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4mm;
+      }
+      .tm-list li {
+        max-width: 100%;
+        font-family: var(--f-serif);
+        font-weight: 600;
+        font-size: var(--tm-size, 4.8mm);
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .tm-list.cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.4mm 6mm;
+        justify-items: center;
+      }
+      .tm-list.cols li:last-child:nth-child(odd) {
+        grid-column: 1/-1;
+      }
+      /* ---- Inside right, layout B: "without-families" (Turut Mengundang hidden) ----
+         Same sunflower postcard style, but larger, with a decorative sunflower finish instead of the list. */
+      .fam-deco {
+        display: none;
+        position: relative;
+        flex: 1;
+        width: 118mm;
+        margin-top: 6mm;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2mm;
+      }
+      .fd-art {
+        position: relative;
+        width: 60mm;
+        height: 22mm;
+      }
+      .fd-art svg {
+        position: absolute;
+        display: block;
+      }
+      .fd-sf {
+        left: 50%;
+        top: 0;
+        width: 22mm;
+        height: 22mm;
+        translate: -50% 0;
+      }
+      .fd-dz {
+        width: 8mm;
+        height: 8mm;
+      }
+      .fd-sprig {
+        width: 8mm;
+        height: 15mm;
+        bottom: -1mm;
+        color: var(--sage);
+      }
+      .fd-hand {
+        font-size: 6.8mm;
+        line-height: 1;
+        color: var(--brown);
+        rotate: -2deg;
+      }
+      .fam.without-families .fam-deco {
+        display: flex;
+      }
+      .fam.without-families .content {
+        padding: 29mm 15mm 15mm;
+      }
+      .fam.without-families .postcard {
+        width: 108mm;
+        height: auto;
+        min-height: 76mm;
+        padding: 3mm;
+      }
+      /* vertical, centred postcard: Lokasi / venue name -> address -> QR code underneath */
+      .fam.without-families .pc-in {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        min-height: 70mm;
+        text-align: center;
+      }
+      .fam.without-families .pc-l {
+        align-items: center;
+        justify-content: flex-start;
+        padding: 5mm 6mm 2mm;
+      }
+      .fam.without-families .pc-l .lok {
+        justify-content: center;
+      }
+      .fam.without-families .pc-l .venue,
+      .fam.without-families .pc-l .addr {
+        align-self: stretch; /* fill the postcard width so long names wrap instead of overflowing */
+        min-width: 0;
+      }
+      .fam.without-families .pc-r {
+        margin: 0 6mm;
+        padding: 4mm 0 5mm;
+        border-left: 0;
+        border-top: 0.3mm dashed rgba(118, 84, 58, 0.45);
+      }
+      .fam.without-families .pc-l .venue {
+        margin-top: 2.4mm;
+      }
+      .fam.without-families .pc-l .addr {
+        margin-top: 2.4mm;
+        font-size: 6.2mm; /* address is larger than the venue name (5 mm) */
+      }
+      .fam.without-families .qr {
+        width: 36mm;
+        height: 36mm;
+        padding: 2mm;
+      }
+      .fam.without-families .closing {
+        margin-top: 7mm;
+        width: 114mm;
+      }
+      .fam.without-families .cl1 {
+        font-size: 5mm;
+        line-height: 1.36;
+      }
+      .fam.without-families .cl2 {
+        margin-top: 4.5mm;
+        font-size: 4.8mm;
+      }
+      .sheet.swap .back {
+        order: 2;
+      }
+      .sheet.swap .front {
+        order: 1;
       }
 
       /* ---------- 6. Responsive tweaks (screen only) ---------- */
@@ -1136,8 +1547,8 @@
               side faces the right way, then print page 2 only.
             </li>
             <li>
-              Fold the sheet in half along the centre: the names go on the
-              front.
+              Fold the sheet in half along the centre, with the guest label on
+              the front.
             </li>
           </ol>
           <p class="tip">
@@ -1165,28 +1576,28 @@
             Side 1 · Outside <span>back cover | front cover</span>
           </p>
           <div class="scaler">
-            <div class="sheet">
-              <!-- BACK COVER: wedding logo -->
+            <div class="sheet" id="sheetOut">
+              <!-- BACK COVER: minimalist initials OR romantic quote (set backCover.design) -->
               <div class="panel back">
-                <div class="bq tl" data-bq></div>
-                <div class="bq br" data-bq></div>
+                <div class="bq tl md" data-bq></div>
+                <div class="bq br md" data-bq></div>
                 <svg
                   class="deco bfly"
-                  style="left: 104mm; top: 44mm; width: 9mm; rotate: 14deg"
+                  style="left: 116mm; top: 30mm; width: 9mm; rotate: 14deg"
                 >
                   <use href="#bfly" />
                 </svg>
                 <svg
                   class="deco"
-                  style="left: 19mm; top: 152mm; width: 5mm; color: #e9a88a"
+                  style="left: 19mm; top: 150mm; width: 5mm; color: #e9a88a"
                 >
                   <use href="#star" />
                 </svg>
                 <svg
                   class="deco"
                   style="
-                    left: 121mm;
-                    top: 40mm;
+                    left: 126mm;
+                    top: 50mm;
                     width: 4mm;
                     color: var(--honey);
                   "
@@ -1194,15 +1605,118 @@
                   <use href="#star" />
                 </svg>
                 <div class="content">
-                  <div class="logo">
-                    <svg><use href="#wreath" /></svg>
+                  <!-- Option A: standalone minimalist initials (no circular frame) -->
+                  <div class="bc-min" id="bcMin" hidden>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        left: 24mm;
+                        top: 6mm;
+                        width: 9mm;
+                        height: 15mm;
+                        rotate: 28deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        right: 24mm;
+                        bottom: 6mm;
+                        width: 9mm;
+                        height: 15mm;
+                        rotate: 208deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        right: 14mm;
+                        top: 16mm;
+                        width: 4mm;
+                        height: 4mm;
+                        color: var(--honey);
+                      "
+                    >
+                      <use href="#star" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        left: 14mm;
+                        bottom: 18mm;
+                        width: 4mm;
+                        height: 4mm;
+                        color: #e9a88a;
+                      "
+                    >
+                      <use href="#star" />
+                    </svg>
                     <div
-                      class="mono"
+                      class="mono-min"
+                      id="monoMin"
                       data-fit
-                      data-max="15"
-                      data-min="5"
-                      data-bind="weddingLogo"
+                      data-max="30"
+                      data-min="10"
                     ></div>
+                    <div class="rule">
+                      <svg><use href="#heart" /></svg>
+                    </div>
+                  </div>
+                  <!-- Option B: romantic handwritten quote -->
+                  <div class="bc-quote" id="bcQuote" hidden>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        right: 10mm;
+                        top: 8mm;
+                        width: 8mm;
+                        height: 13mm;
+                        rotate: 24deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        left: 12mm;
+                        bottom: 8mm;
+                        width: 8mm;
+                        height: 13mm;
+                        rotate: 204deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <div class="qcard">
+                      <span class="qtext" id="qText"></span>
+                      <span class="qsign"
+                        ><svg viewBox="0 0 44 10">
+                          <path
+                            d="M2 6 C8 1 12 9 18 5 S28 1 33 5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="0.9"
+                            stroke-linecap="round"
+                          />
+                          <path
+                            d="M38 2.5c1.2-1.5 3.6-.8 3.2 1.1-.3 1.5-3.2 3.4-3.2 3.4s-2.9-1.9-3.2-3.4c-.4-1.9 2-2.6 3.2-1.1z"
+                            fill="#e9a88a"
+                          /></svg
+                      ></span>
+                    </div>
                   </div>
                   <p class="date" data-bind="weddingDate"></p>
                   <div class="sprigs">
@@ -1216,23 +1730,23 @@
                 <p class="made hand">Made with love.</p>
               </div>
 
-              <!-- FRONT COVER: wedding title -->
+              <!-- FRONT COVER: wedding title, then guest address + guest label area (64 x 32 mm) -->
               <div class="panel front">
-                <div class="bq tl" data-bq></div>
-                <div class="bq br" data-bq></div>
+                <div class="bq tl md" data-bq></div>
+                <div class="bq br sm" data-bq></div>
                 <div class="bq tr sm" data-bq></div>
                 <div class="bq bl sm" data-bq></div>
                 <svg
                   class="deco bfly"
-                  style="left: 104mm; top: 50mm; width: 9mm; rotate: 14deg"
+                  style="left: 114mm; top: 60mm; width: 9mm; rotate: 14deg"
                 >
                   <use href="#bfly" />
                 </svg>
                 <svg
                   class="deco bfly"
                   style="
-                    left: 26mm;
-                    top: 148mm;
+                    left: 15mm;
+                    top: 128mm;
                     width: 8mm;
                     rotate: -14deg;
                     color: var(--sage);
@@ -1242,15 +1756,9 @@
                 </svg>
                 <svg
                   class="deco"
-                  style="left: 60mm; top: 153mm; width: 4.5mm; color: #e9a88a"
-                >
-                  <use href="#heart" />
-                </svg>
-                <svg
-                  class="deco"
                   style="
-                    left: 38mm;
-                    top: 141mm;
+                    left: 20mm;
+                    top: 100mm;
                     width: 4mm;
                     color: var(--honey);
                   "
@@ -1259,29 +1767,43 @@
                 </svg>
                 <svg
                   class="deco"
-                  style="left: 78mm; top: 140mm; width: 3.6mm; color: #e9a88a"
+                  style="left: 124mm; top: 132mm; width: 4mm; color: #e9a88a"
                 >
                   <use href="#heart" />
                 </svg>
+                <svg
+                  class="deco"
+                  style="
+                    left: 122mm;
+                    top: 106mm;
+                    width: 3.4mm;
+                    color: var(--honey);
+                  "
+                >
+                  <use href="#star" />
+                </svg>
                 <div class="content">
                   <!-- <svg class="sunfull"><use href="#sunfull" /></svg> -->
-                  <p class="label invited">THE WEDDING OF</p>
+                  <p class="label wedof">The wedding of</p>
+                  <p class="cname" data-bind="brideName"></p>
+                  <p class="camp">&amp;</p>
                   <p
-                    class="name"
-                    data-fit
-                    data-max="17"
-                    data-min="7"
-                    data-bind="brideName"
-                  ></p>
-                  <p class="amp">&amp;</p>
-                  <p
-                    class="name"
-                    data-fit
-                    data-max="17"
-                    data-min="7"
+                    class="cname"
                     data-bind="groomName"
+                    style="margin-top: 0"
                   ></p>
-                  <p class="tag script" data-bind="tagline"></p>
+                  <p class="cdate" data-bind="weddingDate"></p>
+                  <p class="kepada">Kepada Yth,</p>
+                  <p class="addressee">Bapak/Ibu/Saudara/I</p>
+                  <div class="guest-label">
+                    <span class="gl-no" data-bind="guestLabelNumber"></span>
+                    <span class="gl-hint noprint"
+                      >Guest name label area · 64 × 32 mm</span
+                    >
+                  </div>
+                  <p class="apology">
+                    Mohon maaf apabila ada kesalahan dalam penulisan nama/gelar.
+                  </p>
                 </div>
               </div>
 
@@ -1290,7 +1812,7 @@
           </div>
         </section>
 
-        <!-- ============ SIDE 2 — INSIDE: [ announcement | families + location ] ============ -->
+        <!-- ============ SIDE 2 — INSIDE: [ announcement | location, closing, families ] ============ -->
         <section
           class="side"
           data-side="in"
@@ -1298,212 +1820,212 @@
         >
           <p class="cap">
             Side 2 · Inside
-            <span>wedding announcement | families &amp; location</span>
+            <span>wedding announcement | location &amp; families</span>
           </p>
           <div class="scaler">
             <div class="sheet">
-              <!-- LEFT: wedding announcement -->
+              <!-- LEFT: Indonesian wedding announcement -->
               <div class="panel ann">
                 <div class="bq bl xs" data-bq></div>
                 <div class="bq br xs" data-bq></div>
                 <div class="bq tl xs" data-bq></div>
                 <div class="bq tr xs" data-bq></div>
                 <div class="content">
-                  <svg class="flower"><use href="#sf" /></svg>
-                  <p class="label head">Wedding Announcement</p>
-                  <div class="orn">
-                    <svg><use href="#heart" /></svg>
+                  <div class="grp">
+                    <p class="bismillah script">Bismillahirrahmanirrahim</p>
+                    <p class="salam">
+                      Assalamualaikum Warrahmatullahi Wabarakatuh
+                    </p>
+                    <p class="msg">
+                      Dengan memohon rahmat dan ridho Allah SWT, kami
+                      mengharapkan kehadiran Bapak/Ibu/Saudara/i pada acara
+                      pernikahan putra putri kami.
+                    </p>
                   </div>
-                  <p class="l1 hand">
-                    With hearts full of happiness and gratitude,
-                  </p>
-                  <p class="l2 hand">Together with our beloved families,</p>
-                  <p class="l3">
-                    We joyfully invite you to celebrate the beginning of our
-                    forever.
-                  </p>
-                  <div class="names">
-                    <p
-                      class="name"
-                      data-fit
-                      data-max="9.5"
-                      data-min="5"
-                      data-bind="brideFullName"
-                    ></p>
-                    <p class="amp">&amp;</p>
-                    <p
-                      class="name"
-                      data-fit
-                      data-max="9.5"
-                      data-min="5"
-                      data-bind="groomFullName"
-                    ></p>
+                  <div class="couple">
+                    <div class="grp person">
+                      <p class="pname">
+                        <span class="nm-wrap" data-person="bride"
+                          ><span class="postit"></span
+                          ><span
+                            class="bname"
+                            data-fit
+                            data-max="9.2"
+                            data-min="5"
+                          ></span
+                        ></span>
+                      </p>
+                      <p class="parents" data-bind="brideParents"></p>
+                    </div>
+                    <div class="grp"><p class="dengan script">dengan</p></div>
+                    <div class="grp person">
+                      <p class="pname">
+                        <span class="nm-wrap" data-person="groom"
+                          ><span class="postit"></span
+                          ><span
+                            class="bname"
+                            data-fit
+                            data-max="9.2"
+                            data-min="5"
+                          ></span
+                        ></span>
+                      </p>
+                      <p class="parents" data-bind="groomParents"></p>
+                    </div>
                   </div>
-                  <div class="when">
-                    <p class="dow" data-bind="weddingDay"></p>
+                  <div class="grp">
+                    <p class="sched">Yang InsyaAllah dilaksanakan pada:</p>
                     <p
                       class="dt"
                       data-fit
-                      data-max="8"
+                      data-max="7.6"
                       data-min="4.5"
                       data-bind="weddingDate"
                     ></p>
-                  </div>
-                  <div class="times">
-                    <div>
-                      <span
-                        class="label"
-                        style="font-size: 2.3mm; letter-spacing: 0.7mm"
-                        >Ceremony</span
-                      ><span
-                        class="tm"
-                        data-fit
-                        data-max="6.6"
-                        data-min="3.5"
-                        data-bind="ceremonyTime"
-                      ></span>
-                    </div>
-                    <div>
-                      <span
-                        class="label"
-                        style="font-size: 2.3mm; letter-spacing: 0.7mm"
-                        >Reception</span
-                      ><span
-                        class="tm"
-                        data-fit
-                        data-max="6.6"
-                        data-min="3.5"
-                        data-bind="receptionTime"
-                      ></span>
+                    <div class="times">
+                      <div>
+                        <span
+                          class="label"
+                          style="font-size: 4.5mm; letter-spacing: 0.5mm"
+                          >Akad Nikah</span
+                        ><span
+                          class="tm"
+                          data-fit
+                          data-max="6.4"
+                          data-min="3.5"
+                          data-bind="akadTime"
+                        ></span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                          style="font-size: 4.5mm; letter-spacing: 0.5mm"
+                          >Resepsi</span
+                        ><span
+                          class="tm"
+                          data-fit
+                          data-max="6.4"
+                          data-min="3.5"
+                          data-bind="receptionTime"
+                        ></span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <p class="made hand">Forever starts here.</p>
               </div>
 
-              <!-- RIGHT: extended families and location (vintage postcard) -->
+              <!-- RIGHT: location postcard (with QR), closing message, Turut Mengundang -->
               <div class="panel fam">
                 <div class="bq bl xs" data-bq></div>
                 <div class="bq br xs" data-bq></div>
                 <div class="bq tl xs" data-bq></div>
                 <div class="bq tr xs" data-bq></div>
                 <div class="content">
-                  <p class="together">Together with their extended families,</p>
-                  <p
-                    class="name"
-                    data-fit
-                    data-max="8.5"
-                    data-min="5"
-                    data-bind="brideFamily"
-                  ></p>
-                  <p class="famAmp">&amp;</p>
-                  <p
-                    class="name"
-                    data-fit
-                    data-max="8.5"
-                    data-min="5"
-                    data-bind="groomFamily"
-                    style="margin-top: 0.8mm"
-                  ></p>
-                  <div class="orn">
-                    <svg><use href="#sf" /></svg>
-                  </div>
-
                   <div class="postcard">
                     <div class="pc-in">
                       <div class="pc-l">
-                        <p class="wish hand">Wish you were here...</p>
-                        <p class="label">The Venue</p>
+                        <p class="label lok">
+                          <svg aria-hidden="true"><use href="#pin" /></svg
+                          >Lokasi
+                        </p>
                         <span
                           class="venue"
                           data-fit
-                          data-max="6.6"
-                          data-min="4.2"
-                          data-wrapfallback
+                          data-max="5.8"
+                          data-min="4.5"
                           data-bind="venueName"
                         ></span>
                         <p class="addr" data-bind="venueAddress"></p>
                       </div>
-                      <div class="pc-r">
-                        <svg
-                          class="postmark"
-                          viewBox="0 0 100 100"
-                          aria-hidden="true"
-                        >
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="44"
-                            fill="none"
-                            stroke="#76543A"
-                            stroke-width="3"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="34"
-                            fill="none"
-                            stroke="#76543A"
-                            stroke-width="1.5"
-                            stroke-dasharray="3 4"
-                          />
-                          <path
-                            d="M8 40q42 -12 84 0M8 60q42 -12 84 0"
-                            fill="none"
-                            stroke="#76543A"
-                            stroke-width="2"
-                          />
-                        </svg>
-                        <div class="stamp">
-                          <div class="stamp-in">
-                            <svg><use href="#sf" /></svg
-                            ><small>Forever starts here.</small
-                            ><em>Wedding · Post</em>
-                          </div>
-                        </div>
-                        <!-- hand-drawn location pin with a dotted route -->
-                        <svg
-                          class="pinart"
-                          viewBox="0 0 120 100"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M8 92C30 70 14 52 46 46S92 56 80 30"
-                            fill="none"
-                            stroke="#76543A"
-                            stroke-width="2.2"
-                            stroke-dasharray="1 6"
-                            stroke-linecap="round"
-                          />
-                          <ellipse
-                            cx="80"
-                            cy="32"
-                            rx="10"
-                            ry="3"
-                            fill="#76543A"
-                            opacity=".22"
-                          />
-                          <use
-                            href="#pin"
-                            x="64"
-                            y="-4"
-                            width="32"
-                            height="32"
-                          />
-                          <use href="#sf" x="4" y="60" width="30" height="30" />
-                          <use
-                            href="#dz"
-                            x="92"
-                            y="66"
-                            width="22"
-                            height="22"
-                          />
-                        </svg>
-                      </div>
+                      <div class="pc-r"><div class="qr" id="qrBox"></div></div>
                     </div>
                   </div>
 
-                  <p class="note" data-bind="inviteNote"></p>
+                  <div class="closing">
+                    <p class="cl1">
+                      Merupakan kehormatan dan kebahagiaan bagi kami apabila
+                      Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa
+                      restu kepada kedua mempelai.
+                    </p>
+                    <p class="cl2">
+                      Wassalamualaikum Warrahmatullahi Wabarakatuh
+                    </p>
+                  </div>
+
+                  <div class="fam-deco" id="famDeco" aria-hidden="true">
+                    <div class="fd-art">
+                      <svg class="fd-sprig" style="left: 8mm; rotate: -28deg">
+                        <use href="#sprig" />
+                      </svg>
+                      <svg
+                        class="fd-sprig"
+                        style="right: 8mm; rotate: 28deg; scale: -1 1"
+                      >
+                        <use href="#sprig" />
+                      </svg>
+                      <svg
+                        class="fd-dz"
+                        style="left: 1mm; top: 3mm; rotate: -10deg"
+                      >
+                        <use href="#dz" />
+                      </svg>
+                      <svg
+                        class="fd-dz"
+                        style="right: 1mm; top: 6mm; rotate: 12deg"
+                      >
+                        <use href="#dz" />
+                      </svg>
+                      <svg class="fd-sf"><use href="#sf" /></svg>
+                    </div>
+                    <!-- <p class="fd-hand hand">With love, always.</p> -->
+                    <svg
+                      class="deco bfly"
+                      style="right: 4mm; top: 8mm; width: 9mm; rotate: 14deg"
+                    >
+                      <use href="#bfly" />
+                    </svg>
+                    <svg
+                      class="deco"
+                      style="
+                        left: 6mm;
+                        top: 20mm;
+                        width: 4mm;
+                        color: var(--honey);
+                      "
+                    >
+                      <use href="#star" />
+                    </svg>
+                    <svg
+                      class="deco"
+                      style="
+                        left: 12mm;
+                        bottom: 8mm;
+                        width: 4mm;
+                        color: #e9a88a;
+                      "
+                    >
+                      <use href="#heart" />
+                    </svg>
+                    <svg
+                      class="deco"
+                      style="
+                        right: 10mm;
+                        bottom: 12mm;
+                        width: 3.4mm;
+                        color: var(--honey);
+                      "
+                    >
+                      <use href="#star" />
+                    </svg>
+                  </div>
+
+                  <div class="tm-block" id="tmBlock">
+                    <div class="orn">
+                      <svg><use href="#sf" /></svg>
+                    </div>
+                    <p class="tm-head">Turut Mengundang Keluarga Besar</p>
+                    <ul class="tm-list" id="tmList"></ul>
+                  </div>
                 </div>
               </div>
 
@@ -1522,24 +2044,94 @@
    Tip: keep each value short and on one line. Long names shrink automatically.
    ===================================================================== */
       const weddingDetails = {
+        // Couple
         brideName: "PUTRI", // front cover (short / first name)
         groomName: "YOGA",
-        brideFullName: "PUTRI NABELLA", // inside announcement
-        groomFullName: "MUHAMMAD YOGA ADHA PRATAMA",
-        brideFamily: "[BRIDE FAMILY NAME]", // inside right panel
-        groomFamily: "[GROOM FAMILY NAME]",
-        weddingDay: "MINGGU", // e.g. "Saturday"
-        weddingDate: "17 JANUARI 2027", // e.g. "12 June 2027"
-        ceremonyTime: "07:00 AM", // e.g. "10:00 AM"
-        receptionTime: "08:00 AM", // e.g. "12:30 PM"
-        venueName: "KEDIAMAN KELUARGA MEMPELAI WANITA",
-        venueAddress: "Jl. A. Yani KM.14.400 Gang. 99",
-        weddingLogo: "P & Y", // monogram placeholder: replace with your initials, e.g. "A & R"
+        brideRelation: "Putri Sulung", // shown as "Putri Sulung dari Bapak ... & Ibu ..."
+        groomRelation: "Putra Bungsu",
 
-        /* Optional extras */
-        tagline: "Minggu, 17 Januari 2027", // set "" to hide
-        inviteNote:
-          "We would be delighted to have you join us as we celebrate our love and the beginning of our forever.", // set "" to hide
+        // Outside back cover: choose ONE of two designs
+        backCover: {
+          design: "minimalist", // "minimalist" (standalone initials) or "quote" (handwritten love note)
+          initials: "P & Y", // used when design is "minimalist"
+          quote: "You are my sunshine, my only sunshine.", // used when design is "quote"
+          // Other ideas: "Two hearts, one beautiful forever." / "Where love blooms, forever grows." / "Every love story is beautiful, but ours is my favorite."
+        },
+
+        // ★ NICKNAME STYLE (applies to everyone who has a nickname): choose ONE
+        //   "sticky" = sticky note  |  "hand" = handwriting + arrow  |  "below" = small line under the name
+        //   "inline" = in parentheses  |  "hidden" = off
+        // (the Sticky / Handwritten / Off buttons in the preview header change this too)
+        nicknameStyle: "sticky",
+
+        // Inside announcement: bride and groom share one design ("Name, Title" on one line).
+        // The family nickname is a small sticky note raised above the line, centred between the name and the title.
+        //   nicknamePosition: "sticky" = sticky note between name and title (default)
+        //                     "hand"   = handwriting only (no paper) with an arrow pointing at the name
+        //                     "below"  = small italic line under the name, e.g. biasa disapa "Kano-kano"
+        //                     "inline" = in parentheses in the name line: Putri Nabella (Kano-kano), S.Kom
+        //                     "hidden" = not shown
+        //   nicknamePrefix: words before the nickname when position is "below" ("" for none)
+        bride: {
+          name: "Putri Nabella",
+          educationTitle: "S.Kom", // same line and typography as the name. "" hides it.
+          nickname: "Kano-kano",
+          nicknamePrefix: "biasa disapa", // only used by the "below" style
+        },
+
+        // Groom: identical design to the bride
+        groom: {
+          name: "Muhammad Yoga Adha Pratama",
+          educationTitle: "S.Kom",
+          <!-- nickname: "", -->
+          <!-- nicknamePosition: "sticky", -->
+          <!-- nicknamePrefix: "biasa disapa", -->
+        },
+
+        // Bride's parents
+        brideFather: "Samsi",
+        brideMother: "Rusinah",
+
+        // Groom's parents
+        groomFather: "Priyo Gunawan",
+        groomMother: "Nani Elliawati",
+
+        // Guest label (number printed inside the 64 x 32 mm label area)
+        guestLabelNumber: "103",
+
+        // Wedding date and schedule
+        weddingDate: "Minggu, 17 Januari 2027",
+        akadTime: "07:00 AM",
+        receptionTime: "08:00 AM",
+
+        // Venue
+        venueName: "Kediaman Keluarga Mempelai Wanita",
+        venueAddress: "Jl. A. Yani KM.14.400, Gang 99",
+        locationQRCode: "img/location.png", // your own QR image: a URL, a file next to this page (e.g. "images/qr.png"), or a data: URL.
+        // Leave as is (or "") to show a placeholder. Use a large image (600 px or more) for a sharp print.
+
+        // ★ INSIDE RIGHT PANEL (location & families)
+        //   showTurutMengundang: true  = location + closing message + "Turut Mengundang" list
+        //   showTurutMengundang: false = list hidden, the panel switches to the spacious decorative layout
+        //   layoutWhenHidden: "expanded" = larger postcard + sunflower finish (the layout used when the list is hidden)
+        //   (an empty turutMengundang list below also switches to the expanded layout automatically)
+        locationFamilies: {
+          showTurutMengundang: true,
+          layoutWhenHidden: "expanded",
+        },
+
+        // Inviting families ("Turut Mengundang"): add or remove lines freely
+        turutMengundang: [
+          "Bapak Syahran dan Ibu Fatimah",
+          "Bapak Samsudin dan Istri",
+          "Alm. Bapak H. Juni Madda dan Almh. Hj. Juminah",
+          "Bapak Arsyad dan Ibu Noor Halidah",
+          "Bapak Samsi (Anci) dan Ibu Rusinah",
+        ],
+
+        // Outside layout. Default = back cover (monogram) on the LEFT, front cover (guest label) on the RIGHT.
+        // Set to true to put the guest label on the LEFT and the monogram on the RIGHT instead.
+        swapOutsidePanels: false,
       };
 
       /* =====================================================================
@@ -1650,9 +2242,7 @@
           mk("circle", { r: 5, fill: "#D9A441" }, dz);
 
           // Sun with a happy face and rays
-          // Sun with rays (no face)
           const sun = $("#sunfull");
-
           for (let i = 0; i < 16; i++)
             mk(
               "line",
@@ -1668,10 +2258,30 @@
               },
               sun,
             );
-
           mk(
             "circle",
             { r: 27, fill: "#F6C945", stroke: "#D9A441", "stroke-width": 3 },
+            sun,
+          );
+          mk(
+            "circle",
+            { cx: -12, cy: 6, r: 4.5, fill: "#F5C6A5", opacity: 0.9 },
+            sun,
+          );
+          mk(
+            "circle",
+            { cx: 12, cy: 6, r: 4.5, fill: "#F5C6A5", opacity: 0.9 },
+            sun,
+          );
+          mk(
+            "path",
+            {
+              d: "M-12 -3q3-4 6 0M6 -3q3-4 6 0M-7 8q7 7 14 0",
+              fill: "none",
+              stroke: "#76543A",
+              "stroke-width": 2.2,
+              "stroke-linecap": "round",
+            },
             sun,
           );
 
@@ -1794,12 +2404,168 @@
         }
 
         /* ---------- 2. Put the wedding details everywhere ---------- */
+        /* Text made from several config values */
+        const escHTML = (t) =>
+          String(t).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const parentsLine = (
+          rel,
+          father,
+          mother, // each parent stays together; a line break can only fall between them
+        ) =>
+          `${escHTML(rel)} dari <span class="nb">Bapak ${escHTML(father)}</span> <span class="nb">&amp; Ibu ${escHTML(mother)}</span>`;
+        const derived = {
+          brideParents: (d) =>
+            parentsLine(d.brideRelation, d.brideFather, d.brideMother),
+          groomParents: (d) =>
+            parentsLine(d.groomRelation, d.groomFather, d.groomMother),
+        };
         function bindText() {
           $$("[data-bind]").forEach((el) => {
-            const v = weddingDetails[el.dataset.bind];
-            if (typeof v === "string") el.textContent = v;
+            const k = el.dataset.bind;
+            const v =
+              k in weddingDetails
+                ? weddingDetails[k]
+                : derived[k]
+                  ? derived[k](weddingDetails)
+                  : undefined;
+            if (typeof v === "string") {
+              if (k in weddingDetails) el.textContent = v;
+              else el.innerHTML = v;
+            }
             if (!v) el.hidden = true; // empty optional values disappear
           });
+        }
+
+        /* Back cover design switch + bride's name line (all driven by weddingDetails) */
+        function renderBackCover() {
+          const bc = weddingDetails.backCover || {};
+          const quote = bc.design === "quote";
+          const min = $("#bcMin"),
+            qc = $("#bcQuote");
+          min.hidden = quote;
+          qc.hidden = !quote;
+          if (quote) {
+            $("#qText").textContent = bc.quote || "";
+          } else {
+            $("#monoMin").innerHTML = escHTML(bc.initials || "").replace(
+              /&amp;/g,
+              '<span class="amp">&amp;</span>',
+            );
+          }
+        }
+        function renderPeople() {
+          $$(".nm-wrap[data-person]").forEach((wrap) => {
+            const p = weddingDetails[wrap.dataset.person] || {};
+            const nm = $(".bname", wrap),
+              note = $(".postit", wrap);
+            const nick = (p.nickname || "").trim(),
+              pos =
+                p.nicknamePosition || weddingDetails.nicknameStyle || "sticky";
+            nm.textContent = "";
+            const nt = document.createElement("span");
+            nt.className = "nmtxt";
+            nt.textContent = (p.name || "").trim();
+            nm.appendChild(nt);
+            // "inline": nickname sits in parentheses inside the name line
+            if (nick && pos === "inline") nt.textContent += " (" + nick + ")";
+            const edu = (p.educationTitle || "").trim();
+            if (edu) {
+              nm.appendChild(document.createTextNode(","));
+              const sp = document.createElement("span");
+              sp.className = "etitle";
+              sp.textContent = edu;
+              nm.appendChild(sp);
+            }
+            note.classList.toggle("pos-below", pos === "below");
+            note.classList.toggle("pos-hand", pos === "hand");
+            if (pos === "below") {
+              const pre = (p.nicknamePrefix || "").trim();
+              note.textContent =
+                (pre ? pre + " " : "") + "\u201C" + nick + "\u201D";
+              nm.after(note);
+            } else {
+              note.textContent = nick;
+              wrap.insertBefore(note, nm);
+            }
+            note.hidden = !nick || pos === "hidden" || pos === "inline";
+            const hasNote = !!nick && (pos === "sticky" || pos === "hand");
+            wrap.classList.toggle("no-note", !hasNote);
+            wrap.classList.toggle("hand-note", hasNote && pos === "hand");
+          });
+        }
+
+        /* Sticky note: centre it over the junction between the name and the title, raised above the line */
+        function placeNotes() {
+          $$(".nm-wrap[data-person]").forEach((wrap) => {
+            const note = $(".postit", wrap),
+              nt = $(".nmtxt", wrap),
+              et = $(".etitle", wrap);
+            if (!note || note.hidden || note.classList.contains("pos-below"))
+              return;
+            const wrapped = nt.getClientRects().length > 1;
+            const x = et
+              ? wrapped
+                ? et.offsetLeft + et.offsetWidth / 2 // name wraps: centre the note over the title
+                : (nt.offsetLeft + nt.offsetWidth + et.offsetLeft) / 2
+              : nt.offsetLeft + nt.offsetWidth / 2;
+            note.style.left = x + "px";
+          });
+        }
+
+        /* Location QR code: your own image, never a generated one */
+        function renderQR() {
+          const box = $("#qrBox"),
+            url = (weddingDetails.locationQRCode || "").trim();
+          const placeholder = () => {
+            box.innerHTML =
+              '<div class="qr-ph" style="width:100%;height:100%">Insert<br>location<br>QR code<br>here</div>';
+          };
+          if (!url || url === "YOUR_QR_CODE_IMAGE_URL") {
+            placeholder();
+            return;
+          }
+          const img = new Image();
+          img.alt = "Location QR code";
+          img.onerror = placeholder; // broken link: fall back to the placeholder
+          img.src = url;
+          box.innerHTML = "";
+          box.appendChild(img);
+        }
+
+        /* "Turut Mengundang" list, built from the array in the config */
+        function renderFamilies() {
+          const list = $("#tmList"),
+            names = (weddingDetails.turutMengundang || []).filter(Boolean);
+          list.innerHTML = "";
+          names.forEach((n) => {
+            const li = document.createElement("li");
+            li.textContent = n;
+            list.appendChild(li);
+          });
+          const cfg = weddingDetails.locationFamilies || {};
+          const showFamilies =
+            cfg.showTurutMengundang !== false && names.length > 0;
+          $("#tmBlock").hidden = !showFamilies;
+          const expanded =
+            !showFamilies &&
+            (cfg.layoutWhenHidden || "expanded") === "expanded";
+          $(".panel.fam").classList.toggle("without-families", expanded);
+          // venue name: in the expanded layout it keeps a bigger fixed size and wraps instead of shrinking
+          const venue = $(".panel.fam .venue");
+          if (venue) {
+            venue.dataset.max = expanded ? "5" : "5.8";
+            venue.dataset.min = expanded ? "5" : "4.5";
+          }
         }
 
         /* Shrink text until it fits on one line (so long names never overflow when printed) */
@@ -1810,7 +2576,7 @@
             sd.hidden = false;
           });
           $$("[data-fit]").forEach((el) => {
-            if (el.hidden) return;
+            if (el.hidden || el.classList.contains("bname")) return; // names keep a fixed, larger size and wrap
             const max = parseFloat(el.dataset.max),
               min = parseFloat(el.dataset.min || 4);
             el.classList.remove("wrap");
@@ -1828,9 +2594,43 @@
               el.classList.add("wrap");
             }
           });
+          // Bride and groom names share the same fixed size (set in CSS on .pname)
+          const qt = $("#qText");
+          if (qt && !$("#bcQuote").hidden) {
+            let qs = 9;
+            qt.style.fontSize = qs + "mm";
+            while (
+              (qt.scrollHeight > qt.clientHeight + 1 ||
+                qt.scrollWidth > qt.clientWidth + 1) &&
+              qs > 4
+            ) {
+              qs -= 0.3;
+              qt.style.fontSize = qs + "mm";
+            }
+          }
+          placeNotes();
+          fitFamilies();
           hiddenSides.forEach((sd) => {
             sd.hidden = true;
           });
+        }
+
+        /* Keep the family list inside the A5 panel: 1 column -> 2 columns -> slightly smaller text */
+        function fitFamilies() {
+          const list = $("#tmList");
+          if (!list || $("#tmBlock").hidden) return;
+          const LIMIT = 174 * MM; // stay clear of the corner flowers at the bottom
+          list.classList.remove("cols");
+          list.style.removeProperty("--tm-size");
+          const bottom = () => list.offsetTop + list.offsetHeight; // offsetTop is measured from the positioned .content box
+          let size = 4.8;
+          while (bottom() > LIMIT) {
+            if (!list.classList.contains("cols")) list.classList.add("cols");
+            else if (size > 4.5) {
+              size -= 0.2;
+              list.style.setProperty("--tm-size", size + "mm");
+            } else break;
+          }
         }
 
         /* ---------- 3. Screen preview: views, scaling, options ---------- */
@@ -1885,6 +2685,29 @@
               s.classList.toggle("guides", e.target.checked),
             );
           });
+          /* Nickname style switch: sticky note / handwriting + arrow / off (print uses whatever is selected) */
+          const syncNick = () =>
+            $$("#nickTabs button").forEach((b) =>
+              b.setAttribute(
+                "aria-pressed",
+                String(
+                  b.dataset.nick === (weddingDetails.nicknameStyle || "sticky"),
+                ),
+              ),
+            );
+          $$("#nickTabs button").forEach((b) =>
+            b.addEventListener("click", () => {
+              weddingDetails.nicknameStyle = b.dataset.nick;
+              ["bride", "groom"].forEach((k) => {
+                if (weddingDetails[k])
+                  delete weddingDetails[k].nicknamePosition;
+              });
+              syncNick();
+              renderPeople();
+              fitText();
+            }),
+          );
+          syncNick();
           $("#printBtn").addEventListener("click", () => {
             fitText();
             window.print();
@@ -1903,6 +2726,12 @@
           buildSymbols();
           fillBouquets();
           bindText();
+          renderBackCover();
+          renderPeople();
+          renderQR();
+          renderFamilies();
+          if (weddingDetails.swapOutsidePanels)
+            $("#sheetOut").classList.add("swap");
           setupUI();
           applyView();
           fitText();
