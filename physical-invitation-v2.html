@@ -1718,7 +1718,7 @@
                       ></span>
                     </div>
                   </div>
-                  <p class="date" data-bind="weddingDate"></p>
+                  <!-- <p class="date" data-bind="weddingDate"></p> -->
                   <div class="sprigs">
                     <svg style="rotate: -18deg"><use href="#sprig" /></svg>
                     <svg class="heart"><use href="#heart" /></svg>
@@ -2062,7 +2062,7 @@
         //   "sticky" = sticky note  |  "hand" = handwriting + arrow  |  "below" = small line under the name
         //   "inline" = in parentheses  |  "hidden" = off
         // (the Sticky / Handwritten / Off buttons in the preview header change this too)
-        nicknameStyle: "sticky",
+        nicknameStyle: "hidden",
 
         // Inside announcement: bride and groom share one design ("Name, Title" on one line).
         // The family nickname is a small sticky note raised above the line, centred between the name and the title.
@@ -2097,7 +2097,7 @@
         groomMother: "Nani Elliawati",
 
         // Guest label (number printed inside the 64 x 32 mm label area)
-        guestLabelNumber: "103",
+        guestLabelNumber: "", // 103 size
 
         // Wedding date and schedule
         weddingDate: "Minggu, 17 Januari 2027",
@@ -2116,7 +2116,7 @@
         //   layoutWhenHidden: "expanded" = larger postcard + sunflower finish (the layout used when the list is hidden)
         //   (an empty turutMengundang list below also switches to the expanded layout automatically)
         locationFamilies: {
-          showTurutMengundang: true,
+          showTurutMengundang: false,
           layoutWhenHidden: "expanded",
         },
 

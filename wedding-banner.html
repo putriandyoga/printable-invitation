@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome Sign — Putri &amp; Yoga (A1)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============================================================
+     A1 SUNFLOWER WELCOME SIGN — 594 x 841 mm, portrait
+     Same identity as the sunflower wedding invitation.
+     ============================================================ */
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-hand: "Caveat", "Segoe Script", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --s: 0.3; /* preview scale, set by JavaScript */
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #e9e4d9;
+        color: var(--brown);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      p,
+      h1 {
+        margin: 0;
+      }
+
+      /* ---------- Screen-only controls ---------- */
+      .ui {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 16px 16px 4px;
+      }
+      .ui-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 14px;
+        padding: 12px 18px;
+      }
+      .ui p {
+        font-size: 0.92rem;
+        max-width: 56ch;
+      }
+      .btn {
+        min-height: 46px;
+        padding: 0.6em 1.6em;
+        font: 700 0.95rem var(--f-ui);
+        background: var(--olive);
+        color: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #788b58;
+      }
+      .btn:focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+      }
+
+      /* ---------- Preview stage ---------- */
+      #stage {
+        display: flex;
+        justify-content: center;
+        padding: 14px 16px 32px;
+      }
+      .scaler {
+        position: relative;
+        width: calc(594mm * var(--s));
+        height: calc(841mm * var(--s));
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      .sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 594mm;
+        height: 841mm;
+        overflow: hidden;
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+        background-color: var(--cream);
+        background-image:
+          radial-gradient(circle at 50% 38%, #fffdf2 0, transparent 70%),
+          radial-gradient(rgba(118, 84, 58, 0.07) 1mm, transparent 1.2mm);
+        background-size:
+          100% 100%,
+          8mm 8mm;
+      }
+      /* Same frame as the invitation: thin sage line + dotted gold line (scaled 4x) */
+      .sheet::before {
+        content: "";
+        position: absolute;
+        inset: 32mm;
+        border: 1.4mm solid var(--sage);
+        border-radius: 12mm;
+        z-index: 0;
+      }
+      .sheet::after {
+        content: "";
+        position: absolute;
+        inset: 41.6mm;
+        border: 0.8mm dashed rgba(217, 164, 65, 0.8);
+        border-radius: 8mm;
+        z-index: 0;
+      }
+      .art {
+        position: absolute;
+        inset: 0;
+        width: 594mm;
+        height: 841mm;
+        display: block;
+        z-index: 1;
+      }
+
+      /* ---------- Sign text (centres in mm; type scale built around the 100mm names) ---------- */
+      :root {
+        --sage-deep: #7f9163;
+      }
+      .t {
+        position: absolute;
+        left: 0;
+        width: 594mm;
+        text-align: center;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        line-height: 1;
+        z-index: 2;
+      }
+      .wscript {
+        top: 124mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 58mm;
+        color: var(--olive);
+      }
+      .welcome {
+        top: 198mm;
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 28mm;
+        letter-spacing: 0.12em;
+        padding-left: 0.12em;
+        color: var(--olive);
+      }
+      .families {
+        top: 272mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 23mm;
+        letter-spacing: 0.12em;
+        padding-left: 0.12em;
+        color: var(--sage-deep);
+      }
+      .name {
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 500;
+        font-size: 72mm;
+        letter-spacing: 0.01em;
+        color: var(--brown);
+      }
+      .n1 {
+        top: 358mm;
+      }
+      .amp {
+        top: 436mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 62mm;
+        color: var(--honey);
+      }
+      .n2 {
+        top: 518mm;
+      }
+      .invite {
+        top: 604mm;
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 22mm;
+        letter-spacing: 0.08em;
+        padding-left: 0.08em;
+        color: var(--olive);
+      }
+      .date {
+        top: 648mm;
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 22mm;
+        letter-spacing: 0.08em;
+        padding-left: 0.08em;
+        color: var(--brown);
+      }
+
+      /* ---------- Print: exactly one A1 portrait page ---------- */
+      @page {
+        size: 594mm 841mm;
+        margin: 0;
+      }
+      @media print {
+        :root {
+          --s: 1 !important;
+        }
+        html,
+        body {
+          width: 594mm;
+          height: 841mm;
+          margin: 0;
+          padding: 0;
+          background: #fff;
+          overflow: hidden;
+        }
+        .ui {
+          display: none !important;
+        }
+        #stage {
+          display: block;
+          padding: 0;
+          margin: 0;
+        }
+        .scaler {
+          width: 594mm;
+          height: 841mm;
+          box-shadow: none;
+          margin: 0;
+          break-after: avoid;
+          page-break-after: avoid;
+          break-inside: avoid;
+        }
+        .sheet {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="ui">
+      <div class="ui-card">
+        <p>
+          <strong>Welcome sign, A1 portrait (594 × 841 mm).</strong> In the
+          print dialog, choose paper size A1, set margins to None, turn on
+          Background graphics, then print or save as PDF.
+        </p>
+        <button class="btn" id="printBtn" type="button">
+          Print / Save as PDF
+        </button>
+      </div>
+    </header>
+
+    <main id="stage">
+      <div class="scaler">
+        <div class="sheet" id="sheet">
+          <svg
+            class="art"
+            id="art"
+            viewBox="0 0 594 841"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          ></svg>
+
+          <p class="t wscript">Welcome</p>
+          <p class="t welcome">TO OUR WEDDING!</p>
+          <p class="t families">TOGETHER WITH OUR FAMILIES</p>
+          <h1 class="t name n1">PUTRI</h1>
+          <p class="t amp">&amp;</p>
+          <h1 class="t name n2">YOGA</h1>
+          <p class="t invite">WE INVITE YOU TO CELEBRATE</p>
+          <p class="t date">17 JANUARY 2027</p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        /* ---------- Vector artwork: exact symbols from the invitation, scaled up ---------- */
+        var art = document.getElementById("art");
+        var NS = "http://www.w3.org/2000/svg";
+        function f(n) {
+          return Math.round(n * 100) / 100;
+        }
+
+        // ---- Sunflower: two rings of petals + seeded centre (identical to invitation) ----
+        function sunflower() {
+          var s = '<symbol id="sf" viewBox="-50 -50 100 100">',
+            i;
+          s += '<g fill="#D9A441">';
+          for (i = 0; i < 14; i++)
+            s +=
+              '<ellipse cx="0" cy="-33" rx="8.2" ry="17" transform="rotate(' +
+              (i * 360) / 14 +
+              ')"/>';
+          s += '</g><g fill="#F6C945">';
+          for (i = 0; i < 14; i++)
+            s +=
+              '<ellipse cx="0" cy="-31" rx="7.6" ry="15.5" transform="rotate(' +
+              ((i + 0.5) * 360) / 14 +
+              ')"/>';
+          s += "</g>";
+          for (i = 0; i < 14; i++)
+            s +=
+              '<path d="M0 -20V-42" stroke="#D9A441" stroke-width=".9" opacity=".55" stroke-linecap="round" fill="none" transform="rotate(' +
+              ((i + 0.5) * 360) / 14 +
+              ')"/>';
+          s +=
+            '<circle r="18" fill="#76543A"/><circle r="14.5" fill="#5E4230"/>';
+          [
+            [5, "1.3 3.8"],
+            [9, "1.7 4.0"],
+            [12.5, "2 4.4"],
+          ].forEach(function (a) {
+            s +=
+              '<circle r="' +
+              a[0] +
+              '" fill="none" stroke="#D9A441" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="' +
+              a[1] +
+              '" opacity=".9"/>';
+          });
+          return s + "</symbol>";
+        }
+        // ---- Daisy ----
+        function daisy() {
+          var s = '<symbol id="dz" viewBox="-50 -50 100 100">',
+            i;
+          for (i = 0; i < 10; i++)
+            s +=
+              '<ellipse cx="0" cy="-30" rx="7.2" ry="17" fill="#FFFDF5" stroke="#E0CE9A" stroke-width="1.2" transform="rotate(' +
+              i * 36 +
+              ')"/>';
+          s +=
+            '<circle r="12" fill="#F6C945" stroke="#D9A441" stroke-width="1.5"/><circle r="5" fill="#D9A441"/>';
+          return s + "</symbol>";
+        }
+        var leafSym =
+          '<symbol id="leaf" viewBox="0 0 40 28"><path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A"/><path d="M2 14H36" stroke="#68794D" stroke-width="1.3" stroke-linecap="round" opacity=".6"/></symbol>';
+        var heartSym =
+          '<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z" fill="currentColor"/></symbol>';
+        var starSym =
+          '<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.3l7.1-.7z" fill="currentColor"/></symbol>';
+        var bflySym =
+          '<symbol id="bfly" viewBox="0 0 60 40">' +
+          '<path d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z" fill="currentColor"/>' +
+          '<path d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z" fill="currentColor"/>' +
+          '<circle cx="14" cy="13" r="3" fill="#FFF8E7" opacity=".85"/><circle cx="46" cy="13" r="3" fill="#FFF8E7" opacity=".85"/>' +
+          '<path d="M30 12v18" stroke="#76543A" stroke-width="2.4" stroke-linecap="round"/>' +
+          '<path d="M30 12q-4-7-8-8M30 12q4-7 8-8" fill="none" stroke="#76543A" stroke-width="1.2" stroke-linecap="round"/></symbol>';
+
+        // ---- Corner bouquet: same arrangement as the invitation's .bq (percent positions of a square) ----
+        // corner: 'tl' | 'tr' | 'bl' | 'br'; size in mm; m = distance from page edge
+        function bouquet(corner, size, m) {
+          var x = corner.charAt(1) === "l" ? m : 594 - m;
+          var y = corner.charAt(0) === "t" ? m : 841 - m;
+          var sx = corner.charAt(1) === "l" ? 1 : -1;
+          var sy = corner.charAt(0) === "t" ? 1 : -1;
+          var S = size;
+          function p(v) {
+            return f((v / 100) * S);
+          }
+          function leaf(l, t, rot) {
+            var w = (34 / 100) * S,
+              h = (w * 28) / 40;
+            return (
+              '<use href="#leaf" x="' +
+              p(l) +
+              '" y="' +
+              p(t) +
+              '" width="' +
+              f(w) +
+              '" height="' +
+              f(h) +
+              '" transform="rotate(' +
+              rot +
+              " " +
+              f(p(l) + w / 2) +
+              " " +
+              f(p(t) + h / 2) +
+              ')"/>'
+            );
+          }
+          function box(sym, l, t, w) {
+            return (
+              '<use href="#' +
+              sym +
+              '" x="' +
+              p(l) +
+              '" y="' +
+              p(t) +
+              '" width="' +
+              p(w) +
+              '" height="' +
+              p(w) +
+              '"/>'
+            );
+          }
+          return (
+            '<g transform="translate(' +
+            x +
+            " " +
+            y +
+            ") scale(" +
+            sx +
+            " " +
+            sy +
+            ')">' +
+            leaf(46, 2, 25) +
+            leaf(2, 50, 75) +
+            leaf(42, 52, -20) +
+            box("sf", 0, 0, 62) +
+            box("sf", 48, 30, 38) +
+            box("sf", 12, 58, 26) +
+            box("dz", 62, 6, 15) +
+            box("dz", 36, 70, 15) +
+            "</g>"
+          );
+        }
+        function deco(sym, x, y, w, rot, color, ratio) {
+          var h = ratio ? w / ratio : w;
+          return (
+            '<use href="#' +
+            sym +
+            '" x="' +
+            x +
+            '" y="' +
+            y +
+            '" width="' +
+            w +
+            '" height="' +
+            f(h) +
+            '" style="color:' +
+            color +
+            '" transform="rotate(' +
+            rot +
+            " " +
+            f(x + w / 2) +
+            " " +
+            f(y + h / 2) +
+            ')"/>'
+          );
+        }
+
+        var svg =
+          "<defs>" +
+          sunflower() +
+          daisy() +
+          leafSym +
+          heartSym +
+          starSym +
+          bflySym +
+          "</defs>";
+
+        // Same layout as the invitation's front cover: two large bouquets, two smaller ones
+        svg += bouquet("tl", 190, 14);
+        svg += bouquet("br", 190, 14);
+        svg += bouquet("tr", 130, 14);
+        svg += bouquet("bl", 130, 14);
+
+        // Butterflies, stars and hearts, positioned like the invitation (x4)
+        svg += deco("bfly", 498, 346, 36, 14, "#F5C6A5", 3 / 2);
+        svg += deco("bfly", 60, 366, 32, -14, "#A8B58A", 3 / 2);
+        svg += deco("bfly", 150, 744, 30, -14, "#A8B58A", 3 / 2);
+        svg += deco("heart", 78, 440, 16, 0, "#E9A88A");
+        svg += deco("heart", 500, 432, 14, 0, "#E9A88A");
+        svg += deco("star", 506, 520, 14, 0, "#D9A441");
+        svg += deco("star", 76, 516, 14, 0, "#E9A88A");
+
+        // Slim divider under the welcome title (lines + heart, no sunflower)
+        function divider(cy) {
+          return (
+            '<path d="M197 ' +
+            cy +
+            'H280" stroke="#D9A441" stroke-width="1" stroke-linecap="round" opacity=".85"/>' +
+            '<path d="M314 ' +
+            cy +
+            'H397" stroke="#D9A441" stroke-width="1" stroke-linecap="round" opacity=".85"/>' +
+            '<circle cx="190" cy="' +
+            cy +
+            '" r="1.8" fill="#A8B58A"/><circle cx="404" cy="' +
+            cy +
+            '" r="1.8" fill="#A8B58A"/>' +
+            '<use href="#heart" x="287" y="' +
+            (cy - 6.5) +
+            '" width="20" height="13" style="color:#E9A88A"/>'
+          );
+        }
+        svg += divider(236);
+        svg += divider(712);
+
+        art.innerHTML = svg;
+
+        /* ---------- Preview scaling (never distorts the aspect ratio) ---------- */
+        var MM = 96 / 25.4,
+          root = document.documentElement;
+        function fit() {
+          var ui = document.querySelector(".ui");
+          var availW = Math.max(120, window.innerWidth - 32);
+          var availH = Math.max(
+            160,
+            window.innerHeight - (ui ? ui.offsetHeight : 0) - 48,
+          );
+          var s = Math.min(availW / (594 * MM), availH / (841 * MM), 1);
+          root.style.setProperty("--s", s.toFixed(5));
+        }
+        fit();
+        window.addEventListener("resize", fit);
+        window.addEventListener("beforeprint", function () {
+          root.style.setProperty("--s", "1");
+        });
+        window.addEventListener("afterprint", fit);
+        if (document.fonts && document.fonts.ready)
+          document.fonts.ready.then(fit);
+
+        document
+          .getElementById("printBtn")
+          .addEventListener("click", function () {
+            window.print();
+          });
+      })();
+    </script>
+  </body>
+</html>
