@@ -120,12 +120,13 @@
         transform-origin: 0 0;
         transform: scale(var(--s));
         background-color: var(--cream);
-        background-image:
-          radial-gradient(circle at 50% 38%, #fffdf2 0, transparent 70%),
-          radial-gradient(rgba(118, 84, 58, 0.07) 1mm, transparent 1.2mm);
-        background-size:
-          100% 100%,
-          8mm 8mm;
+        /* soft glow only: the all-over dot pattern was removed so it can't cause print artefacts */
+        background-image: radial-gradient(
+          circle at 50% 38%,
+          #fffdf2 0,
+          transparent 70%
+        );
+        background-size: 100% 100%;
       }
       /* Same frame as the invitation: thin sage line + dotted gold line (scaled 4x) */
       .sheet::before {
@@ -499,8 +500,8 @@
         svg += deco("bfly", 150, 744, 30, -14, "#A8B58A", 3 / 2);
         svg += deco("heart", 78, 440, 16, 0, "#E9A88A");
         svg += deco("heart", 500, 432, 14, 0, "#E9A88A");
-        svg += deco("star", 506, 520, 14, 0, "#D9A441");
-        svg += deco("star", 76, 516, 14, 0, "#E9A88A");
+        // svg += deco("star", 506, 520, 14, 0, "#D9A441");
+        // svg += deco("star", 76, 516, 14, 0, "#E9A88A");
 
         // Slim divider under the welcome title (lines + heart, no sunflower)
         function divider(cy) {
