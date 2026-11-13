@@ -1,0 +1,2523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Our Wedding Invitation — Print Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* =====================================================================
+   PRINT-READY SUNFLOWER WEDDING INVITATION
+   "You Are My Sunshine, My Forever"
+
+   One A4 landscape sheet (297 x 210 mm) = TWO A5 portrait panels (148.5 x 210 mm).
+   Two sheets are printed double-sided and folded in half:
+     SIDE 1 (outside):  [ back cover + logo ] [ front cover + names ]
+     SIDE 2 (inside):   [ announcement ]      [ families + venue ]
+
+   Stylesheet map
+     1. Tokens & base          5. Panel artwork (covers + inside)
+     2. Screen workspace (UI)  6. Responsive tweaks (screen only)
+     3. Sheet & panels         7. PRINT (@page / @media print)
+     4. Decor (bouquets...)
+   ===================================================================== */
+
+      /* ---------- 1. Tokens & base ---------- */
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --ink: #5e4230;
+        --paper: #fffdf5;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-display: "Playfair Display", Georgia, serif;
+        --f-hand: "Caveat", "Segoe Script", cursive;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --s: 1; /* screen preview scale, set by JavaScript */
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #eee8dc;
+        color: var(--ink);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      } /* keep backgrounds when printing */
+
+      /* ---------- 2. Screen workspace (hidden when printing) ---------- */
+      .ui {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 20px 16px 8px;
+      }
+      .ui-card {
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 16px;
+        box-shadow: 4px 6px 0 var(--sage);
+        padding: 18px 20px;
+      }
+      .ui-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .ui h1 {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: clamp(1.5rem, 4.6vw, 2.2rem);
+        line-height: 1.15;
+        color: var(--brown);
+      }
+      .ui .sub {
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 1.35rem;
+        color: var(--olive);
+        line-height: 1.2;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+        min-height: 48px;
+        padding: 0.6em 1.3em;
+        font-weight: 700;
+        font-size: 0.95rem;
+        background: var(--paper);
+        color: var(--brown);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        box-shadow: 2px 3px 0 var(--brown);
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s,
+          background 0.15s;
+      }
+      .btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 4px 0 var(--brown);
+      }
+      .btn:active {
+        transform: translate(2px, 3px);
+        box-shadow: none;
+      }
+      .btn.primary {
+        background: var(--olive);
+        color: var(--cream);
+        letter-spacing: 0.12em;
+        font-size: 1rem;
+        padding: 0.7em 1.7em;
+      }
+      .btn.primary:hover {
+        background: #788b58;
+      }
+      .ui-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 2px dashed rgba(168, 181, 138, 0.9);
+      }
+      .tabs {
+        display: inline-flex;
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      .tabs button {
+        border: 0;
+        background: none;
+        min-height: 44px;
+        padding: 0.5em 1.1em;
+        font-weight: 700;
+        font-size: 0.92rem;
+        color: var(--brown);
+      }
+      .tabs button + button {
+        border-left: 2px solid var(--brown);
+      }
+      .tabs button[aria-pressed="true"] {
+        background: var(--sage);
+        color: var(--ink);
+      }
+      .opts {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .opts label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        min-height: 44px;
+      }
+      .opts input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--olive);
+      }
+      .howto {
+        margin-top: 16px;
+        padding: 14px 16px;
+        background: #f3f6e8;
+        border: 2px dashed var(--sage);
+        border-radius: 12px;
+        font-size: 0.92rem;
+      }
+      .howto summary {
+        font-weight: 700;
+        color: var(--olive);
+        cursor: pointer;
+        min-height: 28px;
+      }
+      .howto ol {
+        margin: 10px 0 0;
+        padding-left: 1.3em;
+      }
+      .howto li {
+        margin: 4px 0;
+      }
+      .howto .tip {
+        margin-top: 10px;
+        font-weight: 700;
+        color: var(--brown);
+      }
+
+      #stage {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 14px 16px 56px;
+      }
+      #stage.full {
+        overflow-x: auto;
+      }
+      .sides {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 26px;
+        align-items: flex-start;
+      }
+      #stage.full .sides {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        width: max-content;
+      }
+      .side .cap {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 0 2px 10px;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .side .cap span {
+        letter-spacing: 0.06em;
+        text-transform: none;
+        font-weight: 500;
+        color: var(--brown);
+      }
+
+      /* ---------- 3. Sheet & panels ---------- */
+      /* .scaler holds the SCALED size on screen; .sheet is always the real 297 x 210 mm. */
+      .scaler {
+        width: calc(297mm * var(--s));
+        height: calc(210mm * var(--s));
+        position: relative;
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      .sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 297mm;
+        height: 210mm;
+        overflow: hidden;
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+        display: grid;
+        grid-template-columns: 148.5mm 148.5mm;
+        background-color: var(--cream);
+        background-image: radial-gradient(
+          rgba(118, 84, 58, 0.07) 0.25mm,
+          transparent 0.3mm
+        );
+        background-size: 2mm 2mm;
+      }
+      .panel {
+        position: relative;
+        width: 148.5mm;
+        height: 210mm;
+        overflow: hidden;
+      }
+      /* Botanical frame on every panel (thin sage line + dotted gold line) */
+      .panel::before {
+        content: "";
+        position: absolute;
+        inset: 8mm;
+        border: 0.35mm solid var(--sage);
+        border-radius: 3mm;
+        z-index: 0;
+      }
+      .panel::after {
+        content: "";
+        position: absolute;
+        inset: 10.4mm;
+        border: 0.2mm dashed rgba(217, 164, 65, 0.8);
+        border-radius: 2mm;
+        z-index: 0;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      /* Screen-only helpers: centre fold + safe area */
+      .fold {
+        position: absolute;
+        left: 148.5mm;
+        top: 0;
+        bottom: 0;
+        border-left: 0.35mm dashed rgba(118, 84, 58, 0.55);
+        z-index: 5;
+        pointer-events: none;
+      }
+      .fold::after {
+        content: "FOLD";
+        position: absolute;
+        top: 2.5mm;
+        left: 50%;
+        translate: -50% 0;
+        padding: 0.4mm 1.6mm;
+        background: rgba(255, 253, 245, 0.92);
+        border: 0.2mm solid rgba(118, 84, 58, 0.4);
+        border-radius: 1mm;
+        font: 700 2.2mm/1.2 var(--f-ui);
+        letter-spacing: 0.3mm;
+        color: var(--brown);
+      }
+      .gd {
+        display: none;
+        position: absolute;
+        inset: 6mm;
+        border: 0.3mm dashed #c0392b;
+        z-index: 6;
+        pointer-events: none;
+      }
+      .sheet.guides .gd {
+        display: block;
+      }
+
+      /* ---------- 4. Decor: bouquets, butterflies, dividers ---------- */
+      .ic {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .bq {
+        position: absolute;
+        width: 60mm;
+        aspect-ratio: 1;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .bq.sm {
+        width: 38mm;
+      }
+      .bq.xs {
+        width: 30mm;
+      }
+      .bq.md {
+        width: 48mm;
+      }
+      .bq.tl {
+        top: 3.5mm;
+        left: 3.5mm;
+      }
+      .bq.tr {
+        top: 3.5mm;
+        right: 3.5mm;
+        scale: -1 1;
+      }
+      .bq.bl {
+        bottom: 3.5mm;
+        left: 3.5mm;
+        scale: 1 -1;
+      }
+      .bq.br {
+        bottom: 3.5mm;
+        right: 3.5mm;
+        scale: -1 -1;
+      }
+      .bq > * {
+        position: absolute;
+        display: block;
+      }
+      .bq .sf {
+        aspect-ratio: 1;
+      }
+      .bq .sf.big {
+        width: 62%;
+        left: 0;
+        top: 0;
+      }
+      .bq .sf.mid {
+        width: 38%;
+        left: 48%;
+        top: 30%;
+      }
+      .bq .sf.small {
+        width: 26%;
+        left: 12%;
+        top: 58%;
+      }
+      .bq .dz {
+        width: 15%;
+        aspect-ratio: 1;
+      }
+      .bq .dz.d1 {
+        left: 62%;
+        top: 6%;
+      }
+      .bq .dz.d2 {
+        left: 36%;
+        top: 70%;
+      }
+      .bq .lf {
+        width: 34%;
+        aspect-ratio: 40/28;
+      }
+      .bq .lf.a {
+        left: 46%;
+        top: 2%;
+        rotate: 25deg;
+      }
+      .bq .lf.b {
+        left: 2%;
+        top: 50%;
+        rotate: 75deg;
+      }
+      .bq .lf.c {
+        left: 42%;
+        top: 52%;
+        rotate: -20deg;
+      }
+      .deco {
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        aspect-ratio: 1;
+      }
+      .deco.bfly {
+        aspect-ratio: 3/2;
+      }
+      .bfly {
+        color: var(--peach);
+      }
+      .label {
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 2.6mm;
+        letter-spacing: 0.9mm;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .script {
+        font-family: var(--f-script);
+        font-weight: 700;
+      }
+      .hand {
+        font-family: var(--f-hand);
+        font-weight: 700;
+      }
+      .orn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5mm;
+        width: 58mm;
+        color: var(--honey);
+      }
+      .orn::before,
+      .orn::after {
+        content: "";
+        flex: 1;
+        height: 0.3mm;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--honey) 0 1.3mm,
+          transparent 1.3mm 2.5mm
+        );
+      }
+      .orn svg {
+        width: 7mm;
+        height: 7mm;
+        flex: none;
+      }
+
+      /* ---------- 5. Panel artwork ---------- */
+      /* Back cover (outside, left): large circular monogram */
+      .back .content {
+        justify-content: center;
+        padding: 0 12mm;
+      }
+      .logo {
+        position: relative;
+        width: 98mm;
+        height: 98mm;
+        margin-top: -10mm;
+        flex: none;
+      }
+      .logo svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .mono {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        translate: -50% -50%;
+        width: 46mm;
+        text-align: center;
+        font-family: var(--f-display);
+        font-style: italic;
+        font-weight: 500;
+        color: var(--brown);
+        line-height: 1.05;
+      }
+      /* Back cover designs: "minimalist" initials or "quote" love note (same 98 mm box as before) */
+      .bc-min[hidden],
+      .bc-quote[hidden],
+      .postit[hidden] {
+        display: none !important;
+      }
+      .bc-min,
+      .bc-quote {
+        position: relative;
+        width: 98mm;
+        height: 98mm;
+        margin-top: -10mm;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .bc-min .orn-svg,
+      .bc-quote .orn-svg {
+        position: absolute;
+        pointer-events: none;
+      }
+      .bc-min .mono-min {
+        position: relative;
+        width: 84mm;
+        text-align: center;
+        white-space: nowrap;
+        font-family: var(--f-display);
+        font-style: italic;
+        font-weight: 500;
+        color: var(--brown);
+        line-height: 1.05;
+        letter-spacing: 0.5mm;
+      }
+      .bc-min .mono-min .amp {
+        font-family: var(--f-script);
+        font-style: normal;
+        font-weight: 600;
+        font-size: 0.62em;
+        color: var(--honey);
+        padding: 0 1.5mm;
+        vertical-align: 0.08em;
+      }
+      .bc-min .rule {
+        display: flex;
+        align-items: center;
+        gap: 2.5mm;
+        width: 52mm;
+        margin-top: 4mm;
+        color: var(--honey);
+      }
+      .bc-min .rule::before,
+      .bc-min .rule::after {
+        content: "";
+        flex: 1;
+        height: 0.3mm;
+        background: currentColor;
+        opacity: 0.7;
+      }
+      .bc-min .rule svg {
+        width: 6mm;
+        height: 6mm;
+        flex: none;
+      }
+      .bc-quote .qcard {
+        position: relative;
+        width: 74mm;
+        padding: 9mm 6mm 8mm;
+        background: #fff8e6;
+        border: 0.2mm solid rgba(118, 84, 58, 0.25);
+        box-shadow: 0.6mm 0.8mm 1.6mm rgba(118, 84, 58, 0.18);
+        rotate: -1.5deg;
+        text-align: center;
+      }
+      .bc-quote .qcard::before {
+        content: "";
+        position: absolute;
+        top: -2.4mm;
+        left: 50%;
+        width: 22mm;
+        height: 5mm;
+        translate: -50% 0;
+        background: rgba(168, 181, 138, 0.78);
+        rotate: 2deg;
+      }
+      .bc-quote .qtext {
+        display: block;
+        max-height: 46mm;
+        overflow: hidden;
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 9mm;
+        line-height: 1.12;
+        color: var(--brown);
+        text-wrap: balance;
+        overflow-wrap: anywhere;
+      }
+      .bc-quote .qsign {
+        display: block;
+        margin-top: 3mm;
+        color: var(--honey);
+      }
+      .bc-quote .qsign svg {
+        width: 22mm;
+        height: 5mm;
+      }
+      .back .date {
+        margin-top: 4mm;
+        width: 120mm;
+        font-family: var(--f-display);
+        font-size: 3.8mm;
+        letter-spacing: 0.9mm;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .back .sprigs {
+        display: flex;
+        align-items: center;
+        gap: 3mm;
+        margin-top: 4mm;
+        color: var(--sage);
+      }
+      .back .sprigs svg {
+        width: 10mm;
+        height: 16mm;
+      }
+      .back .sprigs .heart {
+        width: 5mm;
+        height: 5mm;
+        color: #e9a88a;
+      }
+      .made {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 21mm;
+        font-size: 6.2mm;
+        color: var(--brown);
+        z-index: 2;
+        text-align: center;
+      }
+
+      /* Front cover (outside, right): wedding title on top, guest address + 64 x 32 mm label below */
+      .front {
+        background: radial-gradient(
+          circle at 50% 38%,
+          #fffdf2 0,
+          transparent 70%
+        );
+      }
+      .front .content {
+        justify-content: flex-start;
+        padding: 19mm 16mm 0;
+      }
+      .sunfull {
+        width: 14mm;
+        height: 14mm;
+        flex: none;
+      }
+      .wedof {
+        margin-top: 18mm;
+        font-size: 4.9mm;
+        /* margin-top: 3.5mm; */
+        /* font-size: 2.8mm; */
+      }
+      .cname {
+        width: 100mm;
+        margin-top: 2mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 18.5mm;
+        line-height: 1.14;
+        color: var(--brown);
+        text-wrap: balance;
+      }
+      .camp {
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 11mm;
+        line-height: 1;
+        color: var(--honey);
+        margin-top: 1mm;
+      }
+      .cdate {
+        margin-top: 3.5mm;
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 4.2mm;
+        letter-spacing: 0.5mm;
+        text-transform: uppercase;
+        color: var(--olive);
+        width: 112mm;
+      }
+      .kepada {
+        margin-top: 6.5mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 5.8mm;
+        line-height: 1.1;
+        color: var(--olive);
+      }
+      .addressee {
+        margin-top: 1.5mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 6.2mm;
+        line-height: 1.2;
+        color: var(--brown);
+      }
+      .guest-label {
+        position: relative;
+        flex: none;
+        width: 64mm;
+        height: 32mm;
+        margin-top: 5mm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fffef9;
+        border: 0.4mm dotted var(--honey);
+      }
+      .guest-label::before {
+        content: "";
+        position: absolute;
+        inset: 1.3mm;
+        border: 0.2mm solid rgba(168, 181, 138, 0.85);
+        pointer-events: none;
+      }
+      .gl-no {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 12mm;
+        line-height: 1;
+        color: var(--brown);
+      }
+      .gl-hint {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 3.2mm;
+        text-align: center;
+        font: 500 2.4mm/1.3 var(--f-ui);
+        color: rgba(118, 84, 58, 0.5);
+      }
+      .apology {
+        margin-top: 4.5mm;
+        width: 90mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 4.3mm;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+
+      /* Inside left: Indonesian announcement */
+      .ann .content {
+        padding: 15mm 17mm 25mm;
+        justify-content: space-between;
+      }
+      .grp {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .bismillah {
+        font-size: 7mm;
+        line-height: 1.1;
+        color: var(--olive);
+      }
+      .salam {
+        margin-top: 2mm;
+        width: 116mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 4.5mm;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .msg {
+        margin-top: 3.5mm;
+        width: 104mm;
+        font-family: var(--f-serif);
+        font-weight: 500;
+        font-size: 4.5mm;
+        line-height: 1.28;
+        color: var(--ink);
+      }
+      .person {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .pname {
+        width: 114mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 9.2mm;
+        line-height: 1.14;
+        color: var(--brown);
+        text-wrap: balance;
+      }
+      .parents {
+        margin-top: 1.4mm;
+        width: 96mm;
+        font-family: var(--f-serif);
+        font-weight: 500;
+        font-size: 4.2mm;
+        line-height: 1.25;
+        color: var(--ink);
+        text-wrap: balance;
+      }
+      .parents .nb {
+        display: inline-block;
+        max-width: 100%;
+      } /* Small post-it on the corner of the bride's name (title / marga). Absolutely placed and on a high layer, so nothing else moves. Empty text hides it. */
+      .postit {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        translate: -50% 0;
+        z-index: 10;
+        white-space: nowrap;
+        padding: 1.3mm 3.2mm 1.1mm;
+        background: #fbe0cb;
+        border: 0.2mm solid rgba(118, 84, 58, 0.28);
+        box-shadow: 0.4mm 0.6mm 1.2mm rgba(118, 84, 58, 0.16);
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 3.9mm;
+        line-height: 1.05;
+        color: var(--brown);
+        text-align: center;
+        rotate: -3deg;
+      }
+      .postit::before {
+        content: "";
+        position: absolute;
+        top: -1.7mm;
+        left: 50%;
+        width: 9mm;
+        height: 3mm;
+        translate: -50% 0;
+        background: rgba(168, 181, 138, 0.78);
+        rotate: -3deg;
+      }
+      /* plain small line under the name (optional placement) */
+      .postit.pos-below {
+        position: static;
+        translate: none;
+        display: block;
+        width: max-content;
+        margin: 1mm auto 0;
+        padding: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 4mm;
+        color: var(--olive);
+        rotate: 0deg;
+      }
+      .postit.pos-below::before {
+        display: none;
+      }
+      .nm-wrap {
+        position: relative;
+        display: block;
+        width: 114mm;
+        padding-top: 7.5mm; /* room for the sticky note raised above the name line */
+      }
+      .nm-wrap.no-note {
+        padding-top: 0;
+      }
+      .bname {
+        display: block;
+        white-space: nowrap;
+      }
+      /* Academic title: same line, same typography as the name (only a gap between them) */
+      .bname .etitle {
+        font: inherit;
+        color: inherit;
+        letter-spacing: inherit;
+        margin-left: 0.25em;
+      }
+      .dengan {
+        font-size: 8mm;
+        line-height: 1;
+        color: var(--honey);
+      }
+      .sched {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 4.4mm;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .ann .dt {
+        display: block;
+        width: 112mm;
+        white-space: nowrap;
+        font-family: var(--f-display);
+        font-weight: 700;
+        color: var(--brown);
+        line-height: 1.15;
+        margin-top: 1.5mm;
+      }
+      .ann .dt::after {
+        content: "";
+        display: block;
+        width: 64mm;
+        height: 1mm;
+        margin: 1.4mm auto 0;
+        border-radius: 1mm;
+        background: var(--peach);
+      }
+      .times {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: 100mm;
+        margin-top: 5mm;
+      }
+      .times > div {
+        padding: 0 3mm;
+        min-width: 0;
+      }
+      .times > div + div {
+        border-left: 0.3mm solid var(--sage);
+      }
+      .times .tm {
+        display: block;
+        margin-top: 1.2mm;
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 6.4mm;
+        line-height: 1.1;
+        color: var(--brown);
+        white-space: nowrap;
+      }
+
+      /* Inside right: location postcard (with QR), closing message, Turut Mengundang */
+      .fam .content {
+        padding: 32mm 15mm 0;
+        justify-content: flex-start;
+      }
+      .postcard {
+        position: relative;
+        flex: none;
+        width: 112mm;
+        height: 46mm;
+        padding: 2.4mm;
+        rotate: -1deg;
+        background: repeating-linear-gradient(
+          -45deg,
+          var(--peach) 0 3mm,
+          var(--cream) 3mm 6mm,
+          var(--sage) 6mm 9mm,
+          var(--cream) 9mm 12mm
+        );
+      }
+      .pc-in {
+        height: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 40mm;
+        background-color: var(--paper);
+        background-image: radial-gradient(
+          rgba(118, 84, 58, 0.07) 0.25mm,
+          transparent 0.3mm
+        );
+        background-size: 2mm 2mm;
+        text-align: left;
+      }
+      .pc-l {
+        padding: 4mm 3mm 4mm 5.5mm;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+      }
+      .pc-l .lok {
+        display: flex;
+        align-items: center;
+        gap: 1.4mm;
+        font-size: 2.5mm;
+        letter-spacing: 0.8mm;
+      }
+      .pc-l .lok svg {
+        width: 4.2mm;
+        height: 4.2mm;
+        flex: none;
+      }
+      .pc-l .venue {
+        display: block;
+        margin-top: 1.6mm;
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 5.8mm;
+        line-height: 1.1;
+        color: var(--brown);
+        white-space: nowrap;
+      }
+      .pc-l .venue.wrap {
+        white-space: normal;
+      }
+      .pc-l .addr {
+        margin-top: 1.8mm;
+        font-family: var(--f-ui);
+        font-weight: 500;
+        font-size: 3.1mm;
+        line-height: 1.38;
+        color: var(--ink);
+      }
+      .pc-r {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 0.3mm dashed rgba(118, 84, 58, 0.45);
+      }
+      .qr {
+        width: 31mm;
+        height: 31mm;
+        aspect-ratio: 1;
+        flex: none;
+        padding: 3mm;
+        background: #fff;
+        border: 0.3mm solid rgba(118, 84, 58, 0.3);
+      }
+      .qr img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .qr-ph {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 0.3mm dashed rgba(118, 84, 58, 0.4);
+        font: 700 2.3mm/1.4 var(--f-ui);
+        letter-spacing: 0.35mm;
+        text-transform: uppercase;
+        color: rgba(118, 84, 58, 0.45);
+      }
+      .closing {
+        margin-top: 6mm;
+        width: 110mm;
+      }
+      .cl1 {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 4.7mm;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .cl2 {
+        margin-top: 3mm;
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 4.4mm;
+        line-height: 1.25;
+        color: var(--olive);
+      }
+      .tm-block {
+        margin-top: 5mm;
+        width: 112mm;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .tm-block .orn {
+        width: 44mm;
+      }
+      .tm-head {
+        margin-top: 2.5mm;
+        font-family: var(--f-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 5.8mm;
+        line-height: 1.15;
+        color: var(--brown);
+      }
+      .tm-list {
+        list-style: none;
+        margin: 2.5mm 0 0;
+        padding: 0;
+        width: 108mm;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4mm;
+      }
+      .tm-list li {
+        max-width: 100%;
+        font-family: var(--f-serif);
+        font-weight: 600;
+        font-size: var(--tm-size, 4.8mm);
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .tm-list.cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.4mm 6mm;
+        justify-items: center;
+      }
+      .tm-list.cols li:last-child:nth-child(odd) {
+        grid-column: 1/-1;
+      }
+      .sheet.swap .back {
+        order: 2;
+      }
+      .sheet.swap .front {
+        order: 1;
+      }
+
+      /* ---------- 6. Responsive tweaks (screen only) ---------- */
+      @media (max-width: 640px) {
+        .ui-card {
+          padding: 14px;
+        }
+        .btn.primary {
+          width: 100%;
+        }
+        .tabs {
+          width: 100%;
+        }
+        .tabs button {
+          flex: 1;
+          padding: 0.5em 0.4em;
+        }
+      }
+
+      /* ---------- 7. PRINT ---------- */
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      @media print {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #fff !important;
+          width: 297mm;
+        }
+        .ui,
+        .side .cap,
+        .fold,
+        .gd,
+        .noprint {
+          display: none !important;
+        }
+        #stage {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+          overflow: visible !important;
+          width: 297mm;
+        }
+        .sides {
+          display: block !important;
+          width: 297mm !important;
+          gap: 0;
+        }
+        .side {
+          display: block !important;
+        } /* both sides always print, whatever the preview shows */
+        .scaler {
+          width: 297mm !important;
+          height: 210mm !important;
+          box-shadow: none !important;
+          background: none;
+          break-after: page;
+          page-break-after: always;
+          break-inside: avoid;
+          page-break-inside: avoid;
+          overflow: hidden;
+        }
+        .side:last-child .scaler {
+          break-after: auto;
+          page-break-after: auto;
+        }
+        .sheet {
+          transform: none !important;
+          box-shadow: none !important;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Shared SVG art (flower shapes are drawn by JavaScript, see buildSymbols()) -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <symbol id="sf" viewBox="-50 -50 100 100"></symbol>
+        <symbol id="dz" viewBox="-50 -50 100 100"></symbol>
+        <symbol id="sunfull" viewBox="-60 -60 120 120"></symbol>
+        <symbol id="sprig" viewBox="0 0 60 100"></symbol>
+        <symbol id="wreath" viewBox="-50 -50 100 100"></symbol>
+        <symbol id="leaf" viewBox="0 0 40 28">
+          <path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A" />
+          <path
+            d="M2 14H36"
+            stroke="#68794D"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            opacity=".6"
+          />
+        </symbol>
+        <symbol id="heart" viewBox="0 0 24 24">
+          <path
+            d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z"
+            fill="currentColor"
+          />
+        </symbol>
+        <symbol id="star" viewBox="0 0 24 24">
+          <path
+            d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.3l7.1-.7z"
+            fill="currentColor"
+          />
+        </symbol>
+        <symbol id="bfly" viewBox="0 0 60 40">
+          <path
+            d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z"
+            fill="currentColor"
+          />
+          <path
+            d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z"
+            fill="currentColor"
+          />
+          <circle cx="14" cy="13" r="3" fill="#FFF8E7" opacity=".85" />
+          <circle cx="46" cy="13" r="3" fill="#FFF8E7" opacity=".85" />
+          <path
+            d="M30 12v18"
+            stroke="#76543A"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+          <path
+            d="M30 12q-4-7-8-8M30 12q4-7 8-8"
+            fill="none"
+            stroke="#76543A"
+            stroke-width="1.2"
+            stroke-linecap="round"
+          />
+        </symbol>
+        <symbol id="pin" viewBox="0 0 24 24">
+          <path
+            d="M12 2C7.6 2 4 5.5 4 9.9 4 15.8 12 22 12 22s8-6.2 8-12.1C20 5.5 16.4 2 12 2z"
+            fill="#E9A88A"
+            stroke="#76543A"
+            stroke-width="1.2"
+            stroke-linejoin="round"
+          />
+          <circle
+            cx="12"
+            cy="10"
+            r="3.3"
+            fill="#FFF8E7"
+            stroke="#76543A"
+            stroke-width="1"
+          />
+        </symbol>
+        <symbol id="divflower" viewBox="0 0 24 24">
+          <use href="#dz" x="2" y="2" width="20" height="20" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- =====================================================================
+     SCREEN WORKSPACE (controls). Never printed.
+     ===================================================================== -->
+    <header class="ui" id="ui">
+      <div class="ui-card">
+        <div class="ui-top">
+          <div>
+            <h1>Our Wedding Invitation</h1>
+            <p class="sub">A little sunshine, a lifetime of love.</p>
+          </div>
+          <button class="btn primary" id="printBtn" type="button">
+            PRINT INVITATION
+          </button>
+        </div>
+
+        <div class="ui-row">
+          <div
+            class="tabs"
+            role="group"
+            aria-label="Choose which side to preview"
+          >
+            <button type="button" data-view="out" aria-pressed="true">
+              Outside
+            </button>
+            <button type="button" data-view="in" aria-pressed="false">
+              Inside
+            </button>
+            <button type="button" data-view="both" aria-pressed="false">
+              Both sides
+            </button>
+          </div>
+          <div class="opts">
+            <button class="btn" id="zoomBtn" type="button" aria-pressed="false">
+              Actual size (scroll)
+            </button>
+            <label
+              ><input type="checkbox" id="guidesChk" /> Safe-area guides</label
+            >
+          </div>
+        </div>
+
+        <details class="howto" open>
+          <summary>How to print (30 seconds)</summary>
+          <ol>
+            <li>
+              Click <b>PRINT INVITATION</b>. Choose paper <b>A4</b>, orientation
+              <b>Landscape</b>, margins <b>None</b>, scale <b>100%</b>, and tick
+              <b>Background graphics</b>.
+            </li>
+            <li>
+              Print <b>both pages</b> double-sided, flipping on the
+              <b>short edge</b>. Page 1 is the outside, page 2 is the inside.
+            </li>
+            <li>
+              No duplex printer? Print page 1, put the sheet back so the printed
+              side faces the right way, then print page 2 only.
+            </li>
+            <li>
+              Fold the sheet in half along the centre, with the guest label on
+              the front.
+            </li>
+          </ol>
+          <p class="tip">
+            Always test on plain paper first to check the front/back alignment
+            and fold direction. Most home printers cannot print right to the
+            edge, so a thin white border is normal. Turn on "Safe-area guides"
+            to see where it is safe.
+          </p>
+        </details>
+      </div>
+    </header>
+
+    <!-- =====================================================================
+     INVITATION PREVIEW AND PRINT SHEETS
+     ===================================================================== -->
+    <main id="stage">
+      <div class="sides">
+        <!-- ============ SIDE 1 — OUTSIDE: [ back cover | front cover ] ============ -->
+        <section
+          class="side"
+          data-side="out"
+          aria-label="Side 1: outside of the invitation"
+        >
+          <p class="cap">
+            Side 1 · Outside <span>back cover | front cover</span>
+          </p>
+          <div class="scaler">
+            <div class="sheet" id="sheetOut">
+              <!-- BACK COVER: minimalist initials OR romantic quote (set backCover.design) -->
+              <div class="panel back">
+                <div class="bq tl md" data-bq></div>
+                <div class="bq br md" data-bq></div>
+                <svg
+                  class="deco bfly"
+                  style="left: 116mm; top: 30mm; width: 9mm; rotate: 14deg"
+                >
+                  <use href="#bfly" />
+                </svg>
+                <svg
+                  class="deco"
+                  style="left: 19mm; top: 150mm; width: 5mm; color: #e9a88a"
+                >
+                  <use href="#star" />
+                </svg>
+                <svg
+                  class="deco"
+                  style="
+                    left: 126mm;
+                    top: 50mm;
+                    width: 4mm;
+                    color: var(--honey);
+                  "
+                >
+                  <use href="#star" />
+                </svg>
+                <div class="content">
+                  <!-- Option A: standalone minimalist initials (no circular frame) -->
+                  <div class="bc-min" id="bcMin" hidden>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        left: 6mm;
+                        top: 8mm;
+                        width: 20mm;
+                        height: 20mm;
+                        rotate: -14deg;
+                      "
+                    >
+                      <use href="#sf" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        right: 8mm;
+                        bottom: 8mm;
+                        width: 15mm;
+                        height: 15mm;
+                        rotate: 18deg;
+                      "
+                    >
+                      <use href="#sf" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        left: 24mm;
+                        top: 6mm;
+                        width: 9mm;
+                        height: 15mm;
+                        rotate: 28deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        right: 24mm;
+                        bottom: 6mm;
+                        width: 9mm;
+                        height: 15mm;
+                        rotate: 208deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        right: 14mm;
+                        top: 16mm;
+                        width: 4mm;
+                        height: 4mm;
+                        color: var(--honey);
+                      "
+                    >
+                      <use href="#star" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        left: 14mm;
+                        bottom: 18mm;
+                        width: 4mm;
+                        height: 4mm;
+                        color: #e9a88a;
+                      "
+                    >
+                      <use href="#star" />
+                    </svg>
+                    <div
+                      class="mono-min"
+                      id="monoMin"
+                      data-fit
+                      data-max="30"
+                      data-min="10"
+                    ></div>
+                    <div class="rule">
+                      <svg><use href="#heart" /></svg>
+                    </div>
+                  </div>
+                  <!-- Option B: romantic handwritten quote -->
+                  <div class="bc-quote" id="bcQuote" hidden>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        left: 4mm;
+                        top: 10mm;
+                        width: 17mm;
+                        height: 17mm;
+                        rotate: -12deg;
+                      "
+                    >
+                      <use href="#sf" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      style="
+                        right: 6mm;
+                        bottom: 10mm;
+                        width: 14mm;
+                        height: 14mm;
+                        rotate: 16deg;
+                      "
+                    >
+                      <use href="#sf" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        right: 10mm;
+                        top: 8mm;
+                        width: 8mm;
+                        height: 13mm;
+                        rotate: 24deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <svg
+                      class="orn-svg"
+                      viewBox="0 0 60 100"
+                      style="
+                        left: 12mm;
+                        bottom: 8mm;
+                        width: 8mm;
+                        height: 13mm;
+                        rotate: 204deg;
+                        color: var(--sage);
+                      "
+                    >
+                      <use href="#sprig" />
+                    </svg>
+                    <div class="qcard">
+                      <span class="qtext" id="qText"></span>
+                      <span class="qsign"
+                        ><svg viewBox="0 0 44 10">
+                          <path
+                            d="M2 6 C8 1 12 9 18 5 S28 1 33 5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="0.9"
+                            stroke-linecap="round"
+                          />
+                          <path
+                            d="M38 2.5c1.2-1.5 3.6-.8 3.2 1.1-.3 1.5-3.2 3.4-3.2 3.4s-2.9-1.9-3.2-3.4c-.4-1.9 2-2.6 3.2-1.1z"
+                            fill="#e9a88a"
+                          /></svg
+                      ></span>
+                    </div>
+                  </div>
+                  <p class="date" data-bind="weddingDate"></p>
+                  <div class="sprigs">
+                    <svg style="rotate: -18deg"><use href="#sprig" /></svg>
+                    <svg class="heart"><use href="#heart" /></svg>
+                    <svg style="rotate: 18deg; scale: -1 1">
+                      <use href="#sprig" />
+                    </svg>
+                  </div>
+                </div>
+                <p class="made hand">Made with love.</p>
+              </div>
+
+              <!-- FRONT COVER: wedding title, then guest address + guest label area (64 x 32 mm) -->
+              <div class="panel front">
+                <div class="bq tl md" data-bq></div>
+                <div class="bq br sm" data-bq></div>
+                <div class="bq tr sm" data-bq></div>
+                <div class="bq bl sm" data-bq></div>
+                <svg
+                  class="deco bfly"
+                  style="left: 114mm; top: 60mm; width: 9mm; rotate: 14deg"
+                >
+                  <use href="#bfly" />
+                </svg>
+                <svg
+                  class="deco bfly"
+                  style="
+                    left: 15mm;
+                    top: 128mm;
+                    width: 8mm;
+                    rotate: -14deg;
+                    color: var(--sage);
+                  "
+                >
+                  <use href="#bfly" />
+                </svg>
+                <svg
+                  class="deco"
+                  style="
+                    left: 20mm;
+                    top: 100mm;
+                    width: 4mm;
+                    color: var(--honey);
+                  "
+                >
+                  <use href="#star" />
+                </svg>
+                <svg
+                  class="deco"
+                  style="left: 124mm; top: 132mm; width: 4mm; color: #e9a88a"
+                >
+                  <use href="#heart" />
+                </svg>
+                <svg
+                  class="deco"
+                  style="
+                    left: 122mm;
+                    top: 106mm;
+                    width: 3.4mm;
+                    color: var(--honey);
+                  "
+                >
+                  <use href="#star" />
+                </svg>
+                <div class="content">
+                  <!-- <svg class="sunfull"><use href="#sunfull" /></svg> -->
+                  <p class="label wedof">The wedding of</p>
+                  <p class="cname" data-bind="brideName"></p>
+                  <p class="camp">&amp;</p>
+                  <p
+                    class="cname"
+                    data-bind="groomName"
+                    style="margin-top: 0"
+                  ></p>
+                  <p class="cdate" data-bind="weddingDate"></p>
+                  <p class="kepada">Kepada Yth,</p>
+                  <p class="addressee">Bapak/Ibu/Saudara/I</p>
+                  <div class="guest-label">
+                    <span class="gl-no" data-bind="guestLabelNumber"></span>
+                    <span class="gl-hint noprint"
+                      >Guest name label area · 64 × 32 mm</span
+                    >
+                  </div>
+                  <p class="apology">
+                    Mohon maaf apabila ada kesalahan dalam penulisan nama/gelar.
+                  </p>
+                </div>
+              </div>
+
+              <i class="fold"></i>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SIDE 2 — INSIDE: [ announcement | location, closing, families ] ============ -->
+        <section
+          class="side"
+          data-side="in"
+          aria-label="Side 2: inside of the invitation"
+        >
+          <p class="cap">
+            Side 2 · Inside
+            <span>wedding announcement | location &amp; families</span>
+          </p>
+          <div class="scaler">
+            <div class="sheet">
+              <!-- LEFT: Indonesian wedding announcement -->
+              <div class="panel ann">
+                <div class="bq bl xs" data-bq></div>
+                <div class="bq br xs" data-bq></div>
+                <div class="bq tl xs" data-bq></div>
+                <div class="bq tr xs" data-bq></div>
+                <div class="content">
+                  <div class="grp">
+                    <p class="bismillah script">Bismillahirrahmanirrahim</p>
+                    <p class="salam">
+                      Assalamualaikum Warrahmatullahi Wabarakatuh
+                    </p>
+                    <p class="msg">
+                      Dengan memohon rahmat dan ridho Allah SWT, kami
+                      mengharapkan kehadiran Bapak/Ibu/Saudara/i pada acara
+                      pernikahan putra putri kami.
+                    </p>
+                  </div>
+                  <div class="grp person">
+                    <p class="pname">
+                      <span class="nm-wrap" data-person="bride"
+                        ><span class="postit"></span
+                        ><span
+                          class="bname"
+                          data-fit
+                          data-max="9.2"
+                          data-min="5"
+                        ></span
+                      ></span>
+                    </p>
+                    <p class="parents" data-bind="brideParents"></p>
+                  </div>
+                  <div class="grp"><p class="dengan script">dengan</p></div>
+                  <div class="grp person">
+                    <p class="pname">
+                      <span class="nm-wrap" data-person="groom"
+                        ><span class="postit"></span
+                        ><span
+                          class="bname"
+                          data-fit
+                          data-max="9.2"
+                          data-min="5"
+                        ></span
+                      ></span>
+                    </p>
+                    <p class="parents" data-bind="groomParents"></p>
+                  </div>
+                  <div class="grp">
+                    <p class="sched">Yang InsyaAllah dilaksanakan pada:</p>
+                    <p
+                      class="dt"
+                      data-fit
+                      data-max="7.6"
+                      data-min="4.5"
+                      data-bind="weddingDate"
+                    ></p>
+                    <div class="times">
+                      <div>
+                        <span
+                          class="label"
+                          style="font-size: 2.4mm; letter-spacing: 0.7mm"
+                          >Akad Nikah</span
+                        ><span
+                          class="tm"
+                          data-fit
+                          data-max="6.4"
+                          data-min="3.5"
+                          data-bind="akadTime"
+                        ></span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                          style="font-size: 2.4mm; letter-spacing: 0.7mm"
+                          >Resepsi</span
+                        ><span
+                          class="tm"
+                          data-fit
+                          data-max="6.4"
+                          data-min="3.5"
+                          data-bind="receptionTime"
+                        ></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT: location postcard (with QR), closing message, Turut Mengundang -->
+              <div class="panel fam">
+                <div class="bq bl xs" data-bq></div>
+                <div class="bq br xs" data-bq></div>
+                <div class="bq tl xs" data-bq></div>
+                <div class="bq tr xs" data-bq></div>
+                <div class="content">
+                  <div class="postcard">
+                    <div class="pc-in">
+                      <div class="pc-l">
+                        <p class="label lok">
+                          <svg aria-hidden="true"><use href="#pin" /></svg
+                          >Lokasi
+                        </p>
+                        <span
+                          class="venue"
+                          data-fit
+                          data-max="5.8"
+                          data-min="3.8"
+                          data-bind="venueName"
+                        ></span>
+                        <p class="addr" data-bind="venueAddress"></p>
+                      </div>
+                      <div class="pc-r"><div class="qr" id="qrBox"></div></div>
+                    </div>
+                  </div>
+
+                  <div class="closing">
+                    <p class="cl1">
+                      Merupakan kehormatan dan kebahagiaan bagi kami apabila
+                      Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa
+                      restu kepada kedua mempelai.
+                    </p>
+                    <p class="cl2">
+                      Wassalamualaikum Warrahmatullahi Wabarakatuh
+                    </p>
+                  </div>
+
+                  <div class="tm-block" id="tmBlock">
+                    <div class="orn">
+                      <svg><use href="#sf" /></svg>
+                    </div>
+                    <p class="tm-head">Turut Mengundang</p>
+                    <ul class="tm-list" id="tmList"></ul>
+                  </div>
+                </div>
+              </div>
+
+              <i class="fold"></i>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      /* =====================================================================
+   ★ EASY EDIT AREA: change everything about YOUR wedding right here ★
+   Every name, date, family and venue on the invitation comes from this one
+   object (nothing is typed twice). Text in [BRACKETS] is a placeholder.
+   Tip: keep each value short and on one line. Long names shrink automatically.
+   ===================================================================== */
+      const weddingDetails = {
+        // Couple
+        brideName: "PUTRI", // front cover (short / first name)
+        groomName: "YOGA",
+        brideRelation: "Putri Sulung", // shown as "Putri Sulung dari Bapak ... & Ibu ..."
+        groomRelation: "Putra Bungsu",
+
+        // Outside back cover: choose ONE of two designs
+        backCover: {
+          design: "minimalist", // "minimalist" (standalone initials) or "quote" (handwritten love note)
+          initials: "P & Y", // used when design is "minimalist"
+          quote: "You are my sunshine, my only sunshine.", // used when design is "quote"
+          // Other ideas: "Two hearts, one beautiful forever." / "Where love blooms, forever grows." / "Every love story is beautiful, but ours is my favorite."
+        },
+
+        // Inside announcement: bride and groom share one design ("Name, Title" on one line).
+        // The family nickname is a small sticky note raised above the line, centred between the name and the title.
+        //   nicknamePosition: "sticky" = sticky note between name and title (default)
+        //                     "below"  = small italic line under the name, e.g. biasa disapa "Kano-kano"
+        //                     "inline" = in parentheses in the name line: Putri Nabella (Kano-kano), S.Kom
+        //                     "hidden" = not shown
+        //   nicknamePrefix: words before the nickname when position is "below" ("" for none)
+        bride: {
+          name: "Putri Nabella",
+          educationTitle: "S.Kom", // same line and typography as the name. "" hides it.
+          nickname: "Kano-kano",
+          nicknamePosition: "sticky",
+          nicknamePrefix: "biasa disapa",
+        },
+
+        // Groom: identical design to the bride
+        groom: {
+          name: "Muhammad Yoga Adha Pratama",
+          educationTitle: "S.Kom",
+          <!-- nickname: "Kano-kano", -->
+          <!-- nicknamePosition: "sticky", -->
+          <!-- nicknamePrefix: "biasa disapa", -->
+        },
+
+        // Bride's parents
+        brideFather: "Samsi",
+        brideMother: "Rusinah",
+
+        // Groom's parents
+        groomFather: "Priyo Gunawan",
+        groomMother: "Nani Elliawati",
+
+        // Guest label (number printed inside the 64 x 32 mm label area)
+        guestLabelNumber: "103",
+
+        // Wedding date and schedule
+        weddingDate: "Minggu, 17 Januari 2027",
+        akadTime: "07:00 AM",
+        receptionTime: "08:00 AM",
+
+        // Venue
+        venueName: "Kediaman Keluarga Mempelai Wanita",
+        venueAddress: "Jl. A. Yani KM.14.400, Gang 99",
+        locationQRCode: "YOUR_QR_CODE_IMAGE_URL", // your own QR image: a URL, a file next to this page (e.g. "images/qr.png"), or a data: URL.
+        // Leave as is (or "") to show a placeholder. Use a large image (600 px or more) for a sharp print.
+
+        // Inviting families ("Turut Mengundang"): add or remove lines freely
+        turutMengundang: [
+          "Bapak Syahran dan Fatimah",
+          "Bapak Samsudin dan Istri",
+          "Bapak H. Juni Madda dan Hj. Juminah",
+          "Bapak Samsi (Anci) dan Rusinah",
+        ],
+
+        // Outside layout. Default = back cover (monogram) on the LEFT, front cover (guest label) on the RIGHT.
+        // Set to true to put the guest label on the LEFT and the monogram on the RIGHT instead.
+        swapOutsidePanels: false,
+      };
+
+      /* =====================================================================
+   Code below: you normally don't need to edit it.
+   ===================================================================== */
+      (function () {
+        "use strict";
+
+        const $ = (s, c = document) => c.querySelector(s);
+        const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+        const SVGNS = "http://www.w3.org/2000/svg";
+        const MM = 96 / 25.4; // CSS pixels per millimetre
+        const SHEET_W = 297 * MM; // A4 landscape width in px
+
+        /* ---------- 1. Draw the flower art ---------- */
+        function mk(tag, attrs, parent) {
+          const el = document.createElementNS(SVGNS, tag);
+          for (const k in attrs) el.setAttribute(k, attrs[k]);
+          parent.appendChild(el);
+          return el;
+        }
+        function buildSymbols() {
+          // Sunflower: two rings of petals + seeded centre
+          const sf = $("#sf");
+          const back = mk("g", { fill: "#D9A441" }, sf),
+            front = mk("g", { fill: "#F6C945" }, sf);
+          for (let i = 0; i < 14; i++)
+            mk(
+              "ellipse",
+              {
+                cx: 0,
+                cy: -33,
+                rx: 8.2,
+                ry: 17,
+                transform: `rotate(${(i * 360) / 14})`,
+              },
+              back,
+            );
+          for (let i = 0; i < 14; i++)
+            mk(
+              "ellipse",
+              {
+                cx: 0,
+                cy: -31,
+                rx: 7.6,
+                ry: 15.5,
+                transform: `rotate(${((i + 0.5) * 360) / 14})`,
+              },
+              front,
+            );
+          for (let i = 0; i < 14; i++)
+            mk(
+              "path",
+              {
+                d: "M0 -20V-42",
+                stroke: "#D9A441",
+                "stroke-width": 0.9,
+                opacity: 0.55,
+                "stroke-linecap": "round",
+                transform: `rotate(${((i + 0.5) * 360) / 14})`,
+              },
+              sf,
+            );
+          mk("circle", { r: 18, fill: "#76543A" }, sf);
+          mk("circle", { r: 14.5, fill: "#5E4230" }, sf);
+          [
+            [5, "1.3 3.8"],
+            [9, "1.7 4.0"],
+            [12.5, "2 4.4"],
+          ].forEach(([r, d]) =>
+            mk(
+              "circle",
+              {
+                r,
+                fill: "none",
+                stroke: "#D9A441",
+                "stroke-width": 1.6,
+                "stroke-linecap": "round",
+                "stroke-dasharray": d,
+                opacity: 0.9,
+              },
+              sf,
+            ),
+          );
+
+          // Daisy
+          const dz = $("#dz");
+          for (let i = 0; i < 10; i++)
+            mk(
+              "ellipse",
+              {
+                cx: 0,
+                cy: -30,
+                rx: 7.2,
+                ry: 17,
+                fill: "#FFFDF5",
+                stroke: "#E0CE9A",
+                "stroke-width": 1.2,
+                transform: `rotate(${i * 36})`,
+              },
+              dz,
+            );
+          mk(
+            "circle",
+            { r: 12, fill: "#F6C945", stroke: "#D9A441", "stroke-width": 1.5 },
+            dz,
+          );
+          mk("circle", { r: 5, fill: "#D9A441" }, dz);
+
+          // Sun with a happy face and rays
+          const sun = $("#sunfull");
+          for (let i = 0; i < 16; i++)
+            mk(
+              "line",
+              {
+                x1: 0,
+                y1: -34,
+                x2: 0,
+                y2: i % 2 ? -46 : -53,
+                stroke: "#F6C945",
+                "stroke-width": 5,
+                "stroke-linecap": "round",
+                transform: `rotate(${i * 22.5})`,
+              },
+              sun,
+            );
+          mk(
+            "circle",
+            { r: 27, fill: "#F6C945", stroke: "#D9A441", "stroke-width": 3 },
+            sun,
+          );
+          mk(
+            "circle",
+            { cx: -12, cy: 6, r: 4.5, fill: "#F5C6A5", opacity: 0.9 },
+            sun,
+          );
+          mk(
+            "circle",
+            { cx: 12, cy: 6, r: 4.5, fill: "#F5C6A5", opacity: 0.9 },
+            sun,
+          );
+          mk(
+            "path",
+            {
+              d: "M-12 -3q3-4 6 0M6 -3q3-4 6 0M-7 8q7 7 14 0",
+              fill: "none",
+              stroke: "#76543A",
+              "stroke-width": 2.2,
+              "stroke-linecap": "round",
+            },
+            sun,
+          );
+
+          // Botanical line-drawing sprig
+          const sp = $("#sprig");
+          const stroke = {
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-width": 1.5,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+          };
+          mk(
+            "path",
+            Object.assign({ d: "M30 98C27 72 33 40 30 8" }, stroke),
+            sp,
+          );
+          const leaf = "M0 0C5 -9 17 -12 25 -7C18 -1 8 3 0 0Z";
+          [
+            [84, 1],
+            [66, -1],
+            [50, 1],
+            [34, -1],
+            [20, 1],
+          ].forEach(([y, dir], n) => {
+            const sc = 1 - n * 0.1;
+            mk(
+              "path",
+              Object.assign(
+                {
+                  d: leaf,
+                  transform: `translate(30 ${y}) scale(${dir * sc} ${sc}) rotate(-28)`,
+                },
+                stroke,
+              ),
+              sp,
+            );
+          });
+          mk(
+            "path",
+            Object.assign(
+              {
+                d: "M30 8C27 3 29 0 30 -1 32 1 33 4 30 8Z",
+                transform: "translate(0 3)",
+              },
+              stroke,
+            ),
+            sp,
+          );
+
+          // Monogram wreath: ring of leaves, four daisies, thin rings
+          const w = $("#wreath");
+          mk(
+            "circle",
+            { r: 47, fill: "none", stroke: "#A8B58A", "stroke-width": 0.6 },
+            w,
+          );
+          mk(
+            "circle",
+            {
+              r: 30,
+              fill: "none",
+              stroke: "#D9A441",
+              "stroke-width": 0.5,
+              "stroke-dasharray": "1.2 1.8",
+            },
+            w,
+          );
+          for (let i = 0; i < 24; i++) {
+            const a = i * 15,
+              g = mk(
+                "g",
+                {
+                  transform: `rotate(${a}) translate(0 -39) rotate(${i % 2 ? 40 : -40})`,
+                },
+                w,
+              );
+            mk(
+              "path",
+              {
+                d: "M0 0C4 -7 12 -8 17 -4C12 1 5 3 0 0Z",
+                fill: i % 2 ? "#A8B58A" : "#68794D",
+                opacity: i % 2 ? 0.95 : 0.85,
+                transform: "translate(-8 4) rotate(90)",
+              },
+              g,
+            );
+          }
+          [0, 90, 180, 270].forEach((a, n) => {
+            const g = mk(
+              "g",
+              { transform: `rotate(${a}) translate(0 -39)` },
+              w,
+            );
+            mk(
+              "use",
+              {
+                href: n % 2 ? "#dz" : "#sf",
+                x: -8,
+                y: -8,
+                width: 16,
+                height: 16,
+                transform: `rotate(${-a})`,
+              },
+              g,
+            );
+          });
+        }
+
+        /* Flower bouquets for corners */
+        function fillBouquets() {
+          const html = `
+    <svg class="lf a"><use href="#leaf"/></svg><svg class="lf b"><use href="#leaf"/></svg><svg class="lf c"><use href="#leaf"/></svg>
+    <svg class="sf big"><use href="#sf"/></svg><svg class="sf mid"><use href="#sf"/></svg><svg class="sf small"><use href="#sf"/></svg>
+    <svg class="dz d1"><use href="#dz"/></svg><svg class="dz d2"><use href="#dz"/></svg>`;
+          $$("[data-bq]").forEach((el) => {
+            el.innerHTML = html;
+            el.setAttribute("aria-hidden", "true");
+          });
+        }
+
+        /* ---------- 2. Put the wedding details everywhere ---------- */
+        /* Text made from several config values */
+        const escHTML = (t) =>
+          String(t).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const parentsLine = (
+          rel,
+          father,
+          mother, // each parent stays together; a line break can only fall between them
+        ) =>
+          `${escHTML(rel)} dari <span class="nb">Bapak ${escHTML(father)}</span> <span class="nb">&amp; Ibu ${escHTML(mother)}</span>`;
+        const derived = {
+          brideParents: (d) =>
+            parentsLine(d.brideRelation, d.brideFather, d.brideMother),
+          groomParents: (d) =>
+            parentsLine(d.groomRelation, d.groomFather, d.groomMother),
+        };
+        function bindText() {
+          $$("[data-bind]").forEach((el) => {
+            const k = el.dataset.bind;
+            const v =
+              k in weddingDetails
+                ? weddingDetails[k]
+                : derived[k]
+                  ? derived[k](weddingDetails)
+                  : undefined;
+            if (typeof v === "string") {
+              if (k in weddingDetails) el.textContent = v;
+              else el.innerHTML = v;
+            }
+            if (!v) el.hidden = true; // empty optional values disappear
+          });
+        }
+
+        /* Back cover design switch + bride's name line (all driven by weddingDetails) */
+        function renderBackCover() {
+          const bc = weddingDetails.backCover || {};
+          const quote = bc.design === "quote";
+          const min = $("#bcMin"),
+            qc = $("#bcQuote");
+          min.hidden = quote;
+          qc.hidden = !quote;
+          if (quote) {
+            $("#qText").textContent = bc.quote || "";
+          } else {
+            $("#monoMin").innerHTML = escHTML(bc.initials || "").replace(
+              /&amp;/g,
+              '<span class="amp">&amp;</span>',
+            );
+          }
+        }
+        function renderPeople() {
+          $$(".nm-wrap[data-person]").forEach((wrap) => {
+            const p = weddingDetails[wrap.dataset.person] || {};
+            const nm = $(".bname", wrap),
+              note = $(".postit", wrap);
+            const nick = (p.nickname || "").trim(),
+              pos = p.nicknamePosition || "sticky";
+            nm.textContent = "";
+            const nt = document.createElement("span");
+            nt.className = "nmtxt";
+            nt.textContent = (p.name || "").trim();
+            nm.appendChild(nt);
+            // "inline": nickname sits in parentheses inside the name line
+            if (nick && pos === "inline") nt.textContent += " (" + nick + ")";
+            const edu = (p.educationTitle || "").trim();
+            if (edu) {
+              nm.appendChild(document.createTextNode(","));
+              const sp = document.createElement("span");
+              sp.className = "etitle";
+              sp.textContent = edu;
+              nm.appendChild(sp);
+            }
+            note.classList.toggle("pos-below", pos === "below");
+            if (pos === "below") {
+              const pre = (p.nicknamePrefix || "").trim();
+              note.textContent =
+                (pre ? pre + " " : "") + "\u201C" + nick + "\u201D";
+              nm.after(note);
+            } else {
+              note.textContent = nick;
+              wrap.insertBefore(note, nm);
+            }
+            note.hidden = !nick || pos === "hidden" || pos === "inline";
+            wrap.classList.toggle("no-note", pos !== "sticky" || !nick);
+          });
+        }
+
+        /* Sticky note: centre it over the junction between the name and the title, raised above the line */
+        function placeNotes() {
+          $$(".nm-wrap[data-person]").forEach((wrap) => {
+            const note = $(".postit", wrap),
+              nt = $(".nmtxt", wrap),
+              et = $(".etitle", wrap);
+            if (!note || note.hidden || note.classList.contains("pos-below"))
+              return;
+            const x = et
+              ? (nt.offsetLeft + nt.offsetWidth + et.offsetLeft) / 2
+              : nt.offsetLeft + nt.offsetWidth / 2;
+            note.style.left = x + "px";
+          });
+        }
+
+        /* Location QR code: your own image, never a generated one */
+        function renderQR() {
+          const box = $("#qrBox"),
+            url = (weddingDetails.locationQRCode || "").trim();
+          const placeholder = () => {
+            box.innerHTML =
+              '<div class="qr-ph" style="width:100%;height:100%">Insert<br>location<br>QR code<br>here</div>';
+          };
+          if (!url || url === "YOUR_QR_CODE_IMAGE_URL") {
+            placeholder();
+            return;
+          }
+          const img = new Image();
+          img.alt = "Location QR code";
+          img.onerror = placeholder; // broken link: fall back to the placeholder
+          img.src = url;
+          box.innerHTML = "";
+          box.appendChild(img);
+        }
+
+        /* "Turut Mengundang" list, built from the array in the config */
+        function renderFamilies() {
+          const list = $("#tmList"),
+            names = (weddingDetails.turutMengundang || []).filter(Boolean);
+          list.innerHTML = "";
+          names.forEach((n) => {
+            const li = document.createElement("li");
+            li.textContent = n;
+            list.appendChild(li);
+          });
+          $("#tmBlock").hidden = names.length === 0;
+        }
+
+        /* Shrink text until it fits on one line (so long names never overflow when printed) */
+        function fitText() {
+          // Hidden sides can't be measured, so show them for a moment (no repaint happens in between)
+          const hiddenSides = $$(".side").filter((sd) => sd.hidden);
+          hiddenSides.forEach((sd) => {
+            sd.hidden = false;
+          });
+          $$("[data-fit]").forEach((el) => {
+            if (el.hidden) return;
+            const max = parseFloat(el.dataset.max),
+              min = parseFloat(el.dataset.min || 4);
+            el.classList.remove("wrap");
+            el.style.whiteSpace = "";
+            let size = max;
+            el.style.fontSize = size + "mm";
+            const limit = el.clientWidth || el.parentElement.clientWidth;
+            while (el.scrollWidth > limit + 1 && size > min) {
+              size -= 0.3;
+              el.style.fontSize = size + "mm";
+            }
+            if (el.scrollWidth > limit + 1) {
+              // still too long: allow it to wrap onto two lines
+              el.style.whiteSpace = "normal";
+              el.classList.add("wrap");
+            }
+          });
+          // Bride and groom name lines always share exactly the same font size (the smaller of the two fits)
+          const bn = $$(".bname").filter((e) => !e.hidden);
+          if (bn.length > 1) {
+            const m = Math.min(...bn.map((e) => parseFloat(e.style.fontSize)));
+            bn.forEach((e) => (e.style.fontSize = m + "mm"));
+          }
+          const qt = $("#qText");
+          if (qt && !$("#bcQuote").hidden) {
+            let qs = 9;
+            qt.style.fontSize = qs + "mm";
+            while (
+              (qt.scrollHeight > qt.clientHeight + 1 ||
+                qt.scrollWidth > qt.clientWidth + 1) &&
+              qs > 4
+            ) {
+              qs -= 0.3;
+              qt.style.fontSize = qs + "mm";
+            }
+          }
+          placeNotes();
+          fitFamilies();
+          hiddenSides.forEach((sd) => {
+            sd.hidden = true;
+          });
+        }
+
+        /* Keep the family list inside the A5 panel: 1 column -> 2 columns -> slightly smaller text */
+        function fitFamilies() {
+          const list = $("#tmList");
+          if (!list || $("#tmBlock").hidden) return;
+          const LIMIT = 174 * MM; // stay clear of the corner flowers at the bottom
+          list.classList.remove("cols");
+          list.style.removeProperty("--tm-size");
+          const bottom = () => list.offsetTop + list.offsetHeight; // offsetTop is measured from the positioned .content box
+          let size = 4.8;
+          while (bottom() > LIMIT) {
+            if (!list.classList.contains("cols")) list.classList.add("cols");
+            else if (size > 3.2) {
+              size -= 0.2;
+              list.style.setProperty("--tm-size", size + "mm");
+            } else break;
+          }
+        }
+
+        /* ---------- 3. Screen preview: views, scaling, options ---------- */
+        const state = { view: "out", full: false };
+        function applyView() {
+          $$(".side").forEach((s) => {
+            s.hidden = !(
+              state.view === "both" || s.dataset.side === state.view
+            );
+          });
+          $$(".tabs button").forEach((b) =>
+            b.setAttribute(
+              "aria-pressed",
+              String(b.dataset.view === state.view),
+            ),
+          );
+          layout();
+        }
+        function layout() {
+          const stage = $("#stage");
+          stage.classList.toggle("full", state.full);
+          const pad = 32,
+            gap = 26;
+          const avail = Math.max(
+            240,
+            stage.getBoundingClientRect().width - pad,
+          );
+          let s;
+          if (state.full) s = 1;
+          else if (state.view === "both" && window.innerWidth >= 900)
+            s = Math.min(1, (avail - gap) / 2 / SHEET_W);
+          else s = Math.min(1, avail / SHEET_W);
+          stage.style.setProperty("--s", s.toFixed(4));
+        }
+        function setupUI() {
+          $$(".tabs button").forEach((b) =>
+            b.addEventListener("click", () => {
+              state.view = b.dataset.view;
+              applyView();
+            }),
+          );
+          $("#zoomBtn").addEventListener("click", (e) => {
+            state.full = !state.full;
+            e.currentTarget.setAttribute("aria-pressed", String(state.full));
+            e.currentTarget.textContent = state.full
+              ? "Fit to screen"
+              : "Actual size (scroll)";
+            layout();
+          });
+          $("#guidesChk").addEventListener("change", (e) => {
+            $$(".sheet").forEach((s) =>
+              s.classList.toggle("guides", e.target.checked),
+            );
+          });
+          $("#printBtn").addEventListener("click", () => {
+            fitText();
+            window.print();
+          });
+          window.addEventListener("resize", layout);
+          window.addEventListener("beforeprint", fitText); // also covers Ctrl/Cmd+P
+          $$(".panel").forEach((p) => {
+            const g = document.createElement("i");
+            g.className = "gd";
+            p.appendChild(g);
+          });
+        }
+
+        /* ---------- boot ---------- */
+        function init() {
+          buildSymbols();
+          fillBouquets();
+          bindText();
+          renderBackCover();
+          renderPeople();
+          renderQR();
+          renderFamilies();
+          if (weddingDetails.swapOutsidePanels)
+            $("#sheetOut").classList.add("swap");
+          setupUI();
+          applyView();
+          fitText();
+          if (document.fonts && document.fonts.ready)
+            document.fonts.ready.then(fitText); // re-fit once the web fonts have loaded
+        }
+        if (document.readyState === "loading")
+          document.addEventListener("DOMContentLoaded", init);
+        else init();
+      })();
+    </script>
+  </body>
+</html>
