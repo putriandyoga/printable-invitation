@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wedding Guest Book — Putri &amp; Yoga (A4 landscape)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* =====================================================================
+   SUNFLOWER WEDDING GUEST BOOK: A4 landscape (297 x 210 mm)
+   Front cover, guest pages (20 boxes each: 4 columns x 5 rows), back cover.
+   Same identity as the invitation, welcome sign and souvenir card.
+   All artwork is vector (CSS + SVG).
+
+   Stylesheet map
+     1. Tokens & base        4. Guest pages (20 boxes)
+     2. Screen controls      5. Covers
+     3. Sheet & frame        6. PRINT (@page A4 landscape)
+   ===================================================================== */
+
+      /* ---------- 1. Tokens & base ---------- */
+      /* ★ GUEST BOX SUNFLOWER WATERMARK SETTINGS (inside the TTD column) ★
+         Change these four values and every guest box updates.
+         Opacity: 0 = invisible ... 1 = solid. Only the sunflower is affected. */
+      :root {
+        --guest-sunflower-opacity: 0.4;
+        --guest-sunflower-size: 65%; /* of the TTD column width */
+        --guest-sunflower-position-x: 50%; /* 0% = left edge, 100% = right edge of the TTD column */
+        --guest-sunflower-position-y: 58%; /* 0% = top, 100% = bottom (58% keeps it clear of the TTD label) */
+      }
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --ink: #5e4230;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-display: "Playfair Display", Georgia, serif;
+        --f-hand: "Caveat", "Segoe Script", cursive;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --s: 1; /* screen preview scale, set by JavaScript */
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #e9e4d9;
+        color: var(--ink);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      p,
+      h1 {
+        margin: 0;
+      }
+      button,
+      select {
+        font: inherit;
+        color: inherit;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* ---------- 2. Screen controls (never printed) ---------- */
+      .ui {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 14px 16px 4px;
+      }
+      .ui-card {
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 16px;
+        box-shadow: 4px 6px 0 var(--sage);
+        padding: 14px 18px;
+        display: grid;
+        gap: 12px;
+      }
+      .ui-row {
+        display: flex;
+        align-items: center;
+        gap: 12px 18px;
+        flex-wrap: wrap;
+      }
+      .ui-row.split {
+        justify-content: space-between;
+      }
+      .ui h1 {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: var(--brown);
+        line-height: 1.15;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0.5em 1.2em;
+        font-weight: 700;
+        font-size: 0.92rem;
+        background: #fffdf5;
+        color: var(--brown);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        box-shadow: 2px 3px 0 var(--brown);
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 4px 0 var(--brown);
+      }
+      .btn:active {
+        transform: translate(2px, 3px);
+        box-shadow: none;
+      }
+      .btn.primary {
+        background: var(--olive);
+        color: var(--cream);
+        letter-spacing: 0.1em;
+        padding: 0.6em 1.6em;
+      }
+      .btn:focus-visible,
+      select:focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+      }
+      .field {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 0.92rem;
+      }
+      .field select {
+        min-height: 44px;
+        padding: 0.3em 0.8em;
+        font-weight: 700;
+        background: #fffdf5;
+        border: 2px solid var(--brown);
+        border-radius: 12px;
+      }
+      .field small {
+        font-weight: 500;
+        color: var(--brown);
+      }
+      .tabs {
+        display: inline-flex;
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        overflow: hidden;
+        background: #fffdf5;
+      }
+      .tabs button {
+        border: 0;
+        background: none;
+        min-height: 42px;
+        padding: 0.4em 1em;
+        font-weight: 700;
+        font-size: 0.88rem;
+        color: var(--brown);
+        cursor: pointer;
+      }
+      .tabs button + button {
+        border-left: 2px solid var(--brown);
+      }
+      .tabs button[aria-pressed="true"] {
+        background: var(--sage);
+        color: var(--ink);
+      }
+      .navlabel {
+        min-width: 11em;
+        text-align: center;
+        font-weight: 700;
+        color: var(--olive);
+        font-size: 0.92rem;
+      }
+      .howto {
+        font-size: 0.88rem;
+        padding: 10px 14px;
+        background: #f3f6e8;
+        border: 2px dashed var(--sage);
+        border-radius: 12px;
+      }
+      .howto b {
+        color: var(--brown);
+      }
+
+      /* ---------- 3. Sheet & frame ---------- */
+      #stage {
+        display: flex;
+        justify-content: center;
+        padding: 12px 16px 40px;
+      }
+      .scaler {
+        display: none;
+        width: calc(297mm * var(--s));
+        height: calc(210mm * var(--s));
+        position: relative;
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      .scaler.current {
+        display: block;
+      }
+      /* .sheet is always the real 297 x 210 mm; the preview scales it */
+      .sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 297mm;
+        height: 210mm;
+        overflow: hidden;
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+        background-color: var(--cream);
+        background-image:
+          radial-gradient(
+            ellipse at 50% 45%,
+            #fffdf2 0,
+            rgba(255, 253, 242, 0) 65%
+          ),
+          radial-gradient(rgba(118, 84, 58, 0.07) 0.22mm, transparent 0.28mm);
+        background-size:
+          100% 100%,
+          2mm 2mm;
+      }
+      /* Thin vintage frame: sage line + dotted gold line (same pair as every other piece) */
+      .sheet::before {
+        content: "";
+        position: absolute;
+        inset: 3.5mm;
+        border: 0.35mm solid var(--sage);
+        border-radius: 3mm;
+        z-index: 0;
+      }
+      .sheet::after {
+        content: "";
+        position: absolute;
+        inset: 4.7mm;
+        border: 0.2mm dashed rgba(217, 164, 65, 0.8);
+        border-radius: 2mm;
+        z-index: 0;
+      }
+      .sheet.cover::before {
+        inset: 8mm;
+        border-width: 0.5mm;
+        border-radius: 5mm;
+      }
+      .sheet.cover::after {
+        inset: 10.6mm;
+        border-width: 0.3mm;
+        border-radius: 3.6mm;
+      }
+      .art {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 297mm;
+        height: 210mm;
+        display: block;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      /* ---------- 4. Guest pages: 20 boxes, 4 columns x 5 rows ---------- */
+      .g-head {
+        position: absolute;
+        left: 9mm;
+        right: 9mm;
+        top: 6.8mm;
+        height: 11mm;
+        display: flex;
+        align-items: center;
+        gap: 4mm;
+        z-index: 2;
+      }
+      .g-head .rule {
+        flex: 1;
+        height: 0;
+        border-top: 0.25mm dashed rgba(217, 164, 65, 0.9);
+      }
+      .g-head svg {
+        width: 9mm;
+        height: 9mm;
+        flex: none;
+      }
+      .g-title {
+        text-align: center;
+        line-height: 1;
+        padding: 0 2mm;
+      }
+      .g-names {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 5.6mm;
+        letter-spacing: 0.1em;
+        padding-left: 0.1em;
+        color: var(--brown);
+        white-space: nowrap;
+      }
+      .g-names .amp {
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 1.15em;
+        letter-spacing: 0;
+        color: var(--honey);
+        padding: 0 0.1em;
+      }
+      .g-date {
+        margin-top: 1.4mm;
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 2.5mm;
+        letter-spacing: 0.24em;
+        padding-left: 0.24em;
+        color: var(--olive);
+      }
+      .grid {
+        position: absolute;
+        left: 9mm;
+        right: 9mm;
+        top: 19mm;
+        bottom: 7mm;
+        display: grid;
+        grid-template-columns: repeat(4, 67.95mm);
+        grid-template-rows: repeat(5, 34.88mm);
+        gap: 2.4mm;
+        z-index: 2;
+      }
+      /* One guest box = a miniature vintage postage stamp (67.95 x 34.88 mm).
+         The perforated edge and double border are drawn by the #stamp SVG symbol. */
+      .gb {
+        position: relative;
+        width: 67.95mm;
+        height: 34.88mm;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .gb .stamp {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      /* UPPER SECTION: left 75% = Nama + Alamat (2 lines), right 25% = TTD across all 3 rows */
+      .gb .up {
+        position: absolute;
+        left: 2.8mm;
+        right: 2.9mm;
+        top: 2.9mm;
+        height: 13.8mm;
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        column-gap: 1.3mm;
+      }
+      .gb .left {
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+        min-width: 0;
+      }
+      .gb .row {
+        display: flex;
+        align-items: flex-end;
+        gap: 1mm;
+        min-width: 0;
+      }
+      .gb .lb {
+        flex: none;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 700;
+        font-size: 3.7mm;
+
+        /* font-family: var(--f-ui); */
+        font-weight: 700;
+        /* font-size: 2.35mm; */
+        letter-spacing: 0.06em;
+        line-height: 1;
+        padding-bottom: 0.55mm;
+        color: var(--olive);
+        white-space: nowrap;
+      }
+      .gb .ln {
+        flex: 1;
+        display: block;
+        height: 0;
+        border-bottom: 0.22mm solid rgba(118, 84, 58, 0.5);
+      }
+      .gb .ttd {
+        position: relative;
+        min-width: 0;
+        border: 0.2mm dashed rgba(118, 84, 58, 0.55);
+        border-radius: 0.9mm;
+        background: rgba(251, 232, 166, 0.14);
+      }
+      /* sunflower watermark: sits behind the signature area, driven only by the variables above */
+      .gb .ttd .wm {
+        position: absolute;
+        left: var(--guest-sunflower-position-x);
+        top: var(--guest-sunflower-position-y);
+        width: var(--guest-sunflower-size);
+        aspect-ratio: 1;
+        height: auto;
+        translate: -50% -50%;
+        opacity: var(--guest-sunflower-opacity);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .gb .ttd .lb {
+        z-index: 1;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0.7mm;
+        text-align: center;
+        padding: 0;
+        font-size: 2.1mm;
+        letter-spacing: 0.22em;
+        padding-left: 0.22em;
+        color: var(--brown);
+      }
+      /* LOWER SECTION: full-width message */
+      .gb .msg {
+        position: absolute;
+        left: 2.9mm;
+        right: 2.9mm;
+        top: 17.5mm;
+        bottom: 2.9mm;
+        display: flex;
+        flex-direction: column;
+      }
+      .gb .msg .hd {
+        height: 3.9mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 700;
+        font-size: 3.7mm;
+        line-height: 1;
+        letter-spacing: 0.03em;
+        color: var(--brown);
+        text-align: center;
+        white-space: nowrap;
+      }
+      .gb .msg .ln {
+        flex: none;
+        height: 5.1mm;
+        width: 100%;
+      }
+
+      /* ---------- 5. Covers ---------- */
+      .t {
+        position: absolute;
+        left: 0;
+        width: 297mm;
+        text-align: center;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        line-height: 1;
+        z-index: 2;
+      }
+      .c-label {
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 6mm;
+        letter-spacing: 0.36em;
+        padding-left: 0.36em;
+        color: var(--olive);
+      }
+      .c-names {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 27mm;
+        letter-spacing: 0.04em;
+        padding-left: 0.04em;
+        color: var(--brown);
+      }
+      .c-names .amp {
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 1.05em;
+        letter-spacing: 0;
+        color: var(--honey);
+        padding: 0 0.12em;
+      }
+      .c-date {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 7.6mm;
+        letter-spacing: 0.22em;
+        padding-left: 0.22em;
+        color: var(--olive);
+      }
+      .c-tag {
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 8.2mm;
+        color: var(--brown);
+      }
+      .b-quote {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 10.6mm;
+        line-height: 1.25;
+        color: var(--brown);
+        white-space: normal;
+      }
+      .b-names {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 7.4mm;
+        letter-spacing: 0.14em;
+        padding-left: 0.14em;
+        color: var(--brown);
+      }
+      .b-names .amp {
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 1.15em;
+        letter-spacing: 0;
+        color: var(--honey);
+        padding: 0 0.1em;
+      }
+      .b-date {
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 3.2mm;
+        letter-spacing: 0.26em;
+        padding-left: 0.26em;
+        color: var(--olive);
+      }
+
+      /* ---------- 6. PRINT (A4 landscape, one page per sheet) ---------- */
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      @media print {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          width: 297mm;
+          background: #fff !important;
+        }
+        .ui {
+          display: none !important;
+        }
+        #stage {
+          display: block;
+          padding: 0;
+          margin: 0;
+          width: 297mm;
+        }
+        .scaler,
+        .scaler.current {
+          display: block !important;
+          width: 297mm !important;
+          height: 209.7mm !important; /* a hair under 210 mm so browsers never add a blank page */
+          box-shadow: none !important;
+          overflow: hidden;
+          break-after: page;
+          page-break-after: always;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        .scaler:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+        .sheet {
+          transform: none !important;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Shared SVG art (symbols are drawn by JavaScript, see buildSymbols()) -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs id="defs"></defs>
+    </svg>
+
+    <!-- =====================================================================
+     SCREEN CONTROLS (never printed)
+     ===================================================================== -->
+    <header class="ui" id="ui">
+      <div class="ui-card">
+        <div class="ui-row split">
+          <h1>Wedding Guest Book · Putri &amp; Yoga</h1>
+          <button class="btn primary" id="printBtn" type="button">
+            PRINT / SAVE AS PDF
+          </button>
+        </div>
+
+        <div class="ui-row">
+          <label class="field" for="pagesSel">
+            Guest pages
+            <select id="pagesSel"></select>
+            <small id="pagesNote"></small>
+          </label>
+          <div class="ui-row" style="gap: 8px">
+            <button
+              class="btn"
+              id="prevBtn"
+              type="button"
+              aria-label="Previous page"
+            >
+              ‹ Prev
+            </button>
+            <span class="navlabel" id="navLabel" aria-live="polite"></span>
+            <button
+              class="btn"
+              id="nextBtn"
+              type="button"
+              aria-label="Next page"
+            >
+              Next ›
+            </button>
+          </div>
+          <div class="tabs" role="group" aria-label="Jump to">
+            <button type="button" data-jump="cover" aria-pressed="false">
+              Front cover
+            </button>
+            <button type="button" data-jump="guest" aria-pressed="false">
+              Guest page
+            </button>
+            <button type="button" data-jump="back" aria-pressed="false">
+              Back cover
+            </button>
+          </div>
+        </div>
+
+        <p class="howto">
+          <b>To print:</b> click Print / Save as PDF, then choose paper
+          <b>A4</b>, orientation <b>Landscape</b>, margins <b>None</b>, scale
+          <b>100%</b>, and turn on <b>Background graphics</b>. The PDF holds the
+          front cover, every guest page, then the back cover. Each guest page
+          has exactly 20 boxes.
+        </p>
+      </div>
+    </header>
+
+    <main id="stage"></main>
+
+    <script>
+      /* =====================================================================
+   ★ EASY EDIT AREA ★
+   ===================================================================== */
+      const guestBook = {
+        bride: "PUTRI",
+        groom: "YOGA",
+        date: "17 JANUARY 2027",
+        coverLabel: "WEDDING GUEST BOOK",
+        coverTagline: "A record of those who shared our special day.",
+        backLine1: "Thank you for being part of",
+        backLine2: "our wedding celebration.",
+        defaultGuestPages: 3, // 3 pages = 60 guests
+        maxGuestPages: 20,
+        // Words inside each guest box
+        labels: {
+          name: "Nama:",
+          address: "Alamat:",
+          signature: "TTD",
+          message: "Sepatah Kata untuk Pengantin",
+        },
+      };
+
+      /* =====================================================================
+   Code below: you normally don't need to edit it.
+   ===================================================================== */
+      (function () {
+        "use strict";
+
+        const $ = (s, c = document) => c.querySelector(s);
+        const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+        const MM = 96 / 25.4;
+        const W = 297,
+          H = 210;
+        const GUESTS_PER_PAGE = 20; // 4 columns x 5 rows
+        const esc = (t) =>
+          String(t).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const f = (n) => Math.round(n * 100) / 100;
+
+        /* ---------- 1. Vector art symbols ---------- */
+        function buildSymbols() {
+          let s = "";
+          // Sunflower
+          s += '<symbol id="sf" viewBox="-50 -50 100 100"><g fill="#D9A441">';
+          for (let i = 0; i < 14; i++)
+            s += `<ellipse cx="0" cy="-33" rx="8.2" ry="17" transform="rotate(${(i * 360) / 14})"/>`;
+          s += '</g><g fill="#F6C945">';
+          for (let i = 0; i < 14; i++)
+            s += `<ellipse cx="0" cy="-31" rx="7.6" ry="15.5" transform="rotate(${((i + 0.5) * 360) / 14})"/>`;
+          s += "</g>";
+          for (let i = 0; i < 14; i++)
+            s += `<path d="M0 -20V-42" stroke="#D9A441" stroke-width=".9" opacity=".55" stroke-linecap="round" fill="none" transform="rotate(${((i + 0.5) * 360) / 14})"/>`;
+          s +=
+            '<circle r="18" fill="#76543A"/><circle r="14.5" fill="#5E4230"/>';
+          [
+            [5, "1.3 3.8"],
+            [9, "1.7 4.0"],
+            [12.5, "2 4.4"],
+          ].forEach(([r, d]) => {
+            s += `<circle r="${r}" fill="none" stroke="#D9A441" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="${d}" opacity=".9"/>`;
+          });
+          s += "</symbol>";
+          // Daisy
+          s += '<symbol id="dz" viewBox="-50 -50 100 100">';
+          for (let i = 0; i < 10; i++)
+            s += `<ellipse cx="0" cy="-30" rx="7.2" ry="17" fill="#FFFDF5" stroke="#E0CE9A" stroke-width="1.2" transform="rotate(${i * 36})"/>`;
+          s +=
+            '<circle r="12" fill="#F6C945" stroke="#D9A441" stroke-width="1.5"/><circle r="5" fill="#D9A441"/></symbol>';
+          // Small peach blossom for the guest boxes
+          s += '<symbol id="pf" viewBox="-50 -50 100 100">';
+          for (let i = 0; i < 5; i++)
+            s += `<ellipse cx="0" cy="-26" rx="16" ry="23" fill="#F5C6A5" stroke="#E9A88A" stroke-width="2.2" transform="rotate(${i * 72})"/>`;
+          s +=
+            '<circle r="11" fill="#FBE8A6" stroke="#D9A441" stroke-width="2.4"/><circle r="4" fill="#D9A441"/></symbol>';
+          // Leaf, heart, star, butterfly
+          s +=
+            '<symbol id="leaf" viewBox="0 0 40 28"><path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A"/><path d="M2 14H36" stroke="#68794D" stroke-width="1.3" stroke-linecap="round" opacity=".6"/></symbol>';
+          s +=
+            '<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z" fill="currentColor"/></symbol>';
+          s +=
+            '<symbol id="star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.3l7.1-.7z" fill="currentColor"/></symbol>';
+          s +=
+            '<symbol id="bfly" viewBox="0 0 60 40">' +
+            '<path d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z" fill="currentColor"/>' +
+            '<path d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z" fill="currentColor"/>' +
+            '<circle cx="14" cy="13" r="3" fill="#FFF8E7" opacity=".85"/><circle cx="46" cy="13" r="3" fill="#FFF8E7" opacity=".85"/>' +
+            '<path d="M30 12v18" stroke="#76543A" stroke-width="2.4" stroke-linecap="round"/>' +
+            '<path d="M30 12q-4-7-8-8M30 12q4-7 8-8" fill="none" stroke="#76543A" stroke-width="1.2" stroke-linecap="round"/></symbol>';
+          // Botanical line sprig
+          const st =
+            'fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+          s += `<symbol id="sprig" viewBox="0 0 60 100"><path d="M30 98C27 72 33 40 30 8" ${st}/>`;
+          [
+            [84, 1],
+            [66, -1],
+            [50, 1],
+            [34, -1],
+            [20, 1],
+          ].forEach(([y, dir], n) => {
+            const sc = 1 - n * 0.1;
+            s += `<path d="M0 0C5 -9 17 -12 25 -7C18 -1 8 3 0 0Z" ${st} transform="translate(30 ${y}) scale(${dir * sc} ${sc}) rotate(-28)"/>`;
+          });
+          s += `<path d="M30 8C27 3 29 0 30 -1 32 1 33 4 30 8Z" ${st} transform="translate(0 3)"/></symbol>`;
+          // Postage-stamp guest box: scalloped (perforated) edge, double inner border, tiny corner ornaments
+          const BW = 67.95,
+            BH = 34.88,
+            R = 0.72;
+          const nx = Math.round(BW / 3),
+            ny = Math.round(BH / 3);
+          const cw = BW / nx,
+            ch = BH / ny;
+          let d = "M0 0";
+          for (let i = 0; i < nx; i++) {
+            const cx = (i + 0.5) * cw;
+            d += `L${f(cx - R)} 0A${R} ${R} 0 0 0 ${f(cx + R)} 0`;
+          }
+          d += `L${BW} 0`;
+          for (let i = 0; i < ny; i++) {
+            const cy = (i + 0.5) * ch;
+            d += `L${BW} ${f(cy - R)}A${R} ${R} 0 0 0 ${BW} ${f(cy + R)}`;
+          }
+          d += `L${BW} ${BH}`;
+          for (let i = nx - 1; i >= 0; i--) {
+            const cx = (i + 0.5) * cw;
+            d += `L${f(cx + R)} ${BH}A${R} ${R} 0 0 0 ${f(cx - R)} ${BH}`;
+          }
+          d += `L0 ${BH}`;
+          for (let i = ny - 1; i >= 0; i--) {
+            const cy = (i + 0.5) * ch;
+            d += `L0 ${f(cy + R)}A${R} ${R} 0 0 0 0 ${f(cy - R)}`;
+          }
+          d += "Z";
+          const i1 = 1.45,
+            i2 = 2.05;
+          const orn = (x, y) =>
+            `<circle cx="${x}" cy="${y}" r="0.42" fill="#D9A441"/>`;
+          s +=
+            `<symbol id="stamp" viewBox="0 0 ${BW} ${BH}" preserveAspectRatio="none">` +
+            `<path d="${d}" fill="#FFFDF6" stroke="#B9976A" stroke-width=".22"/>` +
+            `<rect x="${i1}" y="${i1}" width="${f(BW - 2 * i1)}" height="${f(BH - 2 * i1)}" rx="1.1" fill="none" stroke="#A8B58A" stroke-width=".3"/>` +
+            `<rect x="${i2}" y="${i2}" width="${f(BW - 2 * i2)}" height="${f(BH - 2 * i2)}" rx="0.7" fill="none" stroke="#D9A441" stroke-width=".16" stroke-dasharray=".8 .55" opacity=".9"/>` +
+            orn(f(BW - i1), i1) +
+            orn(i1, f(BH - i1)) +
+            orn(f(BW - i1), f(BH - i1)) +
+            `</symbol>`;
+          $("#defs").innerHTML = s;
+        }
+
+        /* ---------- 2. Cover artwork helpers (coordinates in mm) ---------- */
+        // Corner bouquet: same arrangement as the invitation, anchored at a corner
+        function bouquet(corner, S, m) {
+          const x = corner[1] === "l" ? m : W - m;
+          const y = corner[0] === "t" ? m : H - m;
+          const sx = corner[1] === "l" ? 1 : -1;
+          const sy = corner[0] === "t" ? 1 : -1;
+          const p = (v) => f((v / 100) * S);
+          const leaf = (l, t, rot) => {
+            const w = 0.34 * S,
+              h = (w * 28) / 40;
+            return `<use href="#leaf" x="${p(l)}" y="${p(t)}" width="${f(w)}" height="${f(h)}" transform="rotate(${rot} ${f(p(l) + w / 2)} ${f(p(t) + h / 2)})"/>`;
+          };
+          const box = (sym, l, t, w) =>
+            `<use href="#${sym}" x="${p(l)}" y="${p(t)}" width="${p(w)}" height="${p(w)}"/>`;
+          return (
+            `<g transform="translate(${x} ${y}) scale(${sx} ${sy})">` +
+            leaf(46, 2, 25) +
+            leaf(2, 50, 75) +
+            leaf(42, 52, -20) +
+            box("sf", 0, 0, 62) +
+            box("sf", 48, 30, 38) +
+            box("sf", 12, 58, 26) +
+            box("dz", 62, 6, 15) +
+            box("dz", 36, 70, 15) +
+            "</g>"
+          );
+        }
+        function deco(sym, x, y, w, rot, color, ratio) {
+          const h = ratio ? f(w / ratio) : w;
+          return `<use href="#${sym}" x="${x}" y="${y}" width="${w}" height="${h}" style="color:${color}" transform="rotate(${rot} ${f(x + w / 2)} ${f(y + h / 2)})"/>`;
+        }
+        function divider(cy, half) {
+          const c = W / 2;
+          return (
+            `<path d="M${c - half} ${cy}H${c - 14}" stroke="#D9A441" stroke-width=".5" stroke-linecap="round" opacity=".9"/>` +
+            `<path d="M${c + 14} ${cy}H${c + half}" stroke="#D9A441" stroke-width=".5" stroke-linecap="round" opacity=".9"/>` +
+            `<circle cx="${c - half - 2.4}" cy="${cy}" r="0.9" fill="#A8B58A"/><circle cx="${c + half + 2.4}" cy="${cy}" r="0.9" fill="#A8B58A"/>` +
+            `<use href="#dz" x="${c - 6}" y="${cy - 6}" width="12" height="12"/>`
+          );
+        }
+
+        /* ---------- 3. Build the pages ---------- */
+        function sheetEl(kind, inner) {
+          const sc = document.createElement("div");
+          sc.className = "scaler";
+          sc.dataset.kind = kind;
+          sc.innerHTML = `<div class="sheet${kind === "guest" ? "" : " cover"}">${inner}</div>`;
+          return sc;
+        }
+
+        function frontCover() {
+          const g = guestBook;
+          let art = "";
+          art += bouquet("tl", 74, 6) + bouquet("br", 74, 6);
+          art += bouquet("tr", 56, 6) + bouquet("bl", 56, 6);
+          // top ornament: sunflower with daisies and sprigs
+          art += `<use href="#sprig" x="104" y="26" width="14" height="23" style="color:#A8B58A" transform="rotate(-62 111 37.5)"/>`;
+          art += `<use href="#sprig" x="179" y="26" width="14" height="23" style="color:#A8B58A" transform="rotate(62 186 37.5) translate(372 0) scale(-1 1)"/>`;
+          art += `<use href="#dz" x="121" y="33" width="10" height="10"/><use href="#dz" x="166" y="33" width="10" height="10"/>`;
+          art += `<use href="#sf" x="136.5" y="26" width="24" height="24"/>`;
+          art += divider(144, 52);
+          art += deco("bfly", 234, 58, 16, 14, "#F5C6A5", 1.5);
+          art += deco("bfly", 58, 128, 14, -14, "#A8B58A", 1.5);
+          art += deco("heart", 232, 120, 6, 0, "#E9A88A");
+          art += deco("star", 60, 112, 5, 0, "#D9A441");
+          art += deco("star", 238, 116, 5, 0, "#D9A441");
+          return sheetEl(
+            "cover",
+            `<svg class="art" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${art}</svg>
+             <p class="t c-label" style="top:66mm">${esc(g.coverLabel)}</p>
+             <h1 class="t c-names" style="top:100mm">${esc(g.bride)} <span class="amp">&amp;</span> ${esc(g.groom)}</h1>
+             <p class="t c-date" style="top:127mm">${esc(g.date)}</p>
+             <p class="t c-tag" style="top:158mm">${esc(g.coverTagline)}</p>`,
+          );
+        }
+
+        function backCover() {
+          const g = guestBook;
+          let art = "";
+          art += bouquet("tr", 86, 6) + bouquet("bl", 86, 6);
+          art += bouquet("tl", 62, 6) + bouquet("br", 62, 6);
+          // centre sunflower with sprigs and daisies
+          art += `<use href="#sprig" x="104" y="52" width="16" height="26" style="color:#A8B58A" transform="rotate(-62 112 65)"/>`;
+          art += `<use href="#sprig" x="177" y="52" width="16" height="26" style="color:#A8B58A" transform="rotate(62 185 65) translate(370 0) scale(-1 1)"/>`;
+          art += `<use href="#dz" x="120" y="62" width="11" height="11"/><use href="#dz" x="166" y="62" width="11" height="11"/>`;
+          art += `<use href="#sf" x="129.5" y="44" width="38" height="38"/>`;
+          art += divider(146, 40);
+          art += deco("bfly", 232, 150, 15, 14, "#F5C6A5", 1.5);
+          art += deco("bfly", 52, 58, 14, -14, "#A8B58A", 1.5);
+          art += deco("heart", 66, 112, 5, 0, "#E9A88A");
+          art += deco("star", 232, 116, 5, 0, "#D9A441");
+          return sheetEl(
+            "back",
+            `<svg class="art" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${art}</svg>
+             <p class="t b-quote" style="top:106mm">${esc(g.backLine1)}<br>${esc(g.backLine2)}</p>
+             <p class="t b-names" style="top:159mm">${esc(g.bride)} <span class="amp">&amp;</span> ${esc(g.groom)}</p>
+             <p class="t b-date" style="top:169mm">${esc(g.date)}</p>`,
+          );
+        }
+
+        function guestBox() {
+          const L = guestBook.labels;
+          return `<div class="gb">
+            <svg class="stamp" aria-hidden="true"><use href="#stamp"/></svg>
+            <div class="up">
+              <div class="left">
+                <div class="row"><span class="lb">${esc(L.name)}</span><i class="ln"></i></div>
+                <div class="row"><span class="lb">${esc(L.address)}</span><i class="ln"></i></div>
+                <div class="row"><i class="ln"></i></div>
+              </div>
+              <div class="ttd"><svg class="wm" aria-hidden="true"><use href="#sf"/></svg><span class="lb">${esc(L.signature)}</span></div>
+            </div>
+            <div class="msg">
+              <span class="hd">${esc(L.message)}</span>
+              <i class="ln"></i><i class="ln"></i>
+            </div>
+          </div>`;
+        }
+
+        function guestPage() {
+          const g = guestBook;
+          let boxes = "";
+          for (let i = 0; i < GUESTS_PER_PAGE; i++) boxes += guestBox();
+          const head = `<div class="g-head">
+              <i class="rule"></i>
+              <svg aria-hidden="true"><use href="#sf"/></svg>
+              <div class="g-title">
+                <div class="g-names">${esc(g.bride)} <span class="amp">&amp;</span> ${esc(g.groom)}</div>
+                <div class="g-date">${esc(g.date)}</div>
+              </div>
+              <svg aria-hidden="true"><use href="#sf"/></svg>
+              <i class="rule"></i>
+            </div>`;
+          return sheetEl("guest", `${head}<div class="grid">${boxes}</div>`);
+        }
+
+        /* ---------- 4. Preview: build, navigate, scale ---------- */
+        let sheets = [];
+        let idx = 0;
+        let guestCount = guestBook.defaultGuestPages;
+
+        function build() {
+          const stage = $("#stage");
+          stage.innerHTML = "";
+          sheets = [frontCover()];
+          for (let i = 0; i < guestCount; i++) sheets.push(guestPage());
+          sheets.push(backCover());
+          sheets.forEach((s) => stage.appendChild(s));
+          idx = Math.min(idx, sheets.length - 1);
+          show();
+          $("#pagesNote").textContent =
+            `= ${guestCount} × ${GUESTS_PER_PAGE} = ${guestCount * GUESTS_PER_PAGE} guests`;
+        }
+
+        function label() {
+          const last = sheets.length - 1;
+          if (idx === 0) return "Front cover";
+          if (idx === last) return "Back cover";
+          return `Guest page ${idx} of ${guestCount}`;
+        }
+        function show() {
+          sheets.forEach((s, i) => s.classList.toggle("current", i === idx));
+          $("#navLabel").textContent = label();
+          $("#prevBtn").disabled = idx === 0;
+          $("#nextBtn").disabled = idx === sheets.length - 1;
+          $$(".tabs button").forEach((b) => {
+            const k = b.dataset.jump;
+            const on =
+              (k === "cover" && idx === 0) ||
+              (k === "back" && idx === sheets.length - 1) ||
+              (k === "guest" && idx > 0 && idx < sheets.length - 1);
+            b.setAttribute("aria-pressed", String(on));
+          });
+          fit();
+        }
+        function go(n) {
+          idx = Math.max(0, Math.min(sheets.length - 1, n));
+          show();
+        }
+
+        function fit() {
+          const ui = $("#ui");
+          const availW = Math.max(
+            200,
+            document.documentElement.clientWidth - 32,
+          );
+          const availH = Math.max(
+            240,
+            window.innerHeight - (ui ? ui.offsetHeight : 0) - 56,
+          );
+          const s = Math.min(availW / (W * MM), availH / (H * MM), 3);
+          document.documentElement.style.setProperty("--s", s.toFixed(5));
+        }
+
+        function init() {
+          buildSymbols();
+          // guest-page quantity selector
+          const sel = $("#pagesSel");
+          for (let n = 1; n <= guestBook.maxGuestPages; n++) {
+            const o = document.createElement("option");
+            o.value = n;
+            o.textContent = n;
+            sel.appendChild(o);
+          }
+          sel.value = String(guestCount);
+          sel.addEventListener("change", () => {
+            guestCount = parseInt(sel.value, 10) || 1;
+            build();
+          });
+          $("#prevBtn").addEventListener("click", () => go(idx - 1));
+          $("#nextBtn").addEventListener("click", () => go(idx + 1));
+          $$(".tabs button").forEach((b) =>
+            b.addEventListener("click", () => {
+              const k = b.dataset.jump;
+              go(
+                k === "cover"
+                  ? 0
+                  : k === "back"
+                    ? sheets.length - 1
+                    : Math.min(Math.max(idx, 1), guestCount),
+              );
+            }),
+          );
+          document.addEventListener("keydown", (e) => {
+            if (e.target.tagName === "SELECT") return;
+            if (e.key === "ArrowRight") go(idx + 1);
+            if (e.key === "ArrowLeft") go(idx - 1);
+          });
+          $("#printBtn").addEventListener("click", () => window.print());
+          window.addEventListener("resize", fit);
+          build();
+          // optional #page-number in the address bar opens that page (0 = cover)
+          const h = parseInt((location.hash || "").slice(1), 10);
+          if (!isNaN(h)) go(h);
+          if (document.fonts && document.fonts.ready)
+            document.fonts.ready.then(fit);
+        }
+        if (document.readyState === "loading")
+          document.addEventListener("DOMContentLoaded", init);
+        else init();
+      })();
+    </script>
+  </body>
+</html>
