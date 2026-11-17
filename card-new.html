@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Our Wedding Invitation Set — Print Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* =====================================================================
+   PRINT-READY SUNFLOWER WEDDING INVITATION — TWO-PIECE SET
+   "You Are My Sunshine, My Forever"
+
+   PIECE 1  Main invitation card  92 x 142 mm, double-sided
+              front = outside cover (names + date)
+              back  = wedding announcement
+   PIECE 2  Information card      92 x 122 mm, single-sided
+              venue, date & time, bride's and groom's families
+
+   PRINT SHEET  One A4 portrait sheet (210 x 297 mm), printed on both sides,
+              carries TWO complete sets. No folding.
+                Page 1 (front side): 2 main-card fronts (top row) + 2 info cards (bottom row)
+                Page 2 (back side):  2 main-card backs (top row, same positions)
+              Cut along the crop marks.
+
+   Stylesheet map
+     1. Tokens & base      4. Decor (bouquets, butterflies)
+     2. Screen workspace   5. Card artwork (front, back, info)
+     3. Cards & sheet      6. PRINT (@page / @media print)
+   ===================================================================== */
+
+      /* ---------- 1. Tokens & base ---------- */
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --ink: #5e4230;
+        --paper: #fffdf5;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-display: "Playfair Display", Georgia, serif;
+        --f-hand: "Caveat", "Segoe Script", cursive;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+        /* physical sizes: set from the layout constants in the script */
+        --mw: 92mm;
+        --mh: 142mm;
+        --iw: 92mm;
+        --ih: 122mm;
+        --s: 1;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #eee8dc;
+        color: var(--ink);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* ---------- 2. Screen workspace (hidden when printing) ---------- */
+      .ui {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 20px 16px 8px;
+      }
+      .ui-card {
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 16px;
+        box-shadow: 4px 6px 0 var(--sage);
+        padding: 18px 20px;
+      }
+      .ui-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .ui h1 {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: clamp(1.5rem, 4.6vw, 2.2rem);
+        line-height: 1.15;
+        color: var(--brown);
+      }
+      .ui .sub {
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 1.35rem;
+        color: var(--olive);
+        line-height: 1.2;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+        min-height: 48px;
+        padding: 0.6em 1.3em;
+        font-weight: 700;
+        font-size: 0.95rem;
+        background: var(--paper);
+        color: var(--brown);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        box-shadow: 2px 3px 0 var(--brown);
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s,
+          background 0.15s;
+      }
+      .btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 4px 0 var(--brown);
+      }
+      .btn:active {
+        transform: translate(2px, 3px);
+        box-shadow: none;
+      }
+      .btn.primary {
+        background: var(--olive);
+        color: var(--cream);
+        letter-spacing: 0.12em;
+        font-size: 1rem;
+        padding: 0.7em 1.7em;
+      }
+      .btn.primary:hover {
+        background: #788b58;
+      }
+      .ui-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 2px dashed rgba(168, 181, 138, 0.9);
+      }
+      .opts {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .opts label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        min-height: 44px;
+      }
+      .opts input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--olive);
+      }
+      .facts {
+        font-size: 0.88rem;
+        color: var(--brown);
+      }
+      .facts b {
+        color: var(--olive);
+      }
+      .howto {
+        margin-top: 16px;
+        padding: 14px 16px;
+        background: #f3f6e8;
+        border: 2px dashed var(--sage);
+        border-radius: 12px;
+        font-size: 0.92rem;
+      }
+      .howto summary {
+        font-weight: 700;
+        color: var(--olive);
+        cursor: pointer;
+        min-height: 28px;
+      }
+      .howto ol {
+        margin: 10px 0 0;
+        padding-left: 1.3em;
+      }
+      .howto li {
+        margin: 4px 0;
+      }
+      .howto .tip {
+        margin-top: 10px;
+        font-weight: 700;
+        color: var(--brown);
+      }
+
+      #stage {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 14px 16px 56px;
+      }
+      .sec {
+        margin: 30px 2px 14px;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 1.35rem;
+        color: var(--brown);
+      }
+      .sec small {
+        margin-left: 8px;
+        font-family: var(--f-ui);
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--olive);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 26px;
+        align-items: flex-start;
+      }
+      .cap {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 0 2px 10px;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .cap span {
+        letter-spacing: 0.06em;
+        text-transform: none;
+        font-weight: 500;
+        color: var(--brown);
+      }
+
+      /* ---------- 3. Cards & sheet ---------- */
+      /* .scaler holds the SCALED size on screen; .scaled is always the real size in mm. */
+      .scaler {
+        position: relative;
+        width: calc(var(--w) * 1mm * var(--s));
+        height: calc(var(--h) * 1mm * var(--s));
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      .scaled {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+      }
+      .sheet {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        background: #fff;
+        overflow: hidden;
+      }
+      .slot {
+        position: absolute;
+      }
+      /* crop marks: thin black ticks just outside every card corner */
+      .cm {
+        position: absolute;
+        background: #111;
+        pointer-events: none;
+      }
+
+      .card {
+        position: relative;
+        flex: none;
+        overflow: hidden;
+        background: #fff; /* pure white paper */
+        text-align: center;
+      }
+      .card.main {
+        width: var(--mw);
+        height: var(--mh);
+      }
+      .card.info {
+        width: var(--iw);
+        height: var(--ih);
+      }
+      @media screen {
+        .card {
+          outline: 0.2mm dashed rgba(94, 66, 48, 0.45); /* trim edge, screen only */
+        }
+      }
+      /* Botanical frame on the main card (thin sage line + dotted gold line) */
+      .card.main::before {
+        content: "";
+        position: absolute;
+        inset: 5mm;
+        border: 0.3mm solid var(--sage);
+        border-radius: 2.2mm;
+        z-index: 0;
+      }
+      .card.main::after {
+        content: "";
+        position: absolute;
+        inset: 7mm;
+        border: 0.2mm dashed rgba(217, 164, 65, 0.8);
+        border-radius: 1.5mm;
+        z-index: 0;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .gd {
+        display: none;
+        position: absolute;
+        inset: 3mm;
+        border: 0.3mm dashed #c0392b;
+        z-index: 6;
+        pointer-events: none;
+      }
+      body.guides .gd {
+        display: block;
+      }
+
+      /* ---------- 4. Decor: bouquets, butterflies ---------- */
+      .bq {
+        position: absolute;
+        width: 22mm;
+        aspect-ratio: 1;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .bq.xs {
+        width: 17mm;
+      }
+      .bq.sm {
+        width: 22mm;
+      }
+      .bq.tl {
+        top: 2.5mm;
+        left: 2.5mm;
+      }
+      .bq.tr {
+        top: 2.5mm;
+        right: 2.5mm;
+        scale: -1 1;
+      }
+      .bq.bl {
+        bottom: 2.5mm;
+        left: 2.5mm;
+        scale: 1 -1;
+      }
+      .bq.br {
+        bottom: 2.5mm;
+        right: 2.5mm;
+        scale: -1 -1;
+      }
+      .bq > * {
+        position: absolute;
+        display: block;
+      }
+      .bq .sf {
+        aspect-ratio: 1;
+      }
+      .bq .sf.big {
+        width: 62%;
+        left: 0;
+        top: 0;
+      }
+      .bq .sf.mid {
+        width: 38%;
+        left: 48%;
+        top: 30%;
+      }
+      .bq .sf.small {
+        width: 26%;
+        left: 12%;
+        top: 58%;
+      }
+      .bq .dz {
+        width: 15%;
+        aspect-ratio: 1;
+      }
+      .bq .dz.d1 {
+        left: 62%;
+        top: 6%;
+      }
+      .bq .dz.d2 {
+        left: 36%;
+        top: 70%;
+      }
+      .bq .lf {
+        width: 34%;
+        aspect-ratio: 40/28;
+      }
+      .bq .lf.a {
+        left: 46%;
+        top: 2%;
+        rotate: 25deg;
+      }
+      .bq .lf.b {
+        left: 2%;
+        top: 50%;
+        rotate: 75deg;
+      }
+      .bq .lf.c {
+        left: 42%;
+        top: 52%;
+        rotate: -20deg;
+      }
+      .deco {
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        aspect-ratio: 1;
+      }
+      .deco.bfly {
+        aspect-ratio: 3/2;
+        color: var(--peach);
+      }
+      .label {
+        font-family: var(--f-ui);
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .script {
+        font-family: var(--f-script);
+        font-weight: 700;
+      }
+
+      /* ---------- 5a. MAIN CARD FRONT (outside cover) ---------- */
+      .front .content {
+        justify-content: flex-start;
+        padding: 15mm 10mm 0;
+      }
+      .wedof {
+        font-size: 3.3mm;
+        letter-spacing: 0.7mm;
+      }
+      .cname {
+        width: 76mm;
+        margin-top: 1.5mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 14mm;
+        line-height: 1.1;
+        color: var(--brown);
+      }
+      .camp {
+        margin-top: 0.5mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 8.5mm;
+        line-height: 1;
+        color: var(--honey);
+      }
+      .cdate {
+        margin-top: 3.5mm;
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 3.7mm;
+        letter-spacing: 0.55mm;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .sprigs {
+        display: flex;
+        align-items: center;
+        gap: 2.5mm;
+        margin-top: 4mm;
+        color: var(--sage);
+      }
+      .sprigs svg {
+        width: 6mm;
+        height: 10mm;
+      }
+      .sprigs .heart {
+        width: 3.4mm;
+        height: 3.4mm;
+        color: #e9a88a;
+      }
+      .kepada {
+        margin-top: 5mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 3.9mm;
+        line-height: 1.1;
+        color: var(--olive);
+      }
+      .addressee {
+        margin-top: 0.8mm;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 4.2mm;
+        line-height: 1.2;
+        color: var(--brown);
+      }
+      .guest-label {
+        position: relative;
+        flex: none;
+        width: 54mm;
+        height: 14mm;
+        margin-top: 2.5mm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 0.35mm dotted var(--honey);
+      }
+      .guest-label::before {
+        content: "";
+        position: absolute;
+        inset: 1mm;
+        border: 0.2mm solid rgba(168, 181, 138, 0.85);
+        pointer-events: none;
+      }
+      .gl-no {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 7mm;
+        line-height: 1;
+        color: var(--brown);
+      }
+      .gl-hint {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 1.5mm;
+        text-align: center;
+        font: 500 2mm/1.3 var(--f-ui);
+        color: rgba(118, 84, 58, 0.5);
+      }
+      .apology {
+        margin-top: 2mm;
+        width: 52mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 3mm;
+        line-height: 1.25;
+        color: var(--ink);
+      }
+
+      /* ---------- 5b. MAIN CARD BACK (announcement) ----------
+         Sizes below are in em where 1em = 1 mm x --k. The script lowers --k
+         slightly if a long name ever overflows, so nothing is cut off. */
+      .back .content {
+        justify-content: space-between;
+        padding: 14mm 10mm 16mm;
+        font-size: calc(var(--k, 1) * 1mm);
+      }
+      .grp {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 1.4em;
+      }
+      .couple {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 2.4em;
+      }
+      .person {
+        gap: 1em;
+      }
+      .bismillah {
+        font-size: 4.5em;
+        line-height: 1.1;
+        color: var(--olive);
+        white-space: nowrap;
+      }
+      .salam {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 3em;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .msg {
+        font-family: var(--f-serif);
+        font-weight: 500;
+        font-size: 3.2em;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .pname {
+        width: 100%;
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 4.5em;
+        line-height: 1.14;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--brown);
+        text-wrap: balance;
+      }
+      .nm-wrap {
+        position: relative;
+        display: block;
+        padding-top: 1.15em; /* room for the sticky note */
+      }
+      .nm-wrap.no-note {
+        padding-top: 0;
+      }
+      .bname {
+        display: block;
+        text-wrap: balance;
+      }
+      .bname .etitle {
+        font: inherit;
+        color: inherit;
+        letter-spacing: inherit;
+        margin-left: 0.25em;
+      }
+      .postit {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        translate: -50% 0;
+        z-index: 10;
+        white-space: nowrap;
+        padding: 0.3em 0.7em 0.25em;
+        background: #fbe0cb;
+        border: 0.2mm solid rgba(118, 84, 58, 0.28);
+        box-shadow: 0.4mm 0.6mm 1.2mm rgba(118, 84, 58, 0.16);
+        font-family: var(--f-hand);
+        font-weight: 700;
+        font-size: 0.63em;
+        letter-spacing: 0;
+        line-height: 1.05;
+        text-transform: none;
+        color: var(--brown);
+        text-align: center;
+        rotate: -3deg;
+      }
+      .postit::before {
+        content: "";
+        position: absolute;
+        top: -0.5em;
+        left: 50%;
+        width: 2.1em;
+        height: 0.7em;
+        translate: -50% 0;
+        background: rgba(168, 181, 138, 0.78);
+        rotate: -3deg;
+      }
+      .rel {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 3.2em;
+        line-height: 1.2;
+        color: var(--olive);
+      }
+      .dengan {
+        font-size: 5.6em;
+        line-height: 1;
+        color: var(--honey);
+      }
+      .sched {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 3.2em;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .dt {
+        display: block;
+        width: 100%;
+        white-space: nowrap;
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-size: 4.4em;
+        line-height: 1.15;
+        color: var(--brown);
+      }
+      .bar {
+        display: block;
+        width: 42em;
+        height: 0.9em;
+        border-radius: 1em;
+        background: var(--peach);
+      }
+      .cl1 {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 3.15em;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .cl2 {
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 3.1em;
+        line-height: 1.25;
+        color: var(--olive);
+        width: 18em;
+        text-wrap: balance;
+      }
+
+      /* ---------- 5c. INFORMATION CARD ----------
+         Different composition from the main card: striped postcard border
+         (the same peach / cream / sage stripes as the original location
+         postcard), a sunflower garland pinned over the top edge, and a
+         single-column "ticket" layout. Sizes in em (1em = 1 mm x --k). */
+      .card.info {
+        background: repeating-linear-gradient(
+          -45deg,
+          var(--peach) 0 2.4mm,
+          var(--cream) 2.4mm 4.8mm,
+          var(--sage) 4.8mm 7.2mm,
+          var(--cream) 7.2mm 9.6mm
+        );
+      }
+      .info .in {
+        position: absolute;
+        inset: 3mm;
+        background: #fff;
+        z-index: 0;
+      }
+      .info .in::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 0.25mm solid rgba(118, 84, 58, 0.35);
+      }
+      .info .in::after {
+        content: "";
+        position: absolute;
+        inset: 1.3mm;
+        border: 0.2mm dashed rgba(217, 164, 65, 0.8);
+      }
+      .g-sf {
+        position: absolute;
+        left: 50%;
+        top: 1.2mm;
+        width: 15mm;
+        height: 15mm;
+        translate: -50% 0;
+        z-index: 3;
+      }
+      .g-dz {
+        position: absolute;
+        top: 4.2mm;
+        width: 8mm;
+        height: 8mm;
+        z-index: 3;
+      }
+      .g-lf {
+        position: absolute;
+        top: 6.4mm;
+        width: 8mm;
+        aspect-ratio: 40/28;
+        z-index: 2;
+      }
+      .info .content {
+        justify-content: space-between;
+        align-items: stretch;
+        padding: 17mm 9mm 8mm;
+        font-size: calc(var(--k, 1) * 1mm);
+      }
+      .loc {
+        display: flex;
+        align-items: center;
+        gap: 3.5em;
+        text-align: left;
+      }
+      .loc-t {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+      .lok {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 2.9em;
+        letter-spacing: 0.2em;
+      }
+      .lok svg {
+        width: 1.25em;
+        height: 1.25em;
+        flex: none;
+      }
+      .venue {
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 4.2em;
+        line-height: 1.1;
+        color: var(--brown);
+      }
+      .addr {
+        font-family: var(--f-serif);
+        font-weight: 600;
+        font-size: 3.3em;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+      .qr {
+        width: 21mm;
+        height: 21mm;
+        flex: none;
+        padding: 0.8mm;
+        background: #fff;
+        border: 0.3mm solid rgba(118, 84, 58, 0.3);
+      }
+      .qr img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .qr-ph {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        border: 0.3mm dashed rgba(118, 84, 58, 0.4);
+        font: 700 1.8mm/1.4 var(--f-ui);
+        letter-spacing: 0.3mm;
+        text-transform: uppercase;
+        color: rgba(118, 84, 58, 0.45);
+      }
+      .irule {
+        display: block;
+        align-self: center;
+        width: 46em;
+        height: 0;
+        border-top: 0.35mm dotted var(--honey);
+      }
+      .when {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2em;
+      }
+      .info .dt {
+        font-size: 4.2em;
+      }
+      .times {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: 72em;
+        margin-top: 0.8em;
+      }
+      .times > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6em;
+        padding: 0 2em;
+      }
+      .times > div + div {
+        border-left: 0.3mm solid var(--sage);
+      }
+      .times .label {
+        font-size: 2.8em;
+        letter-spacing: 0.15em;
+      }
+      .tm {
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 5em;
+        line-height: 1.05;
+        white-space: nowrap;
+        color: var(--brown);
+      }
+      .fams {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+      .fams .f {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9em;
+        padding: 0 2em;
+      }
+      .fams .f + .f {
+        border-left: 0.3mm solid var(--sage);
+      }
+      .fams .label {
+        font-size: 2.4em;
+        letter-spacing: 0.18em;
+        line-height: 1.35;
+        text-wrap: balance;
+      }
+      .fr {
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 3.1em;
+        line-height: 1.15;
+        color: var(--olive);
+      }
+      .fn {
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 3.6em;
+        line-height: 1.1;
+        color: var(--brown);
+      }
+      .tmb {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.6em;
+      }
+      .tm-head {
+        font-family: var(--f-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 3.5em;
+        line-height: 1.15;
+        color: var(--brown);
+      }
+      .tm-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.7em;
+      }
+      .tm-list li {
+        font-family: var(--f-serif);
+        font-weight: 600;
+        font-size: 2.95em;
+        line-height: 1.2;
+        color: var(--ink);
+      }
+
+      /* ---------- 6. PRINT ---------- */
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      @media print {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #fff !important;
+          width: 210mm;
+        }
+        .ui,
+        #designs,
+        .cap,
+        .sec,
+        .gd,
+        .noprint {
+          display: none !important;
+        }
+        #stage {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+          width: 210mm;
+        }
+        #sheetsBox {
+          --s: 1 !important;
+        }
+        .row {
+          display: block !important;
+          gap: 0;
+        }
+        .page {
+          display: block;
+          break-after: page;
+          page-break-after: always;
+        }
+        .page:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+        .scaler {
+          width: 210mm !important;
+          height: 296.5mm !important;
+          box-shadow: none !important;
+          overflow: hidden;
+        }
+        .scaled {
+          transform: none !important;
+        }
+        .card {
+          outline: none !important;
+        }
+      }
+      @media (max-width: 640px) {
+        .ui-card {
+          padding: 14px;
+        }
+        .btn.primary {
+          width: 100%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Shared SVG art (flower shapes are drawn by JavaScript, see buildSymbols()) -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <symbol id="sf" viewBox="-50 -50 100 100"></symbol>
+        <symbol id="dz" viewBox="-50 -50 100 100"></symbol>
+        <symbol id="sprig" viewBox="0 0 60 100"></symbol>
+        <symbol id="leaf" viewBox="0 0 40 28">
+          <path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A" />
+          <path
+            d="M2 14H36"
+            stroke="#68794D"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            opacity=".6"
+          />
+        </symbol>
+        <symbol id="heart" viewBox="0 0 24 24">
+          <path
+            d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z"
+            fill="currentColor"
+          />
+        </symbol>
+        <symbol id="star" viewBox="0 0 24 24">
+          <path
+            d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.3l7.1-.7z"
+            fill="currentColor"
+          />
+        </symbol>
+        <symbol id="bfly" viewBox="0 0 60 40">
+          <path
+            d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z"
+            fill="currentColor"
+          />
+          <path
+            d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z"
+            fill="currentColor"
+          />
+          <circle cx="14" cy="13" r="3" fill="#FFF8E7" opacity=".85" />
+          <circle cx="46" cy="13" r="3" fill="#FFF8E7" opacity=".85" />
+          <path
+            d="M30 12v18"
+            stroke="#76543A"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+          <path
+            d="M30 12q-4-7-8-8M30 12q4-7 8-8"
+            fill="none"
+            stroke="#76543A"
+            stroke-width="1.2"
+            stroke-linecap="round"
+          />
+        </symbol>
+        <symbol id="pin" viewBox="0 0 24 24">
+          <path
+            d="M12 2C7.6 2 4 5.5 4 9.9 4 15.8 12 22 12 22s8-6.2 8-12.1C20 5.5 16.4 2 12 2z"
+            fill="#E9A88A"
+            stroke="#76543A"
+            stroke-width="1.2"
+            stroke-linejoin="round"
+          />
+          <circle
+            cx="12"
+            cy="10"
+            r="3.3"
+            fill="#FFF8E7"
+            stroke="#76543A"
+            stroke-width="1"
+          />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- =====================================================================
+     SCREEN WORKSPACE (controls). Never printed.
+     ===================================================================== -->
+    <header class="ui" id="ui">
+      <div class="ui-card">
+        <div class="ui-top">
+          <div>
+            <h1>Our Wedding Invitation Set</h1>
+            <p class="sub">Two cards. Two sets. One A4 sheet.</p>
+          </div>
+          <button class="btn primary" id="printBtn" type="button">
+            PRINT SHEET
+          </button>
+        </div>
+
+        <div class="ui-row">
+          <p class="facts" id="facts"></p>
+          <div class="opts">
+            <label
+              ><input type="checkbox" id="guidesChk" /> Safe-area guides (3 mm
+              inside every card)</label
+            >
+          </div>
+        </div>
+
+        <details class="howto" open>
+          <summary>How to print and cut (1 minute)</summary>
+          <ol>
+            <li>
+              Click <b>PRINT SHEET</b>. Choose paper <b>A4</b>, orientation
+              <b>Portrait</b>, margins <b>None</b>, scale <b>100%</b>, and tick
+              <b>Background graphics</b>.
+            </li>
+            <li>
+              Print <b>both pages on one sheet, double-sided</b>, flipping on
+              the <b>long edge</b>. Page 1 = main-card fronts (top) and
+              information cards (bottom). Page 2 = main-card backs (top).
+            </li>
+            <li>
+              No duplex printer? Print page 1, put the sheet back so the printed
+              side faces the right way, then print page 2 only.
+            </li>
+            <li>
+              Cut along the <b>crop marks</b> (the small black ticks outside
+              each corner). Cut the row gap first, then separate the cards.
+            </li>
+            <li>
+              Each guest gets one main card and one information card, tucked
+              together.
+            </li>
+          </ol>
+          <p class="tip">
+            Test on plain paper first and hold it up to the light to check the
+            front/back alignment. Home printers usually cannot print closer than
+            3–5 mm to the edge. The crop marks stay inside 5 mm.
+          </p>
+        </details>
+      </div>
+    </header>
+
+    <main id="stage">
+      <!-- ============ THE THREE DESIGNS, SHOWN SEPARATELY ============ -->
+      <section id="designs">
+        <h2 class="sec">
+          The set <small>real size is shown by the mm captions</small>
+        </h2>
+        <div class="row" id="cardsBox">
+          <figure style="margin: 0">
+            <p class="cap">
+              Main card · Front <span>outside cover · 92 × 142 mm</span>
+            </p>
+            <div class="scaler" style="--w: 92; --h: 142">
+              <div class="scaled" data-card="front"></div>
+            </div>
+          </figure>
+          <figure style="margin: 0">
+            <p class="cap">
+              Main card · Back <span>announcement · 92 × 142 mm</span>
+            </p>
+            <div class="scaler" style="--w: 92; --h: 142">
+              <div class="scaled" data-card="back"></div>
+            </div>
+          </figure>
+          <figure style="margin: 0">
+            <p class="cap">
+              Information card <span>single-sided · 92 × 122 mm</span>
+            </p>
+            <div class="scaler" style="--w: 92; --h: 122">
+              <div class="scaled" data-card="info"></div>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ A4 PRINT LAYOUT (two pages = both sides of one sheet) ============ -->
+      <section id="sheetsBox">
+        <h2 class="sec">
+          A4 print layout
+          <small>one sheet, printed on both sides · 210 × 297 mm</small>
+        </h2>
+        <div class="row" id="sheets"></div>
+      </section>
+    </main>
+
+    <script>
+      /* =====================================================================
+   ★ EASY EDIT AREA: change everything about YOUR wedding right here ★
+   Every name, date, family and venue on the invitation comes from this one
+   object (nothing is typed twice). Keep each value short and on one line.
+   ===================================================================== */
+      const weddingDetails = {
+        // Cover (front of the main card)
+        brideName: "PUTRI",
+        groomName: "YOGA",
+        coverDate: "17 JANUARY 2027",
+
+        // Guest label area on the cover (number printed inside the label)
+        showGuestLabel: true,
+        guestLabelNumber: "", // e.g. "103"
+
+        // Announcement (back of the main card)
+        weddingDate: "Minggu, 17 Januari 2027",
+        bride: {
+          name: "Putri Nabella",
+          educationTitle: "S.Kom",
+          nickname: "Kano-kano", // small sticky note above the name. "" hides it.
+          relation: "Putri Sulung",
+          father: "Samsi",
+          mother: "Rusinah",
+        },
+        groom: {
+          name: "Muhammad Yoga Adha Pratama",
+          educationTitle: "S.Kom",
+          nickname: "",
+          relation: "Putra Bungsu",
+          father: "Priyo Gunawan",
+          mother: "Nani Elliawati",
+        },
+
+        // Information card
+        akadTime: "07:00 AM",
+        receptionTime: "08:00 AM",
+        venueName: "Kediaman Keluarga Mempelai Wanita",
+        venueAddress: "Jl. A. Yani KM.14.400, Gang 99",
+        locationQRCode: "img/location.png", // your own QR image (a file next to this page, a URL or a data: URL). Missing = placeholder.
+
+        // Inviting families ("Turut Mengundang"): add or remove lines freely. Empty list hides the block.
+        turutMengundang: [
+          "Bapak Syahran dan Ibu Fatimah",
+          "Bapak Samsudin dan Istri",
+          "Alm. Bapak H. Juni Madda dan Almh. Hj. Juminah",
+          "Bapak Arsyad dan Ibu Noor Halidah",
+          "Bapak Samsi (Anci) dan Ibu Rusinah",
+        ],
+      };
+
+      /* =====================================================================
+   Code below: you normally don't need to edit it.
+   ===================================================================== */
+      (function () {
+        "use strict";
+
+        const $ = (s, c = document) => c.querySelector(s);
+        const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+        const SVGNS = "http://www.w3.org/2000/svg";
+        const MM = 96 / 25.4; // CSS pixels per millimetre
+        const D = weddingDetails;
+
+        /* ---------- Physical layout (all in mm). One place to change sizes. ---------- */
+        const A4 = { w: 210, h: 297 };
+        const MAIN = { w: 92, h: 142 };
+        const INFO = { w: 92, h: 122 };
+        const GAP_X = 8; // between the two columns
+        const GAP_Y = 9; // between the main-card row and the info-card row
+        const TOP = 12; // top margin
+        const LEFT = (A4.w - (2 * MAIN.w + GAP_X)) / 2; // side margins (9 mm)
+        const COLS = [LEFT, LEFT + MAIN.w + GAP_X];
+        const Y_MAIN = TOP;
+        const Y_INFO = TOP + MAIN.h + GAP_Y;
+        const BOTTOM = A4.h - (Y_INFO + INFO.h);
+
+        const root = document.documentElement.style;
+        root.setProperty("--mw", MAIN.w + "mm");
+        root.setProperty("--mh", MAIN.h + "mm");
+        root.setProperty("--iw", INFO.w + "mm");
+        root.setProperty("--ih", INFO.h + "mm");
+
+        /* ---------- 1. Draw the flower art ---------- */
+        function mk(tag, attrs, parent) {
+          const el = document.createElementNS(SVGNS, tag);
+          for (const k in attrs) el.setAttribute(k, attrs[k]);
+          parent.appendChild(el);
+          return el;
+        }
+        function buildSymbols() {
+          // Sunflower: two rings of petals + seeded centre
+          const sf = $("#sf");
+          const back = mk("g", { fill: "#D9A441" }, sf),
+            front = mk("g", { fill: "#F6C945" }, sf);
+          for (let i = 0; i < 14; i++)
+            mk(
+              "ellipse",
+              {
+                cx: 0,
+                cy: -33,
+                rx: 8.2,
+                ry: 17,
+                transform: `rotate(${(i * 360) / 14})`,
+              },
+              back,
+            );
+          for (let i = 0; i < 14; i++)
+            mk(
+              "ellipse",
+              {
+                cx: 0,
+                cy: -31,
+                rx: 7.6,
+                ry: 15.5,
+                transform: `rotate(${((i + 0.5) * 360) / 14})`,
+              },
+              front,
+            );
+          for (let i = 0; i < 14; i++)
+            mk(
+              "path",
+              {
+                d: "M0 -20V-42",
+                stroke: "#D9A441",
+                "stroke-width": 0.9,
+                opacity: 0.55,
+                "stroke-linecap": "round",
+                transform: `rotate(${((i + 0.5) * 360) / 14})`,
+              },
+              sf,
+            );
+          mk("circle", { r: 18, fill: "#76543A" }, sf);
+          mk("circle", { r: 14.5, fill: "#5E4230" }, sf);
+          [
+            [5, "1.3 3.8"],
+            [9, "1.7 4.0"],
+            [12.5, "2 4.4"],
+          ].forEach(([r, d]) =>
+            mk(
+              "circle",
+              {
+                r,
+                fill: "none",
+                stroke: "#D9A441",
+                "stroke-width": 1.6,
+                "stroke-linecap": "round",
+                "stroke-dasharray": d,
+                opacity: 0.9,
+              },
+              sf,
+            ),
+          );
+
+          // Daisy
+          const dz = $("#dz");
+          for (let i = 0; i < 10; i++)
+            mk(
+              "ellipse",
+              {
+                cx: 0,
+                cy: -30,
+                rx: 7.2,
+                ry: 17,
+                fill: "#FFFDF5",
+                stroke: "#E0CE9A",
+                "stroke-width": 1.2,
+                transform: `rotate(${i * 36})`,
+              },
+              dz,
+            );
+          mk(
+            "circle",
+            { r: 12, fill: "#F6C945", stroke: "#D9A441", "stroke-width": 1.5 },
+            dz,
+          );
+          mk("circle", { r: 5, fill: "#D9A441" }, dz);
+
+          // Botanical line-drawing sprig
+          const sp = $("#sprig");
+          const stroke = {
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-width": 1.5,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+          };
+          mk(
+            "path",
+            Object.assign({ d: "M30 98C27 72 33 40 30 8" }, stroke),
+            sp,
+          );
+          const leaf = "M0 0C5 -9 17 -12 25 -7C18 -1 8 3 0 0Z";
+          [
+            [84, 1],
+            [66, -1],
+            [50, 1],
+            [34, -1],
+            [20, 1],
+          ].forEach(([y, dir], n) => {
+            const sc = 1 - n * 0.1;
+            mk(
+              "path",
+              Object.assign(
+                {
+                  d: leaf,
+                  transform: `translate(30 ${y}) scale(${dir * sc} ${sc}) rotate(-28)`,
+                },
+                stroke,
+              ),
+              sp,
+            );
+          });
+          mk(
+            "path",
+            Object.assign(
+              {
+                d: "M30 8C27 3 29 0 30 -1 32 1 33 4 30 8Z",
+                transform: "translate(0 3)",
+              },
+              stroke,
+            ),
+            sp,
+          );
+        }
+
+        /* ---------- 2. Card templates ---------- */
+        const esc = (t) =>
+          String(t == null ? "" : t).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const BQ = `
+    <svg class="lf a"><use href="#leaf"/></svg><svg class="lf b"><use href="#leaf"/></svg><svg class="lf c"><use href="#leaf"/></svg>
+    <svg class="sf big"><use href="#sf"/></svg><svg class="sf mid"><use href="#sf"/></svg><svg class="sf small"><use href="#sf"/></svg>
+    <svg class="dz d1"><use href="#dz"/></svg><svg class="dz d2"><use href="#dz"/></svg>`;
+        const bq = (pos, size) =>
+          `<div class="bq ${pos} ${size}" aria-hidden="true">${BQ}</div>`;
+        const deco = (id, style, cls = "") =>
+          `<svg class="deco ${cls}" style="${style}" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+        function person(p) {
+          const nick = (p.nickname || "").trim();
+          const edu = (p.educationTitle || "").trim();
+          return `
+            <div class="grp person">
+              <p class="pname">
+                <span class="nm-wrap${nick ? "" : " no-note"}">${nick ? `<span class="postit">${esc(nick)}</span>` : ""}<span class="bname"><span class="nmtxt">${esc(p.name)}</span>${edu ? `,<span class="etitle">${esc(edu)}</span>` : ""}</span></span>
+              </p>
+              <p class="rel">${esc(p.relation)}</p>
+            </div>`;
+        }
+
+        const T = {
+          /* ---- MAIN CARD · FRONT (outside cover) ---- */
+          front() {
+            const guest = D.showGuestLabel
+              ? `<p class="kepada">Kepada Yth,</p>
+                 <p class="addressee">Bapak/Ibu/Saudara/i</p>
+                 <div class="guest-label"><span class="gl-no">${esc(D.guestLabelNumber)}</span><span class="gl-hint noprint">Guest name label area · 54 × 14 mm</span></div>
+                 <p class="apology">Mohon maaf apabila ada kesalahan dalam penulisan nama/gelar.</p>`
+              : "";
+            return `
+            <div class="card main front">
+              ${bq("tl", "sm")}${bq("tr", "sm")}${bq("bl", "xs")}${bq("br", "xs")}
+              ${deco("bfly", "left:71mm;top:45mm;width:7mm;rotate:14deg", "bfly")}
+              ${deco("bfly", "left:11mm;top:90mm;width:6.5mm;rotate:-14deg;color:var(--sage)", "bfly")}
+              ${deco("star", "left:13mm;top:77mm;width:3mm;color:var(--honey)")}
+              ${deco("star", "left:78mm;top:80mm;width:2.6mm;color:var(--honey)")}
+              ${deco("heart", "left:79mm;top:96mm;width:3mm;color:#e9a88a")}
+              <div class="content">
+                <p class="label wedof">The wedding of</p>
+                <p class="cname">${esc(D.brideName)}</p>
+                <p class="camp">&amp;</p>
+                <p class="cname" style="margin-top:0">${esc(D.groomName)}</p>
+                <p class="cdate">${esc(D.coverDate)}</p>
+                <div class="sprigs" aria-hidden="true">
+                  <svg style="rotate:-18deg"><use href="#sprig"/></svg>
+                  <svg class="heart"><use href="#heart"/></svg>
+                  <svg style="rotate:18deg;scale:-1 1"><use href="#sprig"/></svg>
+                </div>
+                ${guest}
+              </div>
+              <i class="gd"></i>
+            </div>`;
+          },
+
+          /* ---- MAIN CARD · BACK (wedding announcement) ---- */
+          back() {
+            return `
+            <div class="card main back">
+              ${bq("tl", "xs")}${bq("tr", "xs")}${bq("bl", "xs")}${bq("br", "xs")}
+              <div class="content">
+                <div class="grp">
+                  <p class="bismillah script">Bismillahirrahmanirrahim</p>
+                  <p class="salam">Assalamualaikum Warrahmatullahi Wabarakatuh</p>
+                  <p class="msg">Dengan memohon rahmat dan ridho Allah SWT, kami mengharapkan kehadiran Bapak/Ibu/Saudara/i pada acara pernikahan putra putri kami.</p>
+                </div>
+                <div class="couple">
+                  ${person(D.bride)}
+                  <p class="dengan script">dengan</p>
+                  ${person(D.groom)}
+                </div>
+                <div class="grp">
+                  <p class="sched">Yang InsyaAllah dilaksanakan pada:</p>
+                  <p class="dt" data-fitline data-max="4.4" data-min="3">${esc(D.weddingDate)}</p>
+                  <i class="bar"></i>
+                </div>
+                <div class="grp">
+                  <p class="cl1">Merupakan kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai.</p>
+                  <p class="cl2">Wassalamualaikum Warrahmatullahi Wabarakatuh</p>
+                </div>
+              </div>
+              <i class="gd"></i>
+            </div>`;
+          },
+
+          /* ---- INFORMATION CARD ---- */
+          info() {
+            const names = (D.turutMengundang || []).filter(Boolean);
+            const fam = (title, p) => `
+              <div class="f">
+                <span class="label">${title}</span>
+                <p class="fr">${esc(p.relation)} dari</p>
+                <p class="fn">Bapak ${esc(p.father)}</p>
+                <p class="fn">&amp; Ibu ${esc(p.mother)}</p>
+              </div>`;
+            return `
+            <div class="card info">
+              <div class="in"></div>
+              <svg class="g-lf" style="left:23mm;rotate:-12deg" aria-hidden="true"><use href="#leaf"/></svg>
+              <svg class="g-lf" style="left:61mm;rotate:12deg;scale:-1 1" aria-hidden="true"><use href="#leaf"/></svg>
+              <svg class="g-dz" style="left:31mm;rotate:-10deg" aria-hidden="true"><use href="#dz"/></svg>
+              <svg class="g-dz" style="left:53mm;rotate:12deg" aria-hidden="true"><use href="#dz"/></svg>
+              <svg class="g-sf" aria-hidden="true"><use href="#sf"/></svg>
+              <div class="content">
+                <div class="loc">
+                  <div class="loc-t">
+                    <p class="label lok"><svg aria-hidden="true"><use href="#pin"/></svg>Lokasi</p>
+                    <span class="venue">${esc(D.venueName)}</span>
+                    <p class="addr">${esc(D.venueAddress)}</p>
+                  </div>
+                  <div class="qr"></div>
+                </div>
+                <i class="irule"></i>
+                <div class="when">
+                  <p class="dt" data-fitline data-max="4.2" data-min="3">${esc(D.weddingDate)}</p>
+                  <i class="bar" style="width:36em"></i>
+                  <div class="times">
+                    <div><span class="label">Akad Nikah</span><span class="tm">${esc(D.akadTime)}</span></div>
+                    <div><span class="label">Resepsi</span><span class="tm">${esc(D.receptionTime)}</span></div>
+                  </div>
+                </div>
+                <i class="irule"></i>
+                <div class="fams">
+                  ${fam("Keluarga Mempelai Wanita", D.bride)}
+                  ${fam("Keluarga Mempelai Pria", D.groom)}
+                </div>
+                ${
+                  names.length
+                    ? `<i class="irule"></i>
+                <div class="tmb">
+                  <p class="tm-head">Turut Mengundang Keluarga Besar</p>
+                  <ul class="tm-list">${names.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
+                </div>`
+                    : ""
+                }
+              </div>
+              <i class="gd"></i>
+            </div>`;
+          },
+        };
+
+        function makeCard(type) {
+          const w = document.createElement("div");
+          w.innerHTML = T[type]().trim();
+          return w.firstElementChild;
+        }
+
+        /* ---------- 3. Print sheets ---------- */
+        function addMarks(sheet, x, y, w, h) {
+          const L = 2.5, // tick length
+            O = 1.5, // gap between the card corner and the tick
+            t = 0.18; // line thickness
+          const put = (l, tp, ww, hh) => {
+            const i = document.createElement("i");
+            i.className = "cm";
+            i.style.cssText = `left:${l}mm;top:${tp}mm;width:${ww}mm;height:${hh}mm`;
+            sheet.appendChild(i);
+          };
+          [
+            [x, y, -1, -1],
+            [x + w, y, 1, -1],
+            [x, y + h, -1, 1],
+            [x + w, y + h, 1, 1],
+          ].forEach(([cx, cy, sx, sy]) => {
+            put(sx < 0 ? cx - O - L : cx + O, cy - t / 2, L, t);
+            put(cx - t / 2, sy < 0 ? cy - O - L : cy + O, t, L);
+          });
+        }
+        function buildSheet(host, items, caption, sub) {
+          const fig = document.createElement("figure");
+          fig.className = "page";
+          fig.style.margin = "0";
+          fig.innerHTML = `<p class="cap">${caption} <span>${sub}</span></p>
+            <div class="scaler" style="--w:${A4.w};--h:${A4.h}"><div class="scaled sheet"></div></div>`;
+          const sheet = $(".sheet", fig);
+          items.forEach(({ type, x, y, w, h }) => {
+            const slot = document.createElement("div");
+            slot.className = "slot";
+            slot.style.cssText = `left:${x}mm;top:${y}mm;width:${w}mm;height:${h}mm`;
+            slot.appendChild(makeCard(type));
+            sheet.appendChild(slot);
+            addMarks(sheet, x, y, w, h);
+          });
+          host.appendChild(fig);
+        }
+        function buildSheets() {
+          const host = $("#sheets");
+          const page1 = [];
+          const page2 = [];
+          COLS.forEach((x) => {
+            page1.push({ type: "front", x, y: Y_MAIN, w: MAIN.w, h: MAIN.h });
+            page1.push({ type: "info", x, y: Y_INFO, w: INFO.w, h: INFO.h });
+          });
+          // long-edge duplex: the back of the LEFT front sits on the RIGHT of page 2
+          [COLS[1], COLS[0]].forEach((x) => {
+            page2.push({ type: "back", x, y: Y_MAIN, w: MAIN.w, h: MAIN.h });
+          });
+          buildSheet(
+            host,
+            page1,
+            "Page 1 · Front side",
+            "2 main-card fronts + 2 information cards",
+          );
+          buildSheet(
+            host,
+            page2,
+            "Page 2 · Back side",
+            "2 main-card backs · flip on the long edge",
+          );
+        }
+
+        /* ---------- 4. Fit, notes, QR ---------- */
+        function fitLine(el) {
+          const max = parseFloat(el.dataset.max),
+            min = parseFloat(el.dataset.min || 3);
+          let s = max;
+          el.style.fontSize = s + "em";
+          while (el.scrollWidth > el.clientWidth + 1 && s > min) {
+            s -= 0.1;
+            el.style.fontSize = s + "em";
+          }
+        }
+        /* If a long name ever makes a card overflow, shrink all its text a little (never below 78 %). */
+        function fitCard(card) {
+          const c = $(".content", card);
+          if (!c) return;
+          let k = 1;
+          c.style.setProperty("--k", "1");
+          while (c.scrollHeight > c.clientHeight + 0.5 && k > 0.78) {
+            k -= 0.02;
+            c.style.setProperty("--k", k.toFixed(2));
+          }
+        }
+        /* Sticky note: centre it over the junction between the name and the title */
+        function placeNotes() {
+          $$(".nm-wrap").forEach((wrap) => {
+            const note = $(".postit", wrap),
+              nt = $(".nmtxt", wrap),
+              et = $(".etitle", wrap);
+            if (!note || !nt) return;
+            const wrapped = nt.getClientRects().length > 1;
+            const x = et
+              ? wrapped
+                ? et.offsetLeft + et.offsetWidth / 2
+                : (nt.offsetLeft + nt.offsetWidth + et.offsetLeft) / 2
+              : nt.offsetLeft + nt.offsetWidth / 2;
+            note.style.left = x + "px";
+          });
+        }
+        function renderQR(box) {
+          const url = (D.locationQRCode || "").trim();
+          const placeholder = () => {
+            box.innerHTML =
+              '<div class="qr-ph">Insert<br>location<br>QR code<br>here</div>';
+          };
+          if (!url || url === "YOUR_QR_CODE_IMAGE_URL") {
+            placeholder();
+            return;
+          }
+          const img = new Image();
+          img.alt = "Location QR code";
+          img.onerror = placeholder;
+          img.src = url;
+          box.innerHTML = "";
+          box.appendChild(img);
+        }
+        function fitAll() {
+          $$("[data-fitline]").forEach(fitLine);
+          $$(".card.back, .card.info").forEach(fitCard);
+          placeNotes();
+        }
+
+        /* ---------- 5. Screen preview scaling ---------- */
+        function layout() {
+          const stage = $("#stage");
+          const avail = Math.max(240, stage.clientWidth - 32);
+          const gap = 26;
+          // single cards
+          const cardPx = MAIN.w * MM;
+          const n = avail >= 1000 ? 3 : avail >= 660 ? 2 : 1;
+          const cs = Math.min(1.45, (avail - (n - 1) * gap) / (n * cardPx));
+          $("#cardsBox").style.setProperty("--s", cs.toFixed(4));
+          // A4 sheets: side by side on wide screens
+          const sheetPx = A4.w * MM;
+          const ss =
+            avail >= 1000
+              ? Math.min(1, (avail - gap) / 2 / sheetPx)
+              : Math.min(1, avail / sheetPx);
+          $("#sheetsBox").style.setProperty("--s", ss.toFixed(4));
+        }
+
+        function setupUI() {
+          $("#facts").innerHTML =
+            `<b>Main card</b> ${MAIN.w} × ${MAIN.h} mm · <b>Info card</b> ${INFO.w} × ${INFO.h} mm · ` +
+            `<b>A4 margins</b> ${LEFT} mm sides, ${TOP} mm top, ${BOTTOM} mm bottom · ` +
+            `<b>gaps</b> ${GAP_X} mm / ${GAP_Y} mm`;
+          $("#guidesChk").addEventListener("change", (e) =>
+            document.body.classList.toggle("guides", e.target.checked),
+          );
+          $("#printBtn").addEventListener("click", () => {
+            fitAll();
+            window.print();
+          });
+          window.addEventListener("resize", layout);
+          window.addEventListener("beforeprint", fitAll);
+        }
+
+        /* ---------- boot ---------- */
+        function init() {
+          buildSymbols();
+          $$("[data-card]").forEach((slot) =>
+            slot.appendChild(makeCard(slot.dataset.card)),
+          );
+          buildSheets();
+          $$(".qr").forEach(renderQR);
+          setupUI();
+          layout();
+          fitAll();
+          if (document.fonts && document.fonts.ready)
+            document.fonts.ready.then(fitAll); // re-fit once the web fonts have loaded
+        }
+        if (document.readyState === "loading")
+          document.addEventListener("DOMContentLoaded", init);
+        else init();
+      })();
+    </script>
+  </body>
+</html>
