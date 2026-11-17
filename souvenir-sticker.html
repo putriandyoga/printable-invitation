@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Souvenir Sticker — Putri &amp; Yoga (50 × 30 mm)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --f-display: "Playfair Display", Georgia, serif;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #e9e4d9;
+        color: var(--brown);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .app {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 16px 16px 40px;
+      }
+      .ui-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 14px;
+        padding: 12px 18px;
+      }
+      .ui-card p {
+        margin: 0;
+        font-size: 0.92rem;
+        max-width: 62ch;
+      }
+      .btn {
+        min-height: 46px;
+        padding: 0.6em 1.6em;
+        font: 700 0.95rem var(--f-ui);
+        background: var(--olive);
+        color: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #788b58;
+      }
+      .btn:focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+      }
+      .section {
+        margin-top: 20px;
+      }
+      .label {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 6px;
+        font: 700 0.8rem var(--f-ui);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin: 0 0 8px;
+      }
+      .label span {
+        font-weight: 400;
+        letter-spacing: 0;
+        text-transform: none;
+        opacity: 0.75;
+      }
+      .stage {
+        background: #d6d1c4;
+        border-radius: 14px;
+        padding: 22px;
+        display: flex;
+        justify-content: center;
+      }
+      #single svg {
+        display: block;
+        width: min(100%, 560px);
+        height: auto;
+        filter: drop-shadow(0 10px 14px rgba(94, 66, 48, 0.35));
+      }
+      #sheet svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      #sheetStage {
+        padding: 14px;
+      }
+      .panel {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .box {
+        background: var(--cream);
+        border: 2px solid var(--sage);
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-size: 0.88rem;
+      }
+      .box h2 {
+        font: 600 1.1rem var(--f-display);
+        margin: 0 0 8px;
+      }
+      .box ol {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .cfg {
+        display: grid;
+        grid-template-columns: 1fr 80px;
+        gap: 6px 10px;
+        align-items: center;
+      }
+      .cfg input {
+        width: 100%;
+        padding: 4px 6px;
+        border: 1px solid var(--sage);
+        border-radius: 6px;
+        font: 0.88rem var(--f-ui);
+        background: #fff;
+      }
+      .sticker-thank-you {
+        font-family: var(--f-script);
+        font-weight: 700;
+        color: var(--olive);
+        fill: var(--olive);
+        letter-spacing: 0;
+        white-space: nowrap;
+      }
+      #warn {
+        color: #a3402a;
+        font-weight: 700;
+        margin-top: 8px;
+        display: none;
+      }
+
+      /* ---------- Print: exactly one A4 landscape sheet ---------- */
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      @media print {
+        html,
+        body {
+          width: 297mm;
+          height: 209.6mm;
+          margin: 0;
+          padding: 0;
+          background: #fff !important;
+          overflow: hidden;
+        }
+        .app {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+        }
+        .ui-card,
+        .panel,
+        #singleSection,
+        .label {
+          display: none !important;
+        }
+        .section,
+        .stage {
+          margin: 0;
+          padding: 0;
+          background: #fff;
+          border-radius: 0;
+          display: block;
+        }
+        #sheet {
+          width: 297mm;
+          height: 209.6mm;
+          overflow: hidden;
+          break-after: avoid;
+          page-break-after: avoid;
+        }
+        #sheet svg {
+          width: 297mm;
+          height: 209.6mm;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="ui-card">
+        <p>
+          <strong>Souvenir sticker, 50 × 30 mm, 30 per A4 sheet.</strong> In the
+          print dialog choose A4, Landscape, margins None, scale 100%, and turn
+          on Background graphics. Print on A4 sticker paper (matte or
+          semi-gloss), then cut along the crop marks.
+        </p>
+        <button class="btn" type="button" onclick="window.print()">
+          Print / Save as PDF
+        </button>
+      </header>
+
+      <section class="section" id="singleSection">
+        <p class="label">Single sticker <span id="sizeNote"></span></p>
+        <div class="stage" id="single"></div>
+      </section>
+
+      <section class="section">
+        <p class="label">
+          A4 landscape print sheet <span id="sheetNote"></span>
+        </p>
+        <div class="stage" id="sheetStage">
+          <div id="sheet" style="width: 100%"></div>
+        </div>
+      </section>
+
+      <div class="panel">
+        <div class="box">
+          <h2>Printing instructions</h2>
+          <ol>
+            <li>Press <b>Print / Save as PDF</b>.</li>
+            <li>
+              Paper <b>A4</b>, orientation <b>Landscape</b>, scale
+              <b>100%</b> (not “fit to page”), margins <b>None</b>,
+              <b>Background graphics</b> on.
+            </li>
+            <li>
+              Print one test page on plain paper first and hold it against a
+              ruler: each sticker should measure 50 × 30 mm.
+            </li>
+            <li>
+              Cut along the thin crop marks; the grey outline shows each
+              sticker’s edge.
+            </li>
+          </ol>
+        </div>
+        <div class="box">
+          <h2>Adjust layout (mm)</h2>
+          <div class="cfg" id="cfg"></div>
+          <div id="warn">These settings do not fit on the A4 sheet.</div>
+          <p style="margin: 10px 0 0; opacity: 0.75">
+            Typography, border and floral options are in the
+            <code>CFG</code> object in the script.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs id="defs"></defs>
+    </svg>
+
+    <script>
+      /* =====================  CONFIGURATION (all mm)  ===================== */
+      const CFG = {
+        w: 50,
+        h: 30,
+        cornerR: 2, // sticker size and corner radius
+        borderOuter: 0.25,
+        borderInner: 0.18, // sage line / dotted gold line thickness
+        bouquet: 13, // size reference for the bottom-left sunflowers
+        floral: 1, // scale of the small right-hand accents
+        tlSunflower: 13, // top-left sunflower size (mm)
+        tlOffset: 2, // its distance from the top and left edges
+        thankYou: "A little thank you", // intro phrase, set in Dancing Script 700
+        size: { top: 3.4, names: 3.6, amp: 4.2, date: 2.1 }, // typography sizes (top = thank-you phrase)
+        sheetW: 297,
+        sheetH: 210, // A4 landscape
+        cols: 5,
+        rows: 6,
+        gapX: 3,
+        gapY: 2, // sheet grid and cutting gaps
+      };
+      /* =================================================================== */
+
+      function sunflower() {
+        var s = '<symbol id="sf" viewBox="-50 -50 100 100"><g fill="#D9A441">',
+          i;
+        for (i = 0; i < 14; i++)
+          s +=
+            '<ellipse cx="0" cy="-33" rx="8.2" ry="17" transform="rotate(' +
+            (i * 360) / 14 +
+            ')"/>';
+        s += '</g><g fill="#F6C945">';
+        for (i = 0; i < 14; i++)
+          s +=
+            '<ellipse cx="0" cy="-31" rx="7.6" ry="15.5" transform="rotate(' +
+            ((i + 0.5) * 360) / 14 +
+            ')"/>';
+        s += "</g>";
+        for (i = 0; i < 14; i++)
+          s +=
+            '<path d="M0 -20V-42" stroke="#D9A441" stroke-width=".9" opacity=".55" stroke-linecap="round" fill="none" transform="rotate(' +
+            ((i + 0.5) * 360) / 14 +
+            ')"/>';
+        s += '<circle r="18" fill="#76543A"/><circle r="14.5" fill="#5E4230"/>';
+        [
+          [5, "1.3 3.8"],
+          [9, "1.7 4.0"],
+          [12.5, "2 4.4"],
+        ].forEach(function (a) {
+          s +=
+            '<circle r="' +
+            a[0] +
+            '" fill="none" stroke="#D9A441" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="' +
+            a[1] +
+            '" opacity=".9"/>';
+        });
+        return s + "</symbol>";
+      }
+      function daisy() {
+        var s = '<symbol id="dz" viewBox="-50 -50 100 100">',
+          i;
+        for (i = 0; i < 10; i++)
+          s +=
+            '<ellipse cx="0" cy="-30" rx="7.2" ry="17" fill="#FFFDF5" stroke="#E0CE9A" stroke-width="1.2" transform="rotate(' +
+            i * 36 +
+            ')"/>';
+        return (
+          s +
+          '<circle r="12" fill="#F6C945" stroke="#D9A441" stroke-width="1.5"/><circle r="5" fill="#D9A441"/></symbol>'
+        );
+      }
+      const SYMS =
+        sunflower() +
+        daisy() +
+        '<symbol id="leaf" viewBox="0 0 40 28"><path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A"/><path d="M2 14H36" stroke="#68794D" stroke-width="1.3" stroke-linecap="round" opacity=".6"/></symbol>' +
+        '<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z" fill="currentColor"/></symbol>' +
+        '<symbol id="bfly" viewBox="0 0 60 40"><path d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z" fill="currentColor"/><path d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z" fill="currentColor"/><circle cx="14" cy="13" r="3" fill="#FFF8E7" opacity=".85"/><circle cx="46" cy="13" r="3" fill="#FFF8E7" opacity=".85"/><path d="M30 12v18" stroke="#76543A" stroke-width="2.4" stroke-linecap="round"/><path d="M30 12q-4-7-8-8M30 12q4-7 8-8" fill="none" stroke="#76543A" stroke-width="1.2" stroke-linecap="round"/></symbol>' +
+        '<pattern id="dots" width="2" height="2" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".17" fill="rgba(118,84,58,.09)"/></pattern>';
+
+      const f = (n) => Math.round(n * 100) / 100;
+
+      /* garden: one large sunflower top-left; two smaller sunflowers + daisy + leaves bottom-left */
+      function garden(W, H, S) {
+        const lf = (x, y, w, r) => U("leaf", x, y, w, (w * 28) / 40, r);
+        const sA = f(S * 0.5),
+          sB = f(S * 0.38),
+          dz = f(S * 0.2);
+        return (
+          lf(12.8, H - 5.2, 4.2, -18) +
+          lf(3.2, H - 12.4, 3.8, -65) +
+          `<use href="#sf" x="${CFG.tlOffset}" y="${CFG.tlOffset}" width="${CFG.tlSunflower}" height="${CFG.tlSunflower}"/>` +
+          U("sf", 2.6, H - 2.6 - sA, sA, sA, 0) +
+          U("sf", 2.6 + sA - 0.9, H - 2.4 - sB, sB, sB, 0) +
+          U("dz", 9.4, H - 2.4 - sB - 2.2, dz, dz, 0)
+        );
+      }
+      const U = (sym, x, y, w, h, rot, col) =>
+        `<use href="#${sym}" x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}" ${col ? `style="color:${col}"` : ""} transform="rotate(${rot} ${f(x + w / 2)} ${f(y + h / 2)})"/>`;
+
+      /* one complete sticker, local coordinates (0,0 = top-left) */
+      function sticker() {
+        const W = CFG.w,
+          H = CFG.h,
+          z = CFG.size,
+          S = CFG.bouquet,
+          k = CFG.floral,
+          mid = H / 2;
+        const left = 2.8 + S + 1.2,
+          right = W - 3,
+          cx = f((left + right) / 2);
+        const accents =
+          U("dz", W - 6.6, 3.2, 3.2 * k, 3.2 * k, 0) +
+          U("leaf", W - 10, 5.4, 4.6 * k, 3.2 * k, 150) +
+          U("dz", W - 6.6, H - 6.4, 3.2 * k, 3.2 * k, 0) +
+          U("leaf", W - 10, H - 8.6, 4.6 * k, 3.2 * k, -150) +
+          U("bfly", cx - 3, 3, 5.6 * k, (5.6 * k * 2) / 3, 12, "#D9A441");
+        const text = `
+    <text class="sticker-thank-you" x="${cx}" y="${f(mid - 4)}" text-anchor="middle" font-size="${z.top}" fill="#68794D">${CFG.thankYou}</text>
+    <text x="${cx}" y="${f(mid + 2.2)}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-weight="500" font-size="${z.names}" letter-spacing=".2" fill="#76543A">PUTRI <tspan font-family="Dancing Script,cursive" font-weight="700" font-size="${z.amp}" letter-spacing="0" fill="#D9A441">&amp;</tspan> YOGA</text>
+    <path d="M${f(cx - 7)} ${f(mid + 5.6)}H${f(cx - 1.8)}M${f(cx + 1.8)} ${f(mid + 5.6)}H${f(cx + 7)}" stroke="#D9A441" stroke-width=".2" fill="none"/>
+    ${U("heart", cx - 0.9, mid + 4.7, 1.8, 1.8, 0, "#E9A88A")}
+    <text x="${cx + 0.2}" y="${f(mid + 9.6)}" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="700" font-size="${z.date}" letter-spacing=".35" fill="#76543A">17 JANUARY 2027</text>`;
+        return `<g clip-path="url(#clip)">
+    <rect width="${W}" height="${H}" fill="#FFF8E7"/><rect width="${W}" height="${H}" fill="url(#dots)"/>
+    <rect x="1.2" y="1.2" width="${f(W - 2.4)}" height="${f(H - 2.4)}" rx="1.4" fill="none" stroke="#A8B58A" stroke-width="${CFG.borderOuter}"/>
+    <rect x="1.9" y="1.9" width="${f(W - 3.8)}" height="${f(H - 3.8)}" rx=".9" fill="none" stroke="rgba(217,164,65,.8)" stroke-width="${CFG.borderInner}" stroke-dasharray=".7 .5"/>
+    ${garden(W, H, S)}${accents}${text}
+  </g>
+  <rect width="${W}" height="${H}" rx="${CFG.cornerR}" fill="none" stroke="#9a9a9a" stroke-width=".1"/>`;
+      }
+
+      function render() {
+        const { w: W, h: H, cols, rows, gapX, gapY, sheetW, sheetH } = CFG;
+        document.getElementById("defs").innerHTML =
+          SYMS +
+          `<clipPath id="clip"><rect width="${W}" height="${H}" rx="${CFG.cornerR}"/></clipPath>`;
+        document.getElementById("sizeNote").textContent =
+          `${W} × ${H} mm · ratio ${f((W / H) * 3)}:3`;
+        document.getElementById("single").innerHTML =
+          `<svg viewBox="-2 -2 ${W + 4} ${H + 4}" xmlns="http://www.w3.org/2000/svg">${sticker()}</svg>`;
+        const gw = cols * W + (cols - 1) * gapX,
+          gh = rows * H + (rows - 1) * gapY,
+          mx = (sheetW - gw) / 2,
+          my = (sheetH - gh) / 2;
+        document.getElementById("warn").style.display =
+          mx < 5 || my < 5 ? "block" : "none";
+        document.getElementById("sheetNote").textContent =
+          `${cols * rows} stickers · margins ${f(mx)} × ${f(my)} mm`;
+        const one = sticker();
+        let s = "",
+          m = "";
+        for (let r = 0; r < rows; r++)
+          for (let c = 0; c < cols; c++)
+            s += `<g transform="translate(${f(mx + c * (W + gapX))} ${f(my + r * (H + gapY))})">${one}</g>`;
+        for (let c = 0; c < cols; c++)
+          [mx + c * (W + gapX), mx + c * (W + gapX) + W].forEach((x) => {
+            m += `M${f(x)} ${f(my - 1)}v-3M${f(x)} ${f(my + gh + 1)}v3`;
+          });
+        for (let r = 0; r < rows; r++)
+          [my + r * (H + gapY), my + r * (H + gapY) + H].forEach((y) => {
+            m += `M${f(mx - 1)} ${f(y)}h-3.5M${f(mx + gw + 1)} ${f(y)}h3.5`;
+          });
+        document.getElementById("sheet").innerHTML =
+          `<svg viewBox="0 0 ${sheetW} ${sheetH}" xmlns="http://www.w3.org/2000/svg"><rect width="${sheetW}" height="${sheetH}" fill="#fff"/>${s}<path d="${m}" stroke="#555" stroke-width=".15" fill="none"/></svg>`;
+      }
+
+      /* live layout controls */
+      [
+        ["w", "Sticker width", 0.5],
+        ["h", "Sticker height", 0.5],
+        ["cornerR", "Corner radius", 0.5],
+        ["bouquet", "Sunflower size", 0.5],
+        ["cols", "Columns", 1],
+        ["rows", "Rows", 1],
+        ["gapX", "Horizontal gap", 0.5],
+        ["gapY", "Vertical gap", 0.5],
+      ].forEach(([k, l, st]) => {
+        document
+          .getElementById("cfg")
+          .insertAdjacentHTML(
+            "beforeend",
+            `<label for="c_${k}">${l}</label><input id="c_${k}" type="number" min="0" step="${st}" value="${CFG[k]}">`,
+          );
+        document.getElementById("c_" + k).addEventListener("input", (e) => {
+          const v = parseFloat(e.target.value);
+          if (v >= 0 && ((k !== "cols" && k !== "rows") || v >= 1)) {
+            CFG[k] = v;
+            render();
+          }
+        });
+      });
+
+      render();
+    </script>
+  </body>
+</html>
