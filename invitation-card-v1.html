@@ -48,6 +48,10 @@
         --f-script: "Dancing Script", "Brush Script MT", cursive;
         --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
         --s: 1; /* screen preview scale, set by JavaScript */
+        --sw: 297mm;
+      }
+      .paper-a5 {
+        --sw: 148.5mm;
       }
       *,
       *::before,
@@ -280,7 +284,7 @@
       /* ---------- 3. Sheet & panels ---------- */
       /* .scaler holds the SCALED size on screen; .sheet is always the real 297 x 210 mm. */
       .scaler {
-        width: calc(297mm * var(--s));
+        width: calc(var(--sw) * var(--s));
         height: calc(210mm * var(--s));
         position: relative;
         background: #fff;
@@ -292,13 +296,13 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: 297mm;
+        width: var(--sw);
         height: 210mm;
         overflow: hidden;
         transform-origin: 0 0;
         transform: scale(var(--s));
         display: grid;
-        grid-template-columns: 148.5mm 148.5mm;
+        grid-template-columns: repeat(auto-fit, 148.5mm);
         background-color: var(--cream);
         background-size: 2mm 2mm;
         /* delete this to remove dotted background */
@@ -375,7 +379,10 @@
       .sheet.guides .gd {
         display: block;
       }
-
+      .paper-a5 .sheet > .panel + .panel,
+      .paper-a5 .cut {
+        display: none;
+      }
       /* ---------- 4. Decor: bouquets, butterflies, dividers ---------- */
       .ic {
         display: block;
@@ -1610,7 +1617,7 @@
           margin: 0;
           padding: 0;
           background: #fff !important;
-          width: 297mm;
+          width: var(--sw);
         }
         .ui,
         .side .cap,
@@ -1623,18 +1630,18 @@
           margin: 0;
           padding: 0;
           overflow: visible !important;
-          width: 297mm;
+          width: var(--sw);
         }
         .sides {
           display: block !important;
-          width: 297mm !important;
+          width: var(--sw) !important;
           gap: 0;
         }
         .side {
           display: block !important;
         } /* both sides always print, whatever the preview shows */
         .scaler {
-          width: 297mm !important;
+          width: var(--sw) !important;
           height: 210mm !important;
           box-shadow: none !important;
           background: none;
@@ -1770,6 +1777,7 @@
         <div class="ui-row">
           <div
             class="tabs"
+            id="viewTabs"
             role="group"
             aria-label="Choose which side to preview"
           >
@@ -1781,6 +1789,19 @@
             </button>
             <button type="button" data-view="both" aria-pressed="false">
               Both sides
+            </button>
+          </div>
+          <div
+            class="tabs"
+            id="paperTabs"
+            role="group"
+            aria-label="Ukuran kertas"
+          >
+            <button type="button" data-paper="a4" aria-pressed="true">
+              A4 (2 kartu)
+            </button>
+            <button type="button" data-paper="a5" aria-pressed="false">
+              A5 (1 kartu)
             </button>
           </div>
           <div class="opts">
@@ -1814,6 +1835,12 @@
               Cut the sheet along the dashed line at the centre. You get two
               flat A5 invitations (no folding); the guest-label side is the
               front.
+            </li>
+            <li>
+              Pilih <b>A5</b> untuk cetak 1 kartu per halaman, atau
+              <b>Save as PDF</b> untuk dibagikan (2 halaman: depan &amp;
+              belakang). Pastikan ukuran kertas di dialog print sama dengan
+              pilihan di atas.
             </li>
           </ol>
           <p class="tip">
@@ -2127,7 +2154,7 @@
         },
 
         // Bride's parents
-        brideFather: "Samsi (Anci)",
+        brideFather: "Samsi (Anci Bengkel)",
         brideMother: "Rusinah",
 
         // Groom's parents
@@ -2177,7 +2204,8 @@
         const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
         const SVGNS = "http://www.w3.org/2000/svg";
         const MM = 96 / 25.4; // CSS pixels per millimetre
-        const SHEET_W = 297 * MM; // A4 landscape width in px
+        const SHEET_A4 = 297 * MM;
+        const SHEET_A5 = 148.5 * MM;
 
         /* ---------- 1. Draw the flower art ---------- */
         function mk(tag, attrs, parent) {
@@ -2692,14 +2720,15 @@
         }
 
         /* ---------- 3. Screen preview: views, scaling, options ---------- */
-        const state = { view: "out", full: false };
+        const state = { view: "out", full: false, paper: "a4" };
         function applyView() {
           $$(".side").forEach((s) => {
             s.hidden = !(
               state.view === "both" || s.dataset.side === state.view
             );
           });
-          $$(".tabs button").forEach((b) =>
+
+          $$("#viewTabs button").forEach((b) =>
             b.setAttribute(
               "aria-pressed",
               String(b.dataset.view === state.view),
@@ -2710,6 +2739,7 @@
         function layout() {
           const stage = $("#stage");
           stage.classList.toggle("full", state.full);
+          const SHEET_W = state.paper === "a5" ? SHEET_A5 : SHEET_A4;
           const pad = 32,
             gap = 26;
           const avail = Math.max(
@@ -2723,11 +2753,42 @@
           else s = Math.min(1, avail / SHEET_W);
           stage.style.setProperty("--s", s.toFixed(4));
         }
+        /* Ukuran kertas: atur class body + aturan @page supaya print/PDF mengikuti */
+        function applyPaper() {
+          document.documentElement.classList.toggle(
+            "paper-a5",
+            state.paper === "a5",
+          );
+          let st = $("#pageStyle");
+          if (!st) {
+            st = document.createElement("style");
+            st.id = "pageStyle";
+            document.head.appendChild(st);
+          }
+          st.textContent =
+            state.paper === "a5"
+              ? "@page { size: A5 portrait; margin: 0; }"
+              : "@page { size: A4 landscape; margin: 0; }";
+          $$("#paperTabs button").forEach((b) =>
+            b.setAttribute(
+              "aria-pressed",
+              String(b.dataset.paper === state.paper),
+            ),
+          );
+          layout();
+        }
         function setupUI() {
-          $$(".tabs button").forEach((b) =>
+          $$("#viewTabs button").forEach((b) =>
             b.addEventListener("click", () => {
               state.view = b.dataset.view;
               applyView();
+            }),
+          );
+          $$("#paperTabs button").forEach((b) =>
+            b.addEventListener("click", () => {
+              state.paper = b.dataset.paper;
+              applyPaper();
+              fitText();
             }),
           );
           $("#zoomBtn").addEventListener("click", (e) => {
@@ -2800,6 +2861,7 @@
           renderQR();
           renderFamilies();
           setupUI();
+          applyPaper();
           applyView();
           fitText();
           if (document.fonts && document.fonts.ready)
