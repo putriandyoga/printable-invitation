@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kartu Peta Lokasi — 10 kartu per A4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sun: #f6c945;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --cream: #fff8e7;
+        --paper: #fffdf5;
+        /* WARNA KERTAS KARTU: putih (default). Warna asal: --card-paper:#fffdf5; --card-dots:radial-gradient(rgba(118,84,58,.07) .25mm,transparent .3mm); --map-paper:#fbf7ee; */
+        --card-paper: #ffffff;
+        --card-dots: none;
+        --map-paper: #ffffff;
+        --ink: #5e4230;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-display: "Playfair Display", Georgia, serif;
+        --f-ui: "DM Sans", system-ui, sans-serif;
+        --s: 1;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #eee8dc;
+        color: var(--ink);
+        font-family: var(--f-ui);
+        -webkit-font-smoothing: antialiased;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      h1,
+      p {
+        margin: 0;
+      }
+      .ui {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px 16px 8px;
+      }
+      .ui-card {
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 16px;
+        box-shadow: 4px 6px 0 var(--sage);
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .ui h1 {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: clamp(1.4rem, 4.6vw, 2rem);
+        color: var(--brown);
+        line-height: 1.15;
+      }
+      .ui .sub {
+        margin-top: 4px;
+        font-size: 0.9rem;
+        color: var(--olive);
+      }
+      .btn {
+        min-height: 48px;
+        padding: 0.7em 1.7em;
+        font: 700 1rem var(--f-ui);
+        letter-spacing: 0.12em;
+        background: var(--olive);
+        color: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        box-shadow: 2px 3px 0 var(--brown);
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #788b58;
+      }
+      .paper {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--brown);
+      }
+      .tabs {
+        display: inline-flex;
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      .tabs button {
+        border: 0;
+        background: none;
+        min-height: 40px;
+        padding: 0.4em 1.1em;
+        font: 700 0.88rem var(--f-ui);
+        color: var(--brown);
+        cursor: pointer;
+      }
+      .tabs button + button {
+        border-left: 2px solid var(--brown);
+      }
+      .tabs button[aria-pressed="true"] {
+        background: var(--sage);
+        color: var(--ink);
+      }
+      .paper label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .paper input[type="color"] {
+        width: 40px;
+        height: 34px;
+        padding: 0;
+        border: 2px solid var(--brown);
+        border-radius: 8px;
+        background: none;
+        cursor: pointer;
+      }
+      #stage {
+        padding: 18px 16px 56px;
+        display: flex;
+        justify-content: center;
+      }
+      .scaler {
+        width: calc(210mm * var(--s));
+        height: calc(297mm * var(--s));
+        position: relative;
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      .sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm;
+        height: 297mm;
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+      }
+      .grid {
+        position: absolute;
+        left: 7mm;
+        top: 11mm;
+        display: grid;
+        grid-template-columns: repeat(2, 98mm);
+        grid-auto-rows: 55mm;
+      }
+      .marks {
+        position: absolute;
+        inset: 0;
+        width: 210mm;
+        height: 297mm;
+        pointer-events: none;
+      }
+
+      /* ---- one card: same "postcard" look as the invitation's location card ---- */
+      .card {
+        width: 98mm;
+        height: 55mm;
+        padding: 1.8mm;
+        background: repeating-linear-gradient(
+          -45deg,
+          var(--peach) 0 3mm,
+          var(--cream) 3mm 6mm,
+          var(--sage) 6mm 9mm,
+          var(--cream) 9mm 12mm
+        );
+      }
+      .pc-in {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--card-paper);
+        background-image: var(--card-dots);
+        background-size: 2mm 2mm;
+        overflow: hidden;
+      }
+      .hd {
+        flex: none;
+        padding: 2.2mm 3mm 0;
+        display: flex;
+        justify-content: center;
+      }
+      .row1 {
+        display: flex;
+        align-items: center;
+        gap: 1.4mm;
+        white-space: nowrap;
+      }
+      .row1 .pin {
+        width: 3.8mm;
+        height: 3.8mm;
+        flex: none;
+      }
+      .addr {
+        font: 700 4.3mm/1 var(--f-serif);
+        letter-spacing: 0.15mm;
+        color: var(--brown);
+      }
+      .mapbox {
+        flex: 1;
+        min-height: 0;
+        margin: 1.5mm 1.7mm 1.7mm;
+        background: var(--map-paper);
+        border: 0.25mm solid var(--sage);
+        border-radius: 1.2mm;
+        overflow: hidden;
+      }
+      .mapbox svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      @media print {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #fff !important;
+        }
+        .ui {
+          display: none !important;
+        }
+        #stage {
+          padding: 0;
+          display: block;
+        }
+        .scaler {
+          width: 210mm !important;
+          height: 297mm !important;
+          box-shadow: none !important;
+        }
+        .sheet {
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- shared art -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <symbol id="leaf" viewBox="0 0 40 28">
+          <path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A" />
+          <path
+            d="M2 14H36"
+            stroke="#68794D"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            opacity=".6"
+          />
+        </symbol>
+        <symbol id="pin" viewBox="0 0 24 24">
+          <path
+            d="M12 2C7.6 2 4 5.5 4 9.9 4 15.8 12 22 12 22s8-6.2 8-12.1C20 5.5 16.4 2 12 2z"
+            fill="#E9A88A"
+            stroke="#76543A"
+            stroke-width="1.2"
+            stroke-linejoin="round"
+          />
+          <circle
+            cx="12"
+            cy="10"
+            r="3.3"
+            fill="#FFF8E7"
+            stroke="#76543A"
+            stroke-width="1"
+          />
+        </symbol>
+        <path id="ar" d="M-8,0H8 M2,-5L8,0L2,5" />
+        <!-- Lucide-style icons, 24x24 grid -->
+        <g id="i-mosque">
+          <path d="M2 21h20" />
+          <path d="M7 21v-5a5 5 0 0 1 10 0v5" />
+          <path d="M12 11V8" />
+          <path d="M2 21V11l1.5-3L5 11v10" />
+          <path d="M19 21V11l1.5-3L22 11v10" />
+        </g>
+        <g id="i-package">
+          <path
+            d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"
+          />
+          <path d="M12 22V12" />
+          <polyline points="3.29 7 12 12 20.71 7" />
+          <path d="m7.5 4.27 9 5.15" />
+        </g>
+        <g id="i-landmark">
+          <line x1="3" x2="21" y1="22" y2="22" />
+          <line x1="6" x2="6" y1="18" y2="11" />
+          <line x1="10" x2="10" y1="18" y2="11" />
+          <line x1="14" x2="14" y1="18" y2="11" />
+          <line x1="18" x2="18" y1="18" y2="11" />
+          <polygon points="12 2 20 7 4 7" />
+        </g>
+        <g id="i-mail">
+          <rect width="20" height="16" x="2" y="4" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </g>
+        <g id="i-house">
+          <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+          <path
+            d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+          />
+        </g>
+      </defs>
+    </svg>
+
+    <header class="ui">
+      <div class="ui-card">
+        <div>
+          <h1>Kartu Peta Lokasi</h1>
+          <p class="sub">
+            10 kartu per A4 (98 × 55 mm) · cetak A4 Portrait, margin None, skala
+            100%, centang Background graphics · potong mengikuti tanda di tepi
+            kertas
+          </p>
+          <div class="paper">
+            <span>Warna kertas:</span>
+            <div
+              class="tabs"
+              id="paperTabs"
+              role="group"
+              aria-label="Warna kertas"
+            >
+              <button type="button" data-paper="putih" aria-pressed="true">
+                Putih (hemat tinta)
+              </button>
+              <button type="button" data-paper="asal" aria-pressed="false">
+                Warna asal
+              </button>
+            </div>
+            <label
+              >atau pilih sendiri
+              <input
+                type="color"
+                id="paperColor"
+                value="#ffffff"
+                aria-label="Pilih warna kertas"
+            /></label>
+          </div>
+        </div>
+        <button class="btn" id="printBtn" type="button">CETAK</button>
+      </div>
+    </header>
+
+    <main id="stage">
+      <div class="scaler">
+        <div class="sheet" id="sheet">
+          <svg
+            class="marks"
+            id="marks"
+            viewBox="0 0 210 297"
+            aria-hidden="true"
+          ></svg>
+          <div class="grid" id="grid"></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="tpl">
+      <div class="card">
+        <div class="pc-in">
+          <div class="hd">
+            <div class="row1">
+              <svg class="pin" aria-hidden="true"><use href="#pin" /></svg
+              ><span class="addr">Jl. A. Yani KM.14.400, Gang 99</span>
+            </div>
+          </div>
+          <div class="mapbox">
+            <svg
+              viewBox="100 130 1340 615"
+              xmlns="http://www.w3.org/2000/svg"
+              font-family="'DM Sans',system-ui,sans-serif"
+              fill="none"
+              stroke-linecap="butt"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M524,-20 L1178,830"
+                stroke="#bdb398"
+                stroke-width="117.6"
+              />
+              <g stroke="#d6cfbc" stroke-width="13">
+                <path d="M800,415 L545,628 L300,798" />
+                <path d="M858,466 L585,672" />
+                <path d="M930,425 L1175,235" />
+              </g>
+              <path
+                d="M524,-20 L1178,830"
+                stroke="#ece6d5"
+                stroke-width="114"
+              />
+              <path
+                d="M524,-20 L1178,830"
+                stroke="#c9c0a6"
+                stroke-width="1.6"
+              />
+              <g stroke="#f6f2e7" stroke-width="11">
+                <path d="M806,410 L545,628 L300,798" />
+                <path d="M864,461 L585,672" />
+                <path d="M936,421 L1175,235" />
+              </g>
+              <g stroke-linecap="round">
+                <path
+                  d="M1120,800 L848,447 Q815,403 800,415 L545,628"
+                  stroke="#a8b58a"
+                  stroke-width="15"
+                  opacity=".38"
+                />
+                <path
+                  d="M575,0 L846,352 Q856,368 800,415 L545,628"
+                  stroke="#a8b58a"
+                  stroke-width="15"
+                  opacity=".38"
+                />
+                <path
+                  d="M1120,800 L848,447 Q815,403 800,415 L545,628"
+                  stroke="#68794d"
+                  stroke-width="6"
+                />
+                <path
+                  d="M575,0 L846,352 Q856,368 800,415 L545,628"
+                  stroke="#68794d"
+                  stroke-width="6"
+                />
+              </g>
+              <g
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <g stroke="#fffdf6">
+                  <use
+                    href="#ar"
+                    transform="translate(702,165) rotate(52.3) scale(1.5)"
+                  />
+                  <use
+                    href="#ar"
+                    transform="translate(779,265) rotate(52.3) scale(1.5)"
+                  />
+                  <use
+                    href="#ar"
+                    transform="translate(912,530) rotate(232.3) scale(1.5)"
+                  />
+                  <use
+                    href="#ar"
+                    transform="translate(981,620) rotate(232.3) scale(1.5)"
+                  />
+                  <use
+                    href="#ar"
+                    transform="translate(1050,710) rotate(232.3) scale(1.5)"
+                  />
+                </g>
+                <g stroke="#8a8068">
+                  <use
+                    href="#ar"
+                    transform="translate(937,470) rotate(52.3) scale(1.5)"
+                  />
+                  <use
+                    href="#ar"
+                    transform="translate(999,550) rotate(52.3) scale(1.5)"
+                  />
+                  <use
+                    href="#ar"
+                    transform="translate(759,335) rotate(232.3) scale(1.5)"
+                  />
+                </g>
+              </g>
+              <g
+                font-size="26"
+                fill="#8a8068"
+                letter-spacing="1.6"
+                text-anchor="middle"
+                font-weight="500"
+              >
+                <text transform="translate(1076,650) rotate(52.3)" dy="9">
+                  BJM → BJB
+                </text>
+                <text transform="translate(670,215) rotate(52.3)" dy="9">
+                  BJM ← BJB
+                </text>
+              </g>
+              <g
+                stroke="#a89f86"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M1385,236 V196 M1375,208 L1385,194 L1395,208" />
+              </g>
+              <text
+                x="1385"
+                y="182"
+                text-anchor="middle"
+                font-size="24"
+                fill="#8a8068"
+                letter-spacing="1"
+              >
+                U
+              </text>
+              <g
+                stroke="#68794d"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <g transform="translate(416,208)">
+                  <circle
+                    r="25"
+                    fill="#fffdf6"
+                    stroke="#cfc8b4"
+                    stroke-width="1.6"
+                  />
+                  <g transform="scale(1.15) translate(-12,-12)">
+                    <use href="#i-mosque" />
+                  </g>
+                </g>
+                <g transform="translate(772,488)">
+                  <circle
+                    r="25"
+                    fill="#fffdf6"
+                    stroke="#cfc8b4"
+                    stroke-width="1.6"
+                  />
+                  <g transform="scale(1.15) translate(-12,-12)">
+                    <use href="#i-package" />
+                  </g>
+                </g>
+                <g transform="translate(1103,240)">
+                  <circle
+                    r="25"
+                    fill="#fffdf6"
+                    stroke="#cfc8b4"
+                    stroke-width="1.6"
+                  />
+                  <g transform="scale(1.15) translate(-12,-12)">
+                    <use href="#i-landmark" />
+                  </g>
+                </g>
+                <g transform="translate(922,607)">
+                  <circle
+                    r="25"
+                    fill="#fffdf6"
+                    stroke="#cfc8b4"
+                    stroke-width="1.6"
+                  />
+                  <g transform="scale(1.15) translate(-12,-12)">
+                    <use href="#i-mail" />
+                  </g>
+                </g>
+              </g>
+              <g
+                font-size="32"
+                fill="#76543a"
+                font-weight="500"
+                letter-spacing=".5"
+                style="stroke: var(--map-paper)"
+                stroke-width="7"
+                stroke-linejoin="round"
+                paint-order="stroke"
+              >
+                <text x="383" y="219" text-anchor="end">Masjid Mujahidin</text>
+                <text x="744" y="542" text-anchor="end">DHL</text>
+                <text x="1103" y="170" text-anchor="middle">
+                  Plaza Pelayanan
+                </text>
+                <text x="1103" y="204" text-anchor="middle">Publik</text>
+                <text x="890" y="619" text-anchor="end">Kantor Pos</text>
+              </g>
+              <path d="M545,664 L548,686" stroke="#68794d" stroke-width="2" />
+              <circle
+                cx="545"
+                cy="628"
+                r="34"
+                stroke="#68794d"
+                stroke-width="1.6"
+                opacity=".5"
+              />
+              <circle cx="545" cy="628" r="28" fill="#68794d" />
+              <g
+                transform="translate(545,628) scale(1.05) translate(-12,-12)"
+                stroke="#fffdf6"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <use href="#i-house" />
+              </g>
+              <rect
+                x="478"
+                y="686"
+                width="430"
+                height="54"
+                rx="27"
+                fill="#fffdf6"
+                stroke="#68794d"
+                stroke-width="1.8"
+              />
+              <text
+                x="693"
+                y="722"
+                text-anchor="middle"
+                font-size="32"
+                font-weight="500"
+                fill="#4e5c38"
+                letter-spacing=".4"
+              >
+                Lokasi Acara — Gang 99
+              </text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script>
+      (function () {
+        "use strict";
+        var NS = "http://www.w3.org/2000/svg",
+          MM = 96 / 25.4;
+        function mk(t, a, p) {
+          var e = document.createElementNS(NS, t);
+          for (var k in a) e.setAttribute(k, a[k]);
+          p.appendChild(e);
+          return e;
+        }
+        var i;
+        // 10 cards
+        var grid = document.getElementById("grid"),
+          tpl = document.getElementById("tpl");
+        for (i = 0; i < 10; i++) grid.appendChild(tpl.content.cloneNode(true));
+
+        // cut marks in the margins (grid: x 7/105/203, y 11 + 55n)
+        var m = document.getElementById("marks"),
+          xs = [7, 105, 203],
+          ys = [11, 66, 121, 176, 231, 286];
+        function ln(x1, y1, x2, y2) {
+          mk(
+            "line",
+            {
+              x1: x1,
+              y1: y1,
+              x2: x2,
+              y2: y2,
+              stroke: "#76543a",
+              "stroke-width": 0.2,
+            },
+            m,
+          );
+        }
+        xs.forEach(function (x) {
+          ln(x, 3, x, 8);
+          ln(x, 289, x, 294);
+        });
+        ys.forEach(function (y) {
+          ln(1.5, y, 5.5, y);
+          ln(204.5, y, 208.5, y);
+        });
+
+        // paper colour: white (default) / original / custom
+        var PAPERS = {
+          putih: { paper: "#ffffff", dots: "none", map: "#ffffff" },
+          asal: {
+            paper: "#fffdf5",
+            dots: "radial-gradient(rgba(118,84,58,.07) .25mm,transparent .3mm)",
+            map: "#fbf7ee",
+          },
+        };
+        var colorIn = document.getElementById("paperColor"),
+          tabs = document.querySelectorAll("#paperTabs button");
+        function setPaper(mode, color, save) {
+          var c =
+              mode === "custom"
+                ? { paper: color, dots: "none", map: color }
+                : PAPERS[mode],
+            r = document.documentElement.style;
+          r.setProperty("--card-paper", c.paper);
+          r.setProperty("--card-dots", c.dots);
+          r.setProperty("--map-paper", c.map);
+          colorIn.value = c.paper;
+          Array.prototype.forEach.call(tabs, function (b) {
+            b.setAttribute("aria-pressed", String(b.dataset.paper === mode));
+          });
+          if (save) {
+            try {
+              localStorage.setItem(
+                "kartuPaper",
+                JSON.stringify({ mode: mode, color: color || "" }),
+              );
+            } catch (e) {}
+          }
+        }
+        Array.prototype.forEach.call(tabs, function (b) {
+          b.addEventListener("click", function () {
+            setPaper(b.dataset.paper, null, true);
+          });
+        });
+        colorIn.addEventListener("input", function () {
+          setPaper("custom", colorIn.value, true);
+        });
+        var saved = null;
+        try {
+          saved = JSON.parse(localStorage.getItem("kartuPaper"));
+        } catch (e) {}
+        if (
+          saved &&
+          saved.mode === "custom" &&
+          /^#[0-9a-f]{6}$/i.test(saved.color)
+        )
+          setPaper("custom", saved.color, false);
+        else if (saved && PAPERS[saved.mode]) setPaper(saved.mode, null, false);
+        else setPaper("putih", null, false);
+
+        // screen preview scale
+        function layout() {
+          var s = Math.min(
+            1,
+            (document.getElementById("stage").clientWidth - 32) / (210 * MM),
+          );
+          document
+            .getElementById("stage")
+            .style.setProperty("--s", Math.max(0.3, s).toFixed(4));
+        }
+        window.addEventListener("resize", layout);
+        layout();
+        document
+          .getElementById("printBtn")
+          .addEventListener("click", function () {
+            window.print();
+          });
+      })();
+    </script>
+  </body>
+</html>
