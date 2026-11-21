@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hidden Seserahan Tag — Putri &amp; Yoga (5 × 8 cm)</title>
+    <!-- wording: Our Wedding Day / Putri & Yoga / 17 January 2027 / With Love -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@400;500;700&family=Dancing+Script:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============================================================
+     HIDDEN SESERAHAN GIFT TAG — default 50 x 80 mm, portrait (5:8)
+     Same sunflower identity as the rest of the wedding stationery.
+
+     SCALING
+     The artwork lives on a 50 x 80 unit canvas (1 unit = 1 mm at the
+     default size). It is scaled with ONE uniform factor to the size in
+     CONFIG, so nothing is stretched. The hole and the cut corners are
+     physical sizes (mm) and are NOT scaled, so the ribbon hole stays
+     the same size whatever the tag size.
+     ============================================================ */
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --sage-deep: #7f9163;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+        /* set by JavaScript from CONFIG */
+        --W: 50; /* tag width, mm */
+        --H: 80; /* tag height, mm */
+        --R: 3; /* corner radius, mm */
+        --k: 1; /* uniform artwork scale */
+        --s: 4; /* on-screen preview zoom */
+        --pw: 50; /* width of the active view, mm */
+        --ph: 80; /* height of the active view, mm */
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #e9e4d9;
+        color: var(--brown);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      p {
+        margin: 0;
+      }
+
+      /* ---------- Screen-only controls ---------- */
+      .ui {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 16px 16px 4px;
+      }
+      .ui-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 14px;
+        padding: 12px 18px;
+      }
+      .ui p {
+        font-size: 0.9rem;
+        max-width: 58ch;
+      }
+      .ctrl {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        min-height: 44px;
+        padding: 0.55em 1.3em;
+        font: 700 0.9rem var(--f-ui);
+        background: var(--cream);
+        color: var(--brown);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .btn.on {
+        background: var(--sage);
+      }
+      .btn.go {
+        background: var(--olive);
+        color: var(--cream);
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .btn:focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+      }
+
+      /* ---------- Preview ---------- */
+      #stage {
+        display: flex;
+        justify-content: center;
+        padding: 14px 16px 32px;
+      }
+      .view {
+        display: none;
+      }
+      body[data-mode="tag"] #tagView,
+      body[data-mode="sheet"] #sheetView {
+        display: block;
+      }
+      .scaler {
+        position: relative;
+        width: calc(var(--pw) * 1mm * var(--s));
+        height: calc(var(--ph) * 1mm * var(--s));
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      #tagView .scaler {
+        background: transparent;
+        box-shadow: none;
+      }
+      .zoom {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: calc(var(--pw) * 1mm);
+        height: calc(var(--ph) * 1mm);
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+      }
+      .paper {
+        background: #fff;
+        overflow: hidden;
+      }
+      .paper > svg.marks {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+      }
+
+      /* ---------- The tag ---------- */
+      .tag {
+        position: relative;
+        width: calc(var(--W) * 1mm);
+        height: calc(var(--H) * 1mm);
+        background: #fff;
+        border-radius: calc(var(--R) * 1mm);
+        overflow: hidden;
+      }
+      #tagView .tag {
+        box-shadow:
+          0 0.4mm 1mm rgba(94, 66, 48, 0.25),
+          0 0 0 0.12mm rgba(94, 66, 48, 0.35);
+      }
+      .sheetTag {
+        position: absolute;
+      }
+      .design {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 50mm;
+        height: 80mm;
+        transform: translate(-50%, -50%) scale(var(--k));
+        transform-origin: 50% 50%;
+      }
+      /* Same frame as the invitation: sage line + dotted gold line, in miniature */
+      .design::before {
+        content: "";
+        position: absolute;
+        inset: 2.4mm;
+        border: 0.4mm solid var(--sage);
+        border-radius: 2.2mm;
+      }
+      .design::after {
+        content: "";
+        position: absolute;
+        inset: 3.4mm;
+        border: 0.3mm dashed rgba(217, 164, 65, 0.85);
+        border-radius: 1.4mm;
+      }
+      .art {
+        position: absolute;
+        inset: 0;
+        width: 50mm;
+        height: 80mm;
+        display: block;
+        z-index: 1;
+      }
+      .hole {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        z-index: 3;
+      }
+
+      /* ---------- Text (centres in design units = mm at 5 x 8 cm) ---------- */
+      .t {
+        position: absolute;
+        left: 0;
+        width: 50mm;
+        text-align: center;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        line-height: 1;
+        z-index: 2;
+      }
+      .t > span {
+        display: inline-block;
+      }
+      .title {
+        top: 17.5mm;
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 3.3mm;
+        letter-spacing: 0.14em;
+        color: var(--olive);
+      }
+      .title > span {
+        margin-right: -0.14em;
+      }
+      .name {
+        font-family: var(--f-serif);
+        font-weight: 700;
+        font-size: 7.2mm;
+        letter-spacing: 0.14em;
+        color: var(--brown);
+      }
+      .name > span {
+        margin-right: -0.14em;
+      }
+      .name1 {
+        top: 30mm;
+      }
+      .amp {
+        top: 36.6mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 6.4mm;
+        color: var(--honey);
+      }
+      .name2 {
+        top: 43.4mm;
+      }
+      .date {
+        top: 51.2mm;
+        font-family: var(--f-serif);
+        font-weight: 600;
+        font-size: 3.7mm;
+        letter-spacing: 0.06em;
+        color: var(--brown);
+        /* lining + tabular figures: every digit is cap-height and equal width */
+        font-variant-numeric: lining-nums tabular-nums;
+        font-feature-settings:
+          "lnum" 1,
+          "tnum" 1;
+      }
+      /* "With Love" sits in the free corner beside the sunflower bouquet */
+      .love {
+        left: 4mm;
+        width: 20mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        color: var(--olive);
+        transform: translateY(-50%) rotate(-8deg);
+      }
+      .love1 {
+        top: 64.6mm;
+        font-size: 5.2mm;
+      }
+      .love2 {
+        top: 70.6mm;
+        font-size: 6.6mm;
+        color: var(--brown);
+      }
+      .lheart {
+        position: absolute;
+        left: 18.6mm;
+        top: 67mm;
+        width: 2.6mm;
+        height: 2.6mm;
+        color: #e9a88a;
+        z-index: 2;
+      }
+
+      /* ---------- Print: only the active view ---------- */
+      @media print {
+        :root {
+          --s: 1 !important;
+        }
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #fff;
+          overflow: hidden;
+        }
+        .ui {
+          display: none !important;
+        }
+        #stage {
+          display: block;
+          padding: 0;
+          margin: 0;
+        }
+        .scaler {
+          box-shadow: none;
+          margin: 0;
+          break-after: avoid;
+          page-break-after: avoid;
+          break-inside: avoid;
+        }
+        #tagView .tag {
+          box-shadow: none;
+        }
+        .zoom {
+          transform: none;
+        }
+      }
+    </style>
+    <style id="pageRule"></style>
+  </head>
+  <body data-mode="tag">
+    <header class="ui">
+      <div class="ui-card">
+        <p id="uiNote"></p>
+        <div class="ctrl">
+          <button class="btn on" id="bTag" type="button">Single tag</button>
+          <button class="btn" id="bSheet" type="button">A4 sheet</button>
+          <button class="btn go" id="printBtn" type="button">
+            Print / Save as PDF
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="stage">
+      <div class="view" id="tagView">
+        <div class="scaler" id="tagScaler">
+          <div class="zoom" id="tagZoom"></div>
+        </div>
+      </div>
+      <div class="view" id="sheetView">
+        <div class="scaler" id="sheetScaler">
+          <div class="zoom paper" id="sheetZoom"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        /* ============================================================
+           CONFIG — change the tag size, hole and wording here.
+           ============================================================ */
+        var CONFIG = {
+          tag: {
+            widthCm: 5, // physical width in cm
+            heightCm: 8, // physical height in cm (portrait: keep 5:8)
+            cornerRadiusMm: 3, // rounded corners (0 = square)
+            holeDiameterMm: 4, // ribbon hole (physical, not scaled)
+            holeFromTopMm: 8.5, // distance from top edge to hole centre
+          },
+          sheet: {
+            widthMm: 210, // A4 portrait
+            heightMm: 297,
+            columns: 3, // tags per row (reduced automatically if they do not fit)
+            rows: 3,
+            gapMm: 8, // space between tags (min 7 so cut marks fit)
+            marginMm: 10,
+          },
+          text: {
+            title: "OUR WEDDING DAY",
+            name1: "PUTRI",
+            amp: "&",
+            name2: "YOGA",
+            date: "17 JANUARY 2027",
+            love1: "With",
+            love2: "Love",
+          },
+        };
+
+        var MM = 96 / 25.4,
+          root = document.documentElement,
+          body = document.body;
+        var T = CONFIG.tag,
+          S = CONFIG.sheet;
+        var Wmm = Math.max(20, T.widthCm * 10),
+          Hmm = Math.max(30, T.heightCm * 10);
+        var k = Math.min(Wmm / 50, Hmm / 80); // one uniform factor
+
+        function f(n) {
+          return Math.round(n * 100) / 100;
+        }
+
+        /* ---------- Artwork: the same symbols as the invitation ---------- */
+        function sunflower() {
+          var s = '<symbol id="sf" viewBox="-50 -50 100 100">',
+            i;
+          s += '<g fill="#D9A441">';
+          for (i = 0; i < 14; i++)
+            s +=
+              '<ellipse cx="0" cy="-33" rx="8.2" ry="17" transform="rotate(' +
+              (i * 360) / 14 +
+              ')"/>';
+          s += '</g><g fill="#F6C945">';
+          for (i = 0; i < 14; i++)
+            s +=
+              '<ellipse cx="0" cy="-31" rx="7.6" ry="15.5" transform="rotate(' +
+              ((i + 0.5) * 360) / 14 +
+              ')"/>';
+          s += "</g>";
+          for (i = 0; i < 14; i++)
+            s +=
+              '<path d="M0 -20V-42" stroke="#D9A441" stroke-width=".9" opacity=".55" stroke-linecap="round" fill="none" transform="rotate(' +
+              ((i + 0.5) * 360) / 14 +
+              ')"/>';
+          s +=
+            '<circle r="18" fill="#76543A"/><circle r="14.5" fill="#5E4230"/>';
+          [
+            [5, "1.3 3.8"],
+            [9, "1.7 4.0"],
+            [12.5, "2 4.4"],
+          ].forEach(function (a) {
+            s +=
+              '<circle r="' +
+              a[0] +
+              '" fill="none" stroke="#D9A441" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="' +
+              a[1] +
+              '" opacity=".9"/>';
+          });
+          return s + "</symbol>";
+        }
+        function daisy() {
+          var s = '<symbol id="dz" viewBox="-50 -50 100 100">',
+            i;
+          for (i = 0; i < 10; i++)
+            s +=
+              '<ellipse cx="0" cy="-30" rx="7.2" ry="17" fill="#FFFDF5" stroke="#E0CE9A" stroke-width="1.2" transform="rotate(' +
+              i * 36 +
+              ')"/>';
+          s +=
+            '<circle r="12" fill="#F6C945" stroke="#D9A441" stroke-width="1.5"/><circle r="5" fill="#D9A441"/>';
+          return s + "</symbol>";
+        }
+        var leafSym =
+          '<symbol id="leaf" viewBox="0 0 40 28"><path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A"/><path d="M2 14H36" stroke="#68794D" stroke-width="1.3" stroke-linecap="round" opacity=".6"/></symbol>';
+        var heartSym =
+          '<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z" fill="currentColor"/></symbol>';
+        var bflySym =
+          '<symbol id="bfly" viewBox="0 0 60 40">' +
+          '<path d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z" fill="currentColor"/>' +
+          '<path d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z" fill="currentColor"/>' +
+          '<path d="M30 12v18" stroke="#76543A" stroke-width="3" stroke-linecap="round"/>' +
+          '<path d="M30 12q-4-7-8-8M30 12q4-7 8-8" fill="none" stroke="#76543A" stroke-width="1.8" stroke-linecap="round"/></symbol>';
+
+        function deco(sym, x, y, w, rot, color, ratio) {
+          var h = ratio ? w / ratio : w;
+          return (
+            '<use href="#' +
+            sym +
+            '" x="' +
+            x +
+            '" y="' +
+            y +
+            '" width="' +
+            w +
+            '" height="' +
+            f(h) +
+            '" style="color:' +
+            color +
+            '" transform="rotate(' +
+            rot +
+            " " +
+            f(x + w / 2) +
+            " " +
+            f(y + h / 2) +
+            ')"/>'
+          );
+        }
+        // tiny divider: two gold lines, sage dots and a heart
+        function divider(cy) {
+          return (
+            '<path d="M14 ' +
+            cy +
+            'H22.4" stroke="#D9A441" stroke-width=".3" stroke-linecap="round"/>' +
+            '<path d="M27.6 ' +
+            cy +
+            'H36" stroke="#D9A441" stroke-width=".3" stroke-linecap="round"/>' +
+            '<circle cx="12" cy="' +
+            cy +
+            '" r=".5" fill="#A8B58A"/><circle cx="38" cy="' +
+            cy +
+            '" r=".5" fill="#A8B58A"/>' +
+            '<use href="#heart" x="23.2" y="' +
+            (cy - 1.7) +
+            '" width="3.6" height="3.6" style="color:#E9A88A"/>'
+          );
+        }
+
+        // Corner bouquet: identical arrangement to the welcome sign's bottom-right bouquet
+        function bouquet(size, m) {
+          var x = 50 - m,
+            y = 80 - m,
+            S = size;
+          function p(v) {
+            return f((v / 100) * S);
+          }
+          function leaf(l, t, rot) {
+            var w = (34 / 100) * S,
+              h = (w * 28) / 40;
+            return (
+              '<use href="#leaf" x="' +
+              p(l) +
+              '" y="' +
+              p(t) +
+              '" width="' +
+              f(w) +
+              '" height="' +
+              f(h) +
+              '" transform="rotate(' +
+              rot +
+              " " +
+              f(p(l) + w / 2) +
+              " " +
+              f(p(t) + h / 2) +
+              ')"/>'
+            );
+          }
+          function box(sym, l, t, w) {
+            return (
+              '<use href="#' +
+              sym +
+              '" x="' +
+              p(l) +
+              '" y="' +
+              p(t) +
+              '" width="' +
+              p(w) +
+              '" height="' +
+              p(w) +
+              '"/>'
+            );
+          }
+          return (
+            '<g transform="translate(' +
+            x +
+            " " +
+            y +
+            ') scale(-1 -1)">' +
+            leaf(46, 2, 25) +
+            leaf(2, 50, 75) +
+            leaf(42, 52, -20) +
+            box("sf", 0, 0, 62) +
+            box("sf", 48, 30, 38) +
+            box("sf", 12, 58, 26) +
+            box("dz", 62, 6, 15) +
+            box("dz", 36, 70, 15) +
+            "</g>"
+          );
+        }
+
+        var art =
+          "<defs>" +
+          sunflower() +
+          daisy() +
+          leafSym +
+          heartSym +
+          "</defs>" +
+          divider(22.6) +
+          bouquet(28, 2.2);
+
+        // Hole + reinforcement ring, in physical mm (not scaled)
+        function holeSvg() {
+          var r = T.holeDiameterMm / 2,
+            cx = Wmm / 2,
+            cy = T.holeFromTopMm;
+          return (
+            '<svg class="hole" viewBox="0 0 ' +
+            Wmm +
+            " " +
+            Hmm +
+            '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+            '<circle cx="' +
+            cx +
+            '" cy="' +
+            cy +
+            '" r="' +
+            f(r + 1.3) +
+            '" fill="none" stroke="#A8B58A" stroke-width=".4"/>' +
+            '<circle cx="' +
+            cx +
+            '" cy="' +
+            cy +
+            '" r="' +
+            r +
+            '" fill="none" stroke="#D9A441" stroke-width=".25" stroke-dasharray=".7 .5"/>' +
+            "</svg>"
+          );
+        }
+
+        function tagHTML(cls, style) {
+          var tx = CONFIG.text;
+          function esc(v) {
+            return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+          }
+          return (
+            '<div class="tag ' +
+            cls +
+            '"' +
+            (style ? ' style="' + style + '"' : "") +
+            ">" +
+            '<div class="design">' +
+            '<svg class="art" viewBox="0 0 50 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+            art +
+            "</svg>" +
+            '<p class="t title"><span data-max="38">' +
+            esc(tx.title) +
+            "</span></p>" +
+            '<p class="t name name1"><span data-max="36">' +
+            esc(tx.name1) +
+            "</span></p>" +
+            '<p class="t amp"><span data-max="10">' +
+            esc(tx.amp) +
+            "</span></p>" +
+            '<p class="t name name2"><span data-max="36">' +
+            esc(tx.name2) +
+            "</span></p>" +
+            '<p class="t date"><span data-max="36">' +
+            esc(tx.date) +
+            "</span></p>" +
+            '<p class="t love love1"><span data-max="18">' +
+            esc(tx.love1) +
+            "</span></p>" +
+            '<p class="t love love2"><span data-max="18">' +
+            esc(tx.love2) +
+            "</span></p>" +
+            '<svg class="lheart" viewBox="0 0 24 24" aria-hidden="true"><use href="#heart"/></svg>' +
+            "</div>" +
+            holeSvg() +
+            "</div>"
+          );
+        }
+
+        /* ---------- Single tag view ---------- */
+        document.getElementById("tagZoom").innerHTML = tagHTML("single", "");
+
+        /* ---------- A4 sheet view ---------- */
+        var SW = S.widthMm,
+          SH = S.heightMm,
+          gap = Math.max(7, S.gapMm),
+          mar = Math.max(6, S.marginMm);
+        var cols = Math.max(
+          1,
+          Math.min(S.columns, Math.floor((SW - 2 * mar + gap) / (Wmm + gap))),
+        );
+        var rows = Math.max(
+          1,
+          Math.min(S.rows, Math.floor((SH - 2 * mar + gap) / (Hmm + gap))),
+        );
+        var gw = cols * Wmm + (cols - 1) * gap,
+          gh = rows * Hmm + (rows - 1) * gap;
+        var x0 = (SW - gw) / 2,
+          y0 = (SH - gh) / 2;
+        var sh = "",
+          marks = "",
+          r,
+          c;
+        for (r = 0; r < rows; r++)
+          for (c = 0; c < cols; c++) {
+            var x = x0 + c * (Wmm + gap),
+              y = y0 + r * (Hmm + gap);
+            sh += tagHTML("sheetTag", "left:" + f(x) + "mm;top:" + f(y) + "mm");
+            // crop marks outside each corner (1 mm clear, 2.5 mm long)
+            [
+              [x, y, -1, -1],
+              [x + Wmm, y, 1, -1],
+              [x, y + Hmm, -1, 1],
+              [x + Wmm, y + Hmm, 1, 1],
+            ].forEach(function (p) {
+              marks +=
+                "M" +
+                f(p[0] + p[2] * 1) +
+                " " +
+                f(p[1]) +
+                "h" +
+                f(p[2] * 2.5) +
+                "M" +
+                f(p[0]) +
+                " " +
+                f(p[1] + p[3] * 1) +
+                "v" +
+                f(p[3] * 2.5);
+            });
+          }
+        sh =
+          '<svg class="marks" width="' +
+          SW +
+          'mm" height="' +
+          SH +
+          'mm" viewBox="0 0 ' +
+          SW +
+          " " +
+          SH +
+          '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="' +
+          marks +
+          '" fill="none" stroke="#76543A" stroke-width=".2"/></svg>' +
+          sh;
+        document.getElementById("sheetZoom").innerHTML = sh;
+
+        /* ---------- Variables, page size, mode ---------- */
+        root.style.setProperty("--W", Wmm);
+        root.style.setProperty("--H", Hmm);
+        root.style.setProperty("--R", T.cornerRadiusMm);
+        root.style.setProperty("--k", k.toFixed(5));
+        document.getElementById("tagScaler").style.setProperty("--pw", Wmm);
+        document.getElementById("tagScaler").style.setProperty("--ph", Hmm);
+        document.getElementById("sheetScaler").style.setProperty("--pw", SW);
+        document.getElementById("sheetScaler").style.setProperty("--ph", SH);
+
+        var mode = "tag";
+        function dims() {
+          return mode === "tag" ? [Wmm, Hmm] : [SW, SH];
+        }
+        function setPage() {
+          var d = dims();
+          document.getElementById("pageRule").textContent =
+            "@page{size:" +
+            d[0] +
+            "mm " +
+            d[1] +
+            "mm;margin:0}" +
+            "@media print{html,body{width:" +
+            d[0] +
+            "mm;height:" +
+            d[1] +
+            "mm}}";
+        }
+
+        /* shrink a line only if it would overflow (never distorts) */
+        function fitText() {
+          var els = document.querySelectorAll("[data-max]");
+          for (var i = 0; i < els.length; i++) {
+            var el = els[i],
+              p = el.parentNode;
+            p.style.fontSize = "";
+            var max = parseFloat(el.getAttribute("data-max")) * MM,
+              w = el.offsetWidth;
+            if (w > max)
+              p.style.fontSize =
+                (parseFloat(getComputedStyle(p).fontSize) * max) / w + "px";
+          }
+        }
+
+        function note() {
+          document.getElementById("uiNote").innerHTML =
+            mode === "tag"
+              ? "<strong>Tag " +
+                T.widthCm +
+                " × " +
+                T.heightCm +
+                " cm, portrait.</strong> Preview is enlarged; it prints at real size. Print as PDF at 100%, margins None, Background graphics on."
+              : "<strong>A4 sheet: " +
+                cols * rows +
+                " tags</strong> (" +
+                cols +
+                " × " +
+                rows +
+                ") at real size " +
+                T.widthCm +
+                " × " +
+                T.heightCm +
+                " cm with cut marks. Print at 100% (no “fit to page”), margins None, Background graphics on.";
+        }
+
+        function fit() {
+          var ui = document.querySelector(".ui"),
+            d = dims();
+          var availW = Math.max(120, window.innerWidth - 32);
+          var availH = Math.max(
+            160,
+            window.innerHeight - (ui ? ui.offsetHeight : 0) - 48,
+          );
+          var s = Math.min(
+            availW / (d[0] * MM),
+            availH / (d[1] * MM),
+            mode === "tag" ? 8 : 1,
+          );
+          root.style.setProperty("--s", s.toFixed(5));
+        }
+        function setMode(m) {
+          mode = m;
+          body.setAttribute("data-mode", m);
+          document.getElementById("bTag").classList.toggle("on", m === "tag");
+          document
+            .getElementById("bSheet")
+            .classList.toggle("on", m === "sheet");
+          setPage();
+          note();
+          fit();
+          fitText();
+        }
+
+        document.getElementById("bTag").addEventListener("click", function () {
+          setMode("tag");
+        });
+        document
+          .getElementById("bSheet")
+          .addEventListener("click", function () {
+            setMode("sheet");
+          });
+        document
+          .getElementById("printBtn")
+          .addEventListener("click", function () {
+            window.print();
+          });
+        window.addEventListener("resize", fit);
+        window.addEventListener("beforeprint", function () {
+          root.style.setProperty("--s", "1");
+          fitText();
+        });
+        window.addEventListener("afterprint", fit);
+        setMode("tag");
+        if (document.fonts && document.fonts.ready)
+          document.fonts.ready.then(function () {
+            fit();
+            fitText();
+          });
+      })();
+    </script>
+  </body>
+</html>

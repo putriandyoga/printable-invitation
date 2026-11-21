@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Banner Pernikahan — Putri &amp; Yoga (75 × 100 cm)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=Dancing+Script:wght@500;600;700&family=Playfair+Display:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============================================================
+     PORTRAIT WEDDING BANNER — sunflower identity
+     Physical size is set in CONFIG (script below), default 75 x 100 cm.
+
+     HOW SCALING WORKS
+     The whole design lives on one fixed "design canvas" of 631 x 841
+     units (same 3:4 shape as 75 x 100 cm). The canvas is
+     scaled UNIFORMLY (one factor for everything) to fit the banner
+     size in CONFIG, so text, flowers and spacing never stretch or
+     change relative to each other. If you choose a different aspect
+     ratio, the canvas stays centred and the cream paper simply
+     extends around it.
+     ============================================================ */
+      :root {
+        --sun: #f6c945;
+        --butter: #fbe8a6;
+        --cream: #fff8e7;
+        --vanilla: #fff1cc;
+        --honey: #d9a441;
+        --sage: #a8b58a;
+        --sage-deep: #7f9163;
+        --olive: #68794d;
+        --brown: #76543a;
+        --peach: #f5c6a5;
+        --f-serif: "Cormorant Garamond", Georgia, serif;
+        --f-display: "Playfair Display", Georgia, serif;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+        /* set by JavaScript from CONFIG */
+        --W: 750; /* banner width in mm */
+        --H: 1000; /* banner height in mm */
+        --k: 1; /* design-canvas scale (uniform) */
+        --s: 0.3; /* on-screen preview scale */
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: #e9e4d9;
+        color: var(--brown);
+        font-family: var(--f-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      p,
+      h1 {
+        margin: 0;
+      }
+
+      /* ---------- Screen-only controls ---------- */
+      .ui {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 16px 16px 4px;
+      }
+      .ui-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        background: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 14px;
+        padding: 12px 18px;
+      }
+      .ui p {
+        font-size: 0.92rem;
+        max-width: 60ch;
+      }
+      .btn {
+        min-height: 46px;
+        padding: 0.6em 1.6em;
+        font: 700 0.95rem var(--f-ui);
+        background: var(--olive);
+        color: var(--cream);
+        border: 2px solid var(--brown);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #788b58;
+      }
+      .btn:focus-visible {
+        outline: 3px solid var(--olive);
+        outline-offset: 3px;
+      }
+
+      /* ---------- Preview stage ---------- */
+      #stage {
+        display: flex;
+        justify-content: center;
+        padding: 14px 16px 32px;
+      }
+      .scaler {
+        position: relative;
+        width: calc(var(--W) * 1mm * var(--s));
+        height: calc(var(--H) * 1mm * var(--s));
+        background: #fff;
+        box-shadow:
+          0 14px 30px -12px rgba(94, 66, 48, 0.55),
+          0 2px 6px rgba(94, 66, 48, 0.2);
+      }
+      /* The sheet is the physical banner (paper) */
+      .sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: calc(var(--W) * 1mm);
+        height: calc(var(--H) * 1mm);
+        overflow: hidden;
+        transform-origin: 0 0;
+        transform: scale(var(--s));
+        background-color: var(--cream);
+      }
+      /* The design canvas: 631 x 841 units, scaled uniformly and centred */
+      .design {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 631mm;
+        height: 841mm;
+        transform: translate(-50%, -50%) scale(var(--k));
+        transform-origin: 50% 50%;
+        background-image: radial-gradient(
+          circle at 50% 38%,
+          #fffdf2 0,
+          transparent 70%
+        );
+      }
+      /* Frame: thin sage line + dotted gold line */
+      .design::before {
+        content: "";
+        position: absolute;
+        inset: 32mm;
+        border: 1.4mm solid var(--sage);
+        border-radius: 12mm;
+        z-index: 0;
+      }
+      .design::after {
+        content: "";
+        position: absolute;
+        inset: 41.6mm;
+        border: 0.8mm dashed rgba(217, 164, 65, 0.8);
+        border-radius: 8mm;
+        z-index: 0;
+      }
+      .art {
+        position: absolute;
+        inset: 0;
+        width: 631mm;
+        height: 841mm;
+        display: block;
+        z-index: 1;
+      }
+
+      /* ---------- Text (centres in design units) ---------- */
+      .t {
+        position: absolute;
+        left: 0;
+        width: 631mm;
+        text-align: center;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        line-height: 1;
+        z-index: 2;
+      }
+      .t > span {
+        display: inline-block;
+      }
+      .wscript {
+        top: 134mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 50mm;
+        color: var(--olive);
+      }
+
+      .families {
+        top: 190mm;
+        font-family: var(--f-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 24mm;
+        letter-spacing: 0.1em;
+        padding-left: 0.1em;
+        color: var(--sage-deep);
+      }
+      .name {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 72mm;
+        letter-spacing: 0.01em;
+        color: var(--brown);
+      }
+      .n1 {
+        top: 322mm;
+      }
+      .n2 {
+        top: 535mm;
+      }
+      .amp {
+        top: 468mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 62mm;
+        color: var(--honey);
+      }
+      .par {
+        font-family: var(--f-display);
+        font-weight: 500;
+        font-size: 22mm;
+        line-height: 1.28;
+        letter-spacing: 0.01em;
+        color: var(--brown);
+      }
+      .b2 {
+        top: 399mm;
+      }
+      .g2 {
+        top: 612mm;
+      }
+      .invite {
+        top: 698mm;
+        font-family: var(--f-script);
+        font-weight: 700;
+        font-size: 0mm;
+        color: var(--olive);
+      }
+      .date {
+        top: 748mm;
+        font-family: var(--f-ui);
+        font-weight: 700;
+        font-size: 22mm;
+        letter-spacing: 0.08em;
+        padding-left: 0.08em;
+        color: var(--brown);
+      }
+
+      /* ---------- Print: exactly one banner-sized page ---------- */
+      @media print {
+        :root {
+          --s: 1 !important;
+        }
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #fff;
+          overflow: hidden;
+        }
+        .ui {
+          display: none !important;
+        }
+        #stage {
+          display: block;
+          padding: 0;
+          margin: 0;
+        }
+        .scaler {
+          box-shadow: none;
+          margin: 0;
+          break-after: avoid;
+          page-break-after: avoid;
+          break-inside: avoid;
+        }
+        .sheet {
+          transform: none;
+        }
+      }
+    </style>
+    <style id="pageRule"></style>
+  </head>
+  <body>
+    <header class="ui">
+      <div class="ui-card">
+        <p id="uiNote"></p>
+        <button class="btn" id="printBtn" type="button">
+          Cetak / Simpan PDF
+        </button>
+      </div>
+    </header>
+
+    <main id="stage">
+      <div class="scaler">
+        <div class="sheet" id="sheet">
+          <div class="design" id="design">
+            <svg
+              class="art"
+              id="art"
+              viewBox="0 0 631 841"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            ></svg>
+
+            <p class="t wscript"><span id="tGreetScript"></span></p>
+            <p class="t families"><span id="tFamilies"></span></p>
+
+            <h1 class="t name n1"><span id="tBride"></span></h1>
+            <p class="t par b2">
+              <span id="tBrideParents" data-max="510"></span>
+            </p>
+
+            <p class="t amp"><span>&amp;</span></p>
+
+            <h1 class="t name n2"><span id="tGroom"></span></h1>
+            <p class="t par g2">
+              <span id="tGroomParents" data-max="510"></span>
+            </p>
+            <p class="t invite"><span id="tInvite"></span></p>
+
+            <p class="t date"><span id="tDate"></span></p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        /* ============================================================
+           CONFIG — change the physical banner size and the wording here.
+           Everything else adapts automatically.
+           ============================================================ */
+        var CONFIG = {
+          banner: {
+            widthCm: 75, // physical width in cm
+            heightCm: 100, // physical height in cm  (portrait: height > width)
+          },
+          text: {
+            greetingScript: "Selamat Datang",
+            families: "Para Tamu Undangan Pernikahan",
+            invite: "Mohon Doa Restu",
+            bride: "PUTRI",
+            groom: "YOGA",
+            brideRelation: "Putri Sulung dari",
+            groomRelation: "Putra Bungsu dari",
+            brideFather: "Samsi (Anci Bengkel)",
+            brideMother: "Rusinah",
+            groomFather: "Priyo Gunawan",
+            groomMother: "Nani Elliawati",
+            date: "17 JANUARI 2027",
+          },
+        };
+
+        /* ---------- Fill in the text ---------- */
+        var T = CONFIG.text;
+        function put(id, v) {
+          document.getElementById(id).textContent = v;
+        }
+        put("tGreetScript", T.greetingScript);
+        put("tFamilies", T.families);
+        put("tInvite", T.invite);
+        put("tBride", T.bride);
+        put("tGroom", T.groom);
+        // Parents: line 1 = "Putri Sulung dari", line 2 = "Bapak ... & Ibu ..."
+        function putLines(id, l1, l2) {
+          var el = document.getElementById(id);
+          el.textContent = "";
+          el.appendChild(document.createTextNode(l1));
+          el.appendChild(document.createElement("br"));
+          el.appendChild(document.createTextNode(l2));
+        }
+        putLines(
+          "tBrideParents",
+          T.brideRelation,
+          "Bapak " + T.brideFather + " & Ibu " + T.brideMother,
+        );
+        putLines(
+          "tGroomParents",
+          T.groomRelation,
+          "Bapak " + T.groomFather + " & Ibu " + T.groomMother,
+        );
+        put("tDate", T.date);
+
+        /* ---------- Vector artwork (same symbols as the invitation) ---------- */
+        var art = document.getElementById("art");
+        function f(n) {
+          return Math.round(n * 100) / 100;
+        }
+
+        function sunflower() {
+          var s = '<symbol id="sf" viewBox="-50 -50 100 100">',
+            i;
+          s += '<g fill="#D9A441">';
+          for (i = 0; i < 14; i++)
+            s +=
+              '<ellipse cx="0" cy="-33" rx="8.2" ry="17" transform="rotate(' +
+              (i * 360) / 14 +
+              ')"/>';
+          s += '</g><g fill="#F6C945">';
+          for (i = 0; i < 14; i++)
+            s +=
+              '<ellipse cx="0" cy="-31" rx="7.6" ry="15.5" transform="rotate(' +
+              ((i + 0.5) * 360) / 14 +
+              ')"/>';
+          s += "</g>";
+          for (i = 0; i < 14; i++)
+            s +=
+              '<path d="M0 -20V-42" stroke="#D9A441" stroke-width=".9" opacity=".55" stroke-linecap="round" fill="none" transform="rotate(' +
+              ((i + 0.5) * 360) / 14 +
+              ')"/>';
+          s +=
+            '<circle r="18" fill="#76543A"/><circle r="14.5" fill="#5E4230"/>';
+          [
+            [5, "1.3 3.8"],
+            [9, "1.7 4.0"],
+            [12.5, "2 4.4"],
+          ].forEach(function (a) {
+            s +=
+              '<circle r="' +
+              a[0] +
+              '" fill="none" stroke="#D9A441" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="' +
+              a[1] +
+              '" opacity=".9"/>';
+          });
+          return s + "</symbol>";
+        }
+        function daisy() {
+          var s = '<symbol id="dz" viewBox="-50 -50 100 100">',
+            i;
+          for (i = 0; i < 10; i++)
+            s +=
+              '<ellipse cx="0" cy="-30" rx="7.2" ry="17" fill="#FFFDF5" stroke="#E0CE9A" stroke-width="1.2" transform="rotate(' +
+              i * 36 +
+              ')"/>';
+          s +=
+            '<circle r="12" fill="#F6C945" stroke="#D9A441" stroke-width="1.5"/><circle r="5" fill="#D9A441"/>';
+          return s + "</symbol>";
+        }
+        var leafSym =
+          '<symbol id="leaf" viewBox="0 0 40 28"><path d="M0 14C9 -2 28 -2 40 14 28 30 9 30 0 14Z" fill="#A8B58A"/><path d="M2 14H36" stroke="#68794D" stroke-width="1.3" stroke-linecap="round" opacity=".6"/></symbol>';
+        var heartSym =
+          '<symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C1 8.5 3 5 6.4 5c2 0 3.5 1.1 5.6 3.2C14.1 6.1 15.6 5 17.6 5 21 5 23 8.5 21.6 11.8 19.5 16.4 12 21 12 21z" fill="currentColor"/></symbol>';
+        var bflySym =
+          '<symbol id="bfly" viewBox="0 0 60 40">' +
+          '<path d="M30 20C22 4 6 2 4 12c-1 8 8 12 16 10-6 2-12 6-9 12 3 5 14 2 19-14z" fill="currentColor"/>' +
+          '<path d="M30 20C38 4 54 2 56 12c1 8-8 12-16 10 6 2 12 6 9 12-3 5-14 2-19-14z" fill="currentColor"/>' +
+          '<circle cx="14" cy="13" r="3" fill="#FFF8E7" opacity=".85"/><circle cx="46" cy="13" r="3" fill="#FFF8E7" opacity=".85"/>' +
+          '<path d="M30 12v18" stroke="#76543A" stroke-width="2.4" stroke-linecap="round"/>' +
+          '<path d="M30 12q-4-7-8-8M30 12q4-7 8-8" fill="none" stroke="#76543A" stroke-width="1.2" stroke-linecap="round"/></symbol>';
+
+        // Corner bouquet (same arrangement as the invitation), sized in design units
+        function bouquet(corner, size, m) {
+          var W = 631,
+            H = 841;
+          var x = corner.charAt(1) === "l" ? m : W - m;
+          var y = corner.charAt(0) === "t" ? m : H - m;
+          var sx = corner.charAt(1) === "l" ? 1 : -1;
+          var sy = corner.charAt(0) === "t" ? 1 : -1;
+          var S = size;
+          function p(v) {
+            return f((v / 100) * S);
+          }
+          function leaf(l, t, rot) {
+            var w = (34 / 100) * S,
+              h = (w * 28) / 40;
+            return (
+              '<use href="#leaf" x="' +
+              p(l) +
+              '" y="' +
+              p(t) +
+              '" width="' +
+              f(w) +
+              '" height="' +
+              f(h) +
+              '" transform="rotate(' +
+              rot +
+              " " +
+              f(p(l) + w / 2) +
+              " " +
+              f(p(t) + h / 2) +
+              ')"/>'
+            );
+          }
+          function box(sym, l, t, w) {
+            return (
+              '<use href="#' +
+              sym +
+              '" x="' +
+              p(l) +
+              '" y="' +
+              p(t) +
+              '" width="' +
+              p(w) +
+              '" height="' +
+              p(w) +
+              '"/>'
+            );
+          }
+          return (
+            '<g transform="translate(' +
+            x +
+            " " +
+            y +
+            ") scale(" +
+            sx +
+            " " +
+            sy +
+            ')">' +
+            leaf(46, 2, 25) +
+            leaf(2, 50, 75) +
+            leaf(42, 52, -20) +
+            box("sf", 0, 0, 62) +
+            box("sf", 48, 30, 38) +
+            box("sf", 12, 58, 26) +
+            box("dz", 62, 6, 15) +
+            box("dz", 36, 70, 15) +
+            "</g>"
+          );
+        }
+        function deco(sym, x, y, w, rot, color, ratio) {
+          var h = ratio ? w / ratio : w;
+          return (
+            '<use href="#' +
+            sym +
+            '" x="' +
+            x +
+            '" y="' +
+            y +
+            '" width="' +
+            w +
+            '" height="' +
+            f(h) +
+            '" style="color:' +
+            color +
+            '" transform="rotate(' +
+            rot +
+            " " +
+            f(x + w / 2) +
+            " " +
+            f(y + h / 2) +
+            ')"/>'
+          );
+        }
+        // Divider: two gold lines, sage dots and a heart (centred on the canvas)
+        function divider(cy) {
+          var c = 315.5;
+          return (
+            '<path d="M' +
+            (c - 118) +
+            " " +
+            cy +
+            "H" +
+            (c - 35) +
+            '" stroke="#D9A441" stroke-width="1" stroke-linecap="round" opacity=".85"/>' +
+            '<path d="M' +
+            (c + 17) +
+            " " +
+            cy +
+            "H" +
+            (c + 100) +
+            '" stroke="#D9A441" stroke-width="1" stroke-linecap="round" opacity=".85"/>' +
+            '<circle cx="' +
+            (c - 125) +
+            '" cy="' +
+            cy +
+            '" r="1.8" fill="#A8B58A"/><circle cx="' +
+            (c + 107) +
+            '" cy="' +
+            cy +
+            '" r="1.8" fill="#A8B58A"/>' +
+            '<use href="#heart" x="' +
+            (c - 10) +
+            '" y="' +
+            (cy - 6.5) +
+            '" width="20" height="13" style="color:#E9A88A"/>'
+          );
+        }
+
+        var svg =
+          "<defs>" +
+          sunflower() +
+          daisy() +
+          leafSym +
+          heartSym +
+          bflySym +
+          "</defs>";
+
+        svg += bouquet("tl", 170, 14);
+        svg += bouquet("br", 170, 14);
+        svg += bouquet("tr", 125, 14);
+        svg += bouquet("bl", 125, 14);
+
+        svg += deco("bfly", 535, 300, 36, 14, "#F5C6A5", 3 / 2);
+        svg += deco("bfly", 60, 330, 32, -14, "#A8B58A", 3 / 2);
+        svg += deco("bfly", 150, 772, 30, -14, "#A8B58A", 3 / 2);
+        svg += deco("heart", 78, 462, 16, 0, "#E9A88A");
+        svg += deco("heart", 537, 456, 14, 0, "#E9A88A");
+
+        svg += divider(238);
+        svg += divider(662);
+
+        art.innerHTML = svg;
+
+        /* ---------- Fit long lines (parent names) without distortion ---------- */
+        var MM = 96 / 25.4,
+          root = document.documentElement;
+        function fitText() {
+          var els = document.querySelectorAll("[data-max]"),
+            i,
+            ratio = 1;
+          for (i = 0; i < els.length; i++) {
+            els[i].parentNode.style.fontSize = "";
+            var w = els[i].offsetWidth,
+              max = parseFloat(els[i].getAttribute("data-max")) * MM;
+            if (w > max) ratio = Math.min(ratio, max / w);
+          }
+          // both parent lines share one size (the smaller one needed)
+          if (ratio < 1)
+            for (i = 0; i < els.length; i++) {
+              var p = els[i].parentNode;
+              p.style.fontSize =
+                parseFloat(getComputedStyle(p).fontSize) * ratio + "px";
+            }
+        }
+
+        /* ---------- Physical size -> scale factors ---------- */
+        var Wmm = Math.max(50, CONFIG.banner.widthCm * 10);
+        var Hmm = Math.max(50, CONFIG.banner.heightCm * 10);
+        var k = Math.min(Wmm / 631, Hmm / 841); // one uniform factor
+        root.style.setProperty("--W", Wmm);
+        root.style.setProperty("--H", Hmm);
+        root.style.setProperty("--k", k.toFixed(5));
+        document.getElementById("pageRule").textContent =
+          "@page{size:" +
+          Wmm +
+          "mm " +
+          Hmm +
+          "mm;margin:0}" +
+          "@media print{html,body{width:" +
+          Wmm +
+          "mm;height:" +
+          Hmm +
+          "mm}}";
+        document.getElementById("uiNote").innerHTML =
+          "<strong>Banner " +
+          (CONFIG.banner.heightCm >= CONFIG.banner.widthCm
+            ? "potret"
+            : "lanskap") +
+          ", " +
+          CONFIG.banner.widthCm +
+          " × " +
+          CONFIG.banner.heightCm +
+          " cm.</strong> Simpan sebagai PDF dengan Background graphics aktif dan margin None; halaman PDF tepat berukuran ini. Ubah ukuran di CONFIG.";
+
+        /* ---------- Preview scaling (never distorts the aspect ratio) ---------- */
+        function fit() {
+          var ui = document.querySelector(".ui");
+          var availW = Math.max(120, window.innerWidth - 32);
+          var availH = Math.max(
+            160,
+            window.innerHeight - (ui ? ui.offsetHeight : 0) - 48,
+          );
+          var s = Math.min(availW / (Wmm * MM), availH / (Hmm * MM), 1);
+          root.style.setProperty("--s", s.toFixed(5));
+        }
+        fit();
+        fitText();
+        window.addEventListener("resize", fit);
+        window.addEventListener("beforeprint", function () {
+          root.style.setProperty("--s", "1");
+        });
+        window.addEventListener("afterprint", fit);
+        if (document.fonts && document.fonts.ready)
+          document.fonts.ready.then(function () {
+            fit();
+            fitText();
+          });
+
+        document
+          .getElementById("printBtn")
+          .addEventListener("click", function () {
+            window.print();
+          });
+      })();
+    </script>
+  </body>
+</html>
